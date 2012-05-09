@@ -1,0 +1,4 @@
+hajokit
+=======
+
+Hajareitten kurssityö
