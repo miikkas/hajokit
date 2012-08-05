@@ -1,0 +1,17 @@
+RESTful API? Voidaan pohtia tarkemmin. Otaksutaan nyt RESTful.
+
+lista pelaajista
+/players
+{"players":[{"player":{"name":"esa","drawing":"0"}},{"player":{"name":"javanainen","drawing":"1"}},{"player":{"name":"jorma","drawing":"0"}}]}
+
+
+canvasin sisältö
+/canvas
+Base64 encoded data???
+
+
+arvaus?
+???
+{"guesses":[{"guess":{"player":"esa","word":"enis"}},{"guess":{"player":"javanainen","word":"talo"}},{"guess":{"player":"jorma","word":"omena"}}]}
+
+
