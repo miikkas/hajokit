@@ -1,15 +1,15 @@
-hajokit
+Hajokit
 =======
 
-Hajareitten kurssityö  
+Hajareitten kurssityö: piirrä & arvaa -peli.  
 
 Perusflow
 ---------
 
-Vain ensimmäisellä kerralla:  
+**Vain ensimmäisellä kerralla:**  
 ``git clone https://github.com/miikkas/hajokit.git hajokit``  
   
-Jatkossa:  
+**Jatkossa:**  
 ``git pull``  
   
 *ahkeraa koodausta*  
