@@ -6,16 +6,18 @@ Hajareitten kurssityö
 Perusflow
 ---------
 
-Vain ensimmäisellä kerralla:
+Vain ensimmäisellä kerralla:  
     $ git clone https://github.com/miikkas/hajokit.git hajokit
 
-Jatkossa:
+Jatkossa:  
     $ git pull  
 
-*ahkeraa koodausta* :
+*ahkeraa koodausta*
+ :  
     $ git commit  
 
-*ahkeraa koodausta* :
+*ahkeraa koodausta*
+ :  
     $ git commit  
     $ git pull --rebase  
     $ git push  
