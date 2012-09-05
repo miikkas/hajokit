@@ -23,3 +23,10 @@ Perusflow
 ``git push``  
   
 *uudestaan!*  
+
+
+Virtuaalikoneet eli Nodet
+-------------------------
+
+ubuntunode{1..3}.porogrammer.fi on apache virtuaalihostit
+ssh portit 200{1..3} ohjataan ko nodeihin.
