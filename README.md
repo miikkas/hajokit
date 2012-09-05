@@ -29,4 +29,4 @@ Virtuaalikoneet eli Nodet
 -------------------------
 
 ubuntu_node{1..3}.porogrammer.fi on apache virtuaalihostit
-ssh portit 200{1..3} ohjataan ko nodeihin.
+ssh portit 200{1..3} porogrammer.fi-osoitteesta ohjataan ko nodeihin.
