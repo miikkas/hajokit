@@ -28,5 +28,5 @@ Perusflow
 Virtuaalikoneet eli Nodet
 -------------------------
 
-ubuntunode{1..3}.porogrammer.fi on apache virtuaalihostit
+ubuntu_node{1..3}.porogrammer.fi on apache virtuaalihostit
 ssh portit 200{1..3} ohjataan ko nodeihin.
