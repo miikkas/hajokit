@@ -15,13 +15,8 @@ def service_resolved(*args):
     print 'address:',args[7]
     print 'port:',args[8]
     print 'txt:',avahi.txt_array_to_string_array(args[9])
-    servicelist{args[2]}=[args[7],avahi.txt_array_to_string_array(args[9])]
+    servicelist[args[2]]=[args[8],avahi.txt_array_to_string_array(args[9])]
 
-def service_removed(*args):
-    servicelist{args[2]}=None
-
-    print "Remaining services:"
-    print servicelist
 
 def print_error(*args):
     print 'error handler'
@@ -33,9 +28,12 @@ def remove_service( interface, protocol, name, stype, domain, flags):
     if flags & avahi.LOOKUP_RESULT_LOCAL:
         pass
 
-    server.ResolveService(interface, protocol, name, stype,
-        domain, avahi.PROTO_UNSPEC, dbus.UInt32(0),
-        reply_handler=service_removed, error_handler=print_error)
+    if name in servicelist:
+       del servicelist[name]
+
+    print "Remaining services:"
+    for service in servicelist.keys():
+        print "http://%s:%s:%s" % (service,servicelist[service][0],servicelist[service][1])
 
 
 
