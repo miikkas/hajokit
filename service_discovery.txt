@@ -1,0 +1,11 @@
+Nodet käyttää avahia rajapintana mdns palvelunmainostukseen.
+
+nodet mainostaa itseään "_hajarit._tcp" tyyppisenä local-domainissa.
+Parametreina samat kuin _http._tcp palvelussa [http://www.dns-sd.org/ServiceTypes.html]
+
+osoite nodeen muodostuu seuraavasti:
+https://<serviceName>.local:<servicePort>+<txt["path"]>
+esimerkiksi
+https://ubuntunode1.local:8080/
+
+polku on juuripolku palveluun jonka alta löytyy REST-rajapinnat.
