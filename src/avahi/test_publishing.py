@@ -6,7 +6,9 @@ import gobject
 import avahi
 from dbus.mainloop.glib import DBusGMainLoop
 
-serviceName = "Hajarit node"
+import platform
+
+serviceName = platform.node()
 serviceType = "_hajarit._tcp" #see http://www.dns-sd.org/ServiceTypes.html
 servicePort = 8080
 serviceTXT = ["path=/canvas","u=hajarit","p=letmein"]
