@@ -23,7 +23,7 @@ def add_service():
         group = dbus.Interface(
                  bus.get_object( avahi.DBUS_NAME, server.EntryGroupNew()),
                  avahi.DBUS_INTERFACE_ENTRY_GROUP )
-        group.connect_to_signal('StateChange', entry_group_state_changed )
+        group.connect_to_signal('StateChanged', entry_group_state_changed )
     
     print "Adding service '%s' of type '%s' .." %(serviceName, serviceType)
 
@@ -59,8 +59,8 @@ def entry_group_state_changed( state, error):
     elif state == avahi.ENTRY_GROUP_COLLISION:
         rename_count -= 1
         if rename_count:
-            name = server.GetAlternativeServiceName(name)
-            print "Service name collision, changing name to '%s'.." % name
+            serviceName = server.GetAlternativeServiceName(serviceName)
+            print "Service name collision, changing name to '%s'.." % serviceName
             remove_service()
             add_service()
         else:
