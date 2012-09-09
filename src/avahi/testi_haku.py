@@ -9,13 +9,16 @@ TYPE = '_hajarit._tcp'
 
 servicelist = {}
 
+def print_services():
+    print "Services:"
+    for service in servicelist.keys():
+        print "https://%s.local:%s%s" % (service,servicelist[service][0],servicelist[service][1]["path"])
+
 def service_resolved(*args):
-    print 'service resolved'
-    print 'name:',args[2]
-    print 'address:',args[7]
-    print 'port:',args[8]
-    print 'txt:',avahi.txt_array_to_string_array(args[9])
-    servicelist[args[2]]=[args[8],avahi.txt_array_to_string_array(args[9])]
+    if args[2] not in servicelist:
+        txt = dict(item.split('=') for item in avahi.txt_array_to_string_array(args[9]))
+        servicelist[args[2]]=[args[8],txt]
+        print_services()
 
 
 def print_error(*args):
@@ -23,17 +26,14 @@ def print_error(*args):
     print args[0]
 
 def remove_service( interface, protocol, name, stype, domain, flags):
-    print 'Removing service "%s" type "%s" domain "%s" ' %(name, stype, domain)
 
     if flags & avahi.LOOKUP_RESULT_LOCAL:
         pass
 
     if name in servicelist:
+       print 'Removing service "%s" type "%s" domain "%s" ' %(name, stype, domain)
        del servicelist[name]
-
-    print "Remaining services:"
-    for service in servicelist.keys():
-        print "http://%s:%s:%s" % (service,servicelist[service][0],servicelist[service][1])
+       print_services()
 
 
 
@@ -46,6 +46,7 @@ def new_service( interface, protocol, name, stype, domain, flags):
     server.ResolveService(interface, protocol, name, stype,
         domain, avahi.PROTO_UNSPEC, dbus.UInt32(0),
         reply_handler=service_resolved, error_handler=print_error)
+
 
 loop = DBusGMainLoop()
 
