@@ -1,20 +1,77 @@
 import base64
 import json
+import platform
 
 from django.http import HttpResponse
+from django.core import serializers
 from django.template import RequestContext
+from django.shortcuts import render_to_response
+from game.models import PeliNode
+from game.models import Peli,Pelaaja
+from game.models import Piirros,Muutos
 
 def index(request):
     """For HTTP GETting the index page of the application."""
-    pass
+    return HttpResponse(serializers.serialize("json", Peli.objects.all() ) )
+
+def newgame(request):
+    """ Request new game to be started """
+    uus_peli = Peli()
+    canvas = Piirros()
+    canvas.save()
+    uus_peli.canvas = canvas
+    uus_peli.save()
+    return HttpResponse(serializers.serialize("json", [uus_peli] ) )
+
+def joingame( request, playerid, gameid ):
+    peli = Peli.objects.get(pk=gameid)
+    pelaaja = Pelaaja.objects.get(pk=playerid)
+    pelaaja.peli=peli
+    peli.pelaajat.add(pelaaja)
+    peli.save()
+    pelaaja.save()
+    return HttpResponse(serializers.serialize("json", [pelaaja] ) )
+
+def endgame( request, gameid ):
+    peli = Peli.objects.get(pk=gameid)
+    peli.delete()
+    return HttpResponse(serializers.serialize("json", Peli.objects.all() ) )
+
+
+def newplayer(request,playername):
+    pelaaja = Pelaaja(nimi=playername)
+    pelinode = PeliNode.objects.filter(hostname=platform.node()+".local")
+    pelaaja.pelinode = pelinode[0]
+    pelaaja.save()
+    return HttpResponse(serializers.serialize("json", [pelaaja] ) )
 
 def players(request):
     """For HTTP GETting the data of the current players, JSON encoded."""
-    pass
+    return HttpResponse(serializers.serialize("json", Pelaaja.objects.all() ) )
 
-def canvas(request):
+def canvasall(request):
     """For HTTP GETting the current canvas data, base 64 encoded, JSON encoded."""
-    pass
+    return HttpResponse(serializers.serialize("json", Piirros.objects.all() ))
+
+def canvas( request, canvas_id ):
+    if request.method == "POST":
+     canvas = Piirros.objects.get(pk=canvas_id)
+     canvas.muutos_set.clear()
+     canvas.muutos_set.delete()
+     for canvas in serializers.deserialize("json", request.POST ):
+       canvas.save()
+    else:
+     return HttpResponse( serializers.serialize("json", [ Piirros.objects.get(pk=canvas_id ) ] ) )
+
+def canvasdiff( request, canvas_id ):
+    canvas = Piirros.objects.get(pk=canvas_id)
+    if requests.method == "POST":
+     for muutos in serializers.deserialize("json", request.POST ):
+        canvas.add(muutos)
+        muutos.save()
+     canvas.save()
+    else:
+     return HttpResponse( serializers.serialize("json", canvas.muutos_set) )
 
 def guesses(request):
     """For HTTP GETting the guesses made on the current game, JSON encoded."""
@@ -24,3 +81,7 @@ def guess(request):
     """For HTTP POSTing a guess to the current game, JSON encoded(?)."""
     pass
 
+
+def nodes(request):
+    all_the_nodes = PeliNode.objects.all()
+    return HttpResponse( serializers.serialize("json", all_the_nodes ) )
