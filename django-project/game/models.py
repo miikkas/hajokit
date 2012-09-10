@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
 from django.db import models
 
 # Create your models here.
@@ -10,13 +12,13 @@ class PeliNode(models.Model):
 
 #Pelaaja, pidetään tallessa missä nodessa on kiinni ja tunniste
 class Pelaaja(models.Model):
-    pelinode = models.ForeingKey('PeliNode')
+    pelinode = models.ForeignKey('PeliNode')
     nimi     = models.CharField(max_length=256)
 
 #Muutos on Piirrokseen tulleet muutokset
 class Muutos(models.Model):
     muutos   = models.TextField()
-    alku     = models.ForeingKey('Piirros')
+    alku     = models.ForeignKey('Piirros')
 
 #Piirros on base64 koodattu piirrostilanne, tämän lisäksi muutokset
 # kun pelaaja liittyy
@@ -25,5 +27,5 @@ class Piirros(models.Model):
 
 #Pelitilanne, kuka on piirtomuodossa ja mitä on piirretty
 class Peli(models.Model):
-    piirtaja = models.ForeingKey('Pelaaja')
-    tilanne  = models.ForeingKey('Piirros')
+    piirtaja = models.ForeignKey('Pelaaja')
+    tilanne  = models.ForeignKey('Piirros')
