@@ -52,6 +52,18 @@ window.onload = function() {
         path.strokeColor = vari;
         path.removeOnDrag();
     }
+
+    //Nelikulmio
+    nelikulmio = new Tool();
+    var startPoint;
+    nelikulmio.onMouseDown = function(event) {
+        startPoint = event.point;
+    }
+    nelikulmio.onMouseDrag = function(event) {
+        path = new Path.Rectangle(startPoint, event.point);
+        path.strokeColor = vari;
+        path.removeOnDrag();
+    }
 }
 
 function changeColor(color) {
