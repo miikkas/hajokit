@@ -40,7 +40,18 @@ window.onload = function() {
         path.add(event.point);
     }
 
-
+    //Ympyrä
+    ympyra = new Tool();
+    var startPoint;
+    ympyra.onMouseDown = function(event) {
+        startPoint = event.point;
+    }
+    ympyra.onMouseDrag = function(event) {
+        var rad = startPoint.getDistance(event.point, false);
+        path = new Path.Circle(startPoint, rad);
+        path.strokeColor = vari;
+        path.removeOnDrag();
+    }
 }
 
 function changeColor(color) {
