@@ -7,7 +7,7 @@ var kyna, viiva, nelikulmio, ellipsi, kumi, taytto;
 var vari = 'black';
 
 window.onload = function() {
-    paper.setup('canvas');
+    paper.setup('piirtocanvas');
     var path;
 
     //Igor, kynä!
