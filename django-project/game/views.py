@@ -34,6 +34,7 @@ def joingame( request, playerid, gameid ):
 
 def endgame( request, gameid ):
     peli = Peli.objects.get(pk=gameid)
+    peli.canvas.delete()
     peli.delete()
     return HttpResponse(serializers.serialize("json", Peli.objects.all() ) )
 
