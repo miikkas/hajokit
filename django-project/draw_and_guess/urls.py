@@ -7,7 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', 'game.views.index'),
     url(r'^players/$', 'game.views.players'),
-    url(r'^player/create/(?P<playername>\w+)$', 'game.views.newplayer'),
+    url(r'^player/create/(?P<playername>.+)$', 'game.views.newplayer'),
     url(r'^player/(?P<playerid>\d+)/join/(?P<gameid>\d+)$', 'game.views.joingame'),
     url(r'^games/new$', 'game.views.newgame'),
     url(r'^games/(?P<gameid>\d+)/delete$', 'game.views.endgame'),
