@@ -12,7 +12,7 @@ from game.models import Piirros,Muutos
 
 def index(request):
     """For HTTP GETting the index page of the application."""
-    return HttpResponse(serializers.serialize("json", Peli.objects.all() ) )
+    return render_to_response('piirra_ja_arvaa.html',{})
 
 def newgame(request):
     """ Request new game to be started """
