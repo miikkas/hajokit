@@ -10,7 +10,7 @@ sudo apt-get install --install-suggests -u python-pip libapache2-mod-wsgi python
 sudo pip install django
 
 #konffataan settings kohdilleen
-sed -i -e "s/DAG_ROOT = '\/home\/mdf\/projects\/hajokit/DAG_ROOT = '\/home\/ileoo\/src\/hajokit/g" ${juurihakemisto}/django-project/draw_and_guess/settings.py
+sed -i -e "s/DAG_ROOT = '\/home\/mdf\/projects\/hajokit/DAG_ROOT = '${juurihakemisto}/g" ${juurihakemisto}/django-project/draw_and_guess/settings.py
 
 sudo cp apache_sites/hajokit /etc/apache2/sites-available/
 sudo a2dissite default
