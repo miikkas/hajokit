@@ -11,6 +11,8 @@ import avahi
 from dbus.mainloop.glib import DBusGMainLoop
 from dbus import DBusException
 
+import prctl
+
 #daemoning, saadaan SIGTERM
 import signal
 
@@ -24,6 +26,7 @@ servicePort = 80
 serviceTXT = ["path=/","u=hajarit","p=letmein"]
 domain = ""
 host = ""
+prosessinimi = "Hajokit -ryhmän SD-moduli"
 
 #Tiedostokahva logitukseen
 LOGFILE = None
@@ -196,6 +199,7 @@ if __name__ == "__main__":
 
 
    log("Discovery setup done")
+   prctl.set_proctitle(prosessinimi)
 
    #Kun saadaan sigTERM, lopetetaan
    signal.signal(signal.SIGTERM, stop)
