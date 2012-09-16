@@ -11,6 +11,9 @@ import avahi
 from dbus.mainloop.glib import DBusGMainLoop
 from dbus import DBusException
 
+#daemoning, saadaan SIGTERM
+import signal
+
 import time
 
 import platform
@@ -48,6 +51,18 @@ def initdb():
     global conn, cursor
     conn = sqlite3.connect(djangoDB)
     cursor = conn.cursor()
+
+def stop(signum, frame):
+    global group
+    #pysäytetään pyynnöstä ja siivotaan jäljet
+    log("Pysäytetään serveri ja siivotaan")
+    if group:
+       group.Free()
+    log("Siivotaan tietokanta")
+    cursor.execute('DELETE FROM game_pelinode')
+    conn.commit()
+    conn.close()
+    gobject.MainLoop().quit()
 
 #common logging
 def log(*args):
@@ -107,10 +122,10 @@ def entry_group_state_changed( state, error):
             add_service()
         else:
             log("Giving up, no hope anymore")
-            main_loop.quit()
+            gobject.MainLoop().quit()
     elif state == avahi.ENTRY_GROUP_FAILURE:
         log("Entry group failure,givin up")
-        main_loop.quit()
+        gobject.MainLoop().quit()
         return
 
 #Discovery parts
@@ -181,6 +196,9 @@ if __name__ == "__main__":
 
 
    log("Discovery setup done")
+
+   #Kun saadaan sigTERM, lopetetaan
+   signal.signal(signal.SIGTERM, stop)
 
    gobject.MainLoop().run()
    group.Free()
