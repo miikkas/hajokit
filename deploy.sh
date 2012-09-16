@@ -19,3 +19,7 @@ sudo a2dissite default
 sudo a2ensite hajokit
 sudo a2enmod wsgi
 sudo service apache2 reload
+
+#tehdään tyhjä kanta jos ei ole olemassa
+cd django-project && python manage.py syncdb --noinput
+
