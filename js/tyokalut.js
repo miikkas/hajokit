@@ -31,7 +31,7 @@ window.onload = function() {
     
     //Viiva
     viiva.onMouseDown = function(event) {
-        polku = new polku();
+        polku = new Path();
         polku.strokeColor = piirtovari;
         polku.strokeWidth = piirtokoko;
         if (polku.segments.length === 0) {
@@ -51,8 +51,8 @@ window.onload = function() {
         alkuPiste = event.point;
     };
     ympyra.onMouseDrag = function(event) {
-        var rad = startPoint.getDistance(event.point, false);
-        polku = new polku.Circle(alkuPiste, rad);
+        var rad = alkuPiste.getDistance(event.point, false);
+        polku = new Path.Circle(alkuPiste, rad);
         polku.strokeColor = piirtovari;
         polku.strokeWidth = piirtokoko;
         polku.removeOnDrag();
@@ -63,7 +63,7 @@ window.onload = function() {
         alkuPiste = event.point;
     };
     nelikulmio.onMouseDrag = function(event) {
-        polku = new polku.Rectangle(alkuPiste, event.point);
+        polku = new Path.Rectangle(alkuPiste, event.point);
         polku.strokeColor = piirtovari;
         polku.strokeWidth = piirtokoko;
         polku.removeOnDrag();
