@@ -13,7 +13,11 @@ middleware here, or combine a Django application with an application of another
 framework.
 
 """
-import os
+import os,sys
+
+sys.path.append(os.path.dirname(__file__))
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "draw_and_guess.settings")
 
