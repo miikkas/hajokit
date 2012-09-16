@@ -8,7 +8,7 @@ var piirtovari = 'black';
 var piirtokoko = 5;
 
 window.onload = function() {
-    paper.setup('canvas');
+    paper.setup('piirtocanvas');
     kyna = new Tool();
     viiva = new Tool();
     ympyra = new Tool();
@@ -18,57 +18,57 @@ window.onload = function() {
 
     //Igor, kynä!
     kyna.onMouseDown = function(event) {
-        polku = new polku();
+        polku = new Path();
         polku.strokeColor = piirtovari;
         polku.strokeWidth = piirtokoko;
-    }
+    };
     kyna.onMouseDrag = function(event) {
         polku.add(event.point);
-    }
+    };
     kyna.onMouseUp = function(event) {
         polku.simplify();
-    }
+    };
     
     //Viiva
     viiva.onMouseDown = function(event) {
         polku = new polku();
         polku.strokeColor = piirtovari;
         polku.strokeWidth = piirtokoko;
-        if (polku.segments.length == 0) {
+        if (polku.segments.length === 0) {
             polku.add(event.point);
         }
         polku.add(event.point);
-    }
+    };
     viiva.onMouseDrag = function(event) {
         polku.lastSegment.point = event.point;
-    }
+    };
     viiva.onMouseUp = function(event) {
         polku.add(event.point);
-    }
+    };
 
     //Ympyrä
     ympyra.onMouseDown = function(event) {
         alkuPiste = event.point;
-    }
+    };
     ympyra.onMouseDrag = function(event) {
         var rad = startPoint.getDistance(event.point, false);
         polku = new polku.Circle(alkuPiste, rad);
         polku.strokeColor = piirtovari;
         polku.strokeWidth = piirtokoko;
         polku.removeOnDrag();
-    }
+    };
 
     //Nelikulmio
     nelikulmio.onMouseDown = function(event) {
         alkuPiste = event.point;
-    }
+    };
     nelikulmio.onMouseDrag = function(event) {
         polku = new polku.Rectangle(alkuPiste, event.point);
         polku.strokeColor = piirtovari;
         polku.strokeWidth = piirtokoko;
         polku.removeOnDrag();
-    }
-}
+    };
+};
 
 function muutaVaria(vari) {
     /*
