@@ -6,7 +6,9 @@ juurihakemisto=$( cd "$( dirname "$0" )" && pwd )
 #Eli nyt ollaan projektin juuressa, sekä tiedetään missä projektin juuri on
 
 sudo apt-get install --install-suggests -u python-pip libapache2-mod-wsgi python-avahi python-dbus
+
 #Asennetaan django 1.4.1 #FIXME
+sudo apt-get remove python-django
 sudo pip install django
 
 #konffataan settings kohdilleen
