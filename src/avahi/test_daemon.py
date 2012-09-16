@@ -17,7 +17,7 @@ import platform
 
 serviceName = platform.node()
 serviceType = "_hajarit._tcp" #see http://www.dns-sd.org/ServiceTypes.html
-servicePort = 8080
+servicePort = 80
 serviceTXT = ["path=/","u=hajarit","p=letmein"]
 domain = ""
 host = ""
