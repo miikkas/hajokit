@@ -1,0 +1,22 @@
+﻿$(document).ready(function () {
+
+    function lahetaCanvas() {
+        /*
+         * Lähetä canvasin sisältö palvelimelle.
+         */
+        
+        var canvas = document.getElementById('piirtocanvas');
+        var image = canvas.toDataURL("image/png");
+        //Sinänsä kai ei tarvi odottaa palvelimelta mitään, joten 
+        //voisi käyttää jotain pelkkää postia esim.
+        //tarkista url
+        $.ajax ({
+            type: "POST",
+            url: "canvas/",
+            dataType: "text", 
+            data: 'image=' + image
+        }).done(function (response) {
+            //
+        });
+    }
+});
