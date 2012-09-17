@@ -27,6 +27,7 @@ window.onload = function() {
     };
     kyna.onMouseUp = function(event) {
         polku.simplify();
+        lahetaPolku(polku);
     };
     
     //Viiva
@@ -44,6 +45,7 @@ window.onload = function() {
     };
     viiva.onMouseUp = function(event) {
         polku.add(event.point);
+        lahetaPolku(polku);
     };
 
     //Ympyrä
@@ -57,6 +59,10 @@ window.onload = function() {
         polku.strokeWidth = piirtokoko;
         polku.removeOnDrag();
     };
+    ympyra.onMouseUp = function(event) {
+        lahetaPolku(polku);
+    };
+
 
     //Nelikulmio
     nelikulmio.onMouseDown = function(event) {
@@ -67,6 +73,9 @@ window.onload = function() {
         polku.strokeColor = piirtovari;
         polku.strokeWidth = piirtokoko;
         polku.removeOnDrag();
+    };
+    nelikulmio.onMouseUp = function(event) {
+        lahetaPolku(polku);
     };
 };
 
@@ -79,4 +88,14 @@ function muutaVaria(vari) {
 
 function muutaKokoa(koko) {
     piirtokoko = koko;
+}
+
+function lahetaPolku(polku) {
+    $.ajax ({
+        type: "POST",
+        url: "canvas/jokuid/" + polku.segments,
+        dataType: "text", 
+    }).done(function (response) {
+        //do something
+    });
 }
