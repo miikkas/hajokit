@@ -1,28 +1,52 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-<link rel="stylesheet" type="text/css" href="piirra_ja_arvaa_style.css" />
-</head>
-<body>
+﻿<!DOCTYPE HTML>
+ <html>
+    <head>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <script type="text/javascript" src="js/paper.js"></script>
+        <script type="text/javascript" src="js/tyokalut.js"></script>
+        <script type="text/javascript" src="js/viestitys.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/piirra_ja_arvaa_style.css" />
+    </head>
+ <body>
 <h1></h1>
 
 <div class="piirtoalue">
 
-<canvas id="piirtocanvas" width="550" height="600" style="border:2px solid #000000;">
+<canvas id="piirtocanvas" width="550" height="700" style="border:2px solid #000000;">
 
 
 </canvas>
 </div>
 
 <div class="tyokalut">
-<h1>HOH!</h1>
+    <a href="#" onClick="javascript:kyna.activate();">Kynä</a>
+    <a href="#" onClick="javascript:viiva.activate();">Viiva</a>
+    <a href="#" onClick="javascript:ympyra.activate();">Ympyrä</a>
+    <a href="#" onClick="javascript:nelikulmio.activate();">Nelikulmio</a>
+    <!--<a href="javascript:taytto.activate();">Ämpäri</a>
+    <a href="javascript:kumi.activate();">Gumi</a>-->
+</div>
+
+<div class="varit">
+    <a href="#" onClick="javascript:muutaVaria('black');" id="black">MUSTA</a>
+    <a href="#" onClick="javascript:muutaVaria('red');" id="red">Punainen</a>
+    <a href="#" onClick="javascript:muutaVaria('green');" id="green">Vihreä</a>
+    <a href="#" onClick="javascript:muutaVaria('blue');" id="blue">Sininen</a>
+    <a href="#" onClick="javascript:muutaVaria('yellow');" id="yellow">Keltainen</a>
+</div>
+
+<div class="koot">
+    <a href="#" onClick="javascript:muutaKokoa(1);" id="koko1">1</a>
+    <a href="#" onClick="javascript:muutaKokoa(2);" id="koko2">2</a>
+    <a href="#" onClick="javascript:muutaKokoa(5);" id="koko5">5</a>
+    <a href="#" onClick="javascript:muutaKokoa(7);" id="koko7">7</a>
+    <a href="#" onClick="javascript:muutaKokoa(10);" id="koko10">10</a>
 </div>
 
 <div class="arvausalue">
 </div>
 
 <div class="painikkeet">
-<h1>HOHHOH!</h1>
 </div>
 
  </body>
