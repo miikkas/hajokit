@@ -9,10 +9,10 @@
         var image = canvas.toDataURL("image/png");
         //Sinänsä kai ei tarvi odottaa palvelimelta mitään, joten 
         //voisi käyttää jotain pelkkää postia esim.
-        //tarkista url
+        //muista id
         $.ajax ({
             type: "POST",
-            url: "canvas/",
+            url: "canvas/jokuid",
             dataType: "text", 
             data: 'image=' + image
         }).done(function (response) {
