@@ -10,11 +10,11 @@ Perusflow
 ``git clone https://github.com/miikkas/hajokit.git hajokit``  
   
 **Jatkossa:**  
-``git pull``  
+``git pull --rebase``
   
 *ahkeraa koodausta*  
   
-``git commit``  
+``git commit``
   
 *ahkeraa koodausta*  
   
