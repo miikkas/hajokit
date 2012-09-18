@@ -27,7 +27,9 @@ window.onload = function() {
     };
     kyna.onMouseUp = function(event) {
         polku.simplify();
-        lahetaPolku(polku);
+        if (polku.segments.length != 0) {
+            lahetaPolku(polku);
+        }
     };
     
     //Viiva
@@ -45,7 +47,9 @@ window.onload = function() {
     };
     viiva.onMouseUp = function(event) {
         polku.add(event.point);
-        lahetaPolku(polku);
+        if (alkuPiste.getDistance(event.point, false) > 0) {
+            lahetaPolku(polku);
+        }
     };
 
     //Ympyrä
@@ -60,7 +64,10 @@ window.onload = function() {
         polku.removeOnDrag();
     };
     ympyra.onMouseUp = function(event) {
-        lahetaPolku(polku);
+        if (rad > 0) {
+            lahetaPolku(polku);
+        }
+        rad = 0;
     };
 
 
@@ -75,7 +82,9 @@ window.onload = function() {
         polku.removeOnDrag();
     };
     nelikulmio.onMouseUp = function(event) {
-        lahetaPolku(polku);
+        if (alkuPiste.getDistance(event.point, false) > 0) {
+            lahetaPolku(polku);
+        }
     };
 };
 
