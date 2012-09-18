@@ -102,8 +102,9 @@ function muutaKokoa(koko) {
 function lahetaPolku(polku) {
     $.ajax ({
         type: "POST",
-        url: "canvas/jokuid/" + polku.segments,
+        url: "canvas/jokuid/",
         dataType: "text", 
+        data: polku.segments
     }).done(function (response) {
         //do something
     });
