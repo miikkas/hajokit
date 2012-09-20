@@ -23,6 +23,9 @@ def newgame(request, nodename= platform.node()+".local"):
     pelinode = PeliNode.objects.get(hostname=nodename)
     uus_peli.pelinode = pelinode
     uus_peli.save()
+    if nodename == platform.node()+".local":
+       for node in PeliNode.objects.exclude(hostname=platform.node()+".local"):
+           newplayer = urllib2.urlopen("http://"+node.hostname+":"+node.port+node.path+"/games/new/"+platform.node()+".local").read()
     return HttpResponse(serializers.serialize("json", [uus_peli] ) )
 
 def joingame( request, playerid, gameid ):
@@ -49,6 +52,9 @@ def newplayer(request,playername,nodename=platform.node()+".local"):
     pelinode = PeliNode.objects.get(hostname=nodename)
     pelaaja.pelinode = pelinode
     pelaaja.save()
+    if nodename == platform.node()+".local":
+       for node in PeliNode.objects.exclude(hostname=platform.node()+".local"):
+           newplayer = urllib2.urlopen("http://"+node.hostname+":"+node.port+node.path+"/player/create/"+playername+"/"+platform.node()+".local").read()
     return HttpResponse(serializers.serialize("json", [pelaaja] ) )
 
 def players(request):
