@@ -20,8 +20,8 @@ def newgame(request, nodename= platform.node()+".local"):
     canvas = Piirros()
     canvas.save()
     uus_peli.canvas = canvas
-    pelinode = PeliNode.objects.filter(hostname=nodename)
-    uus_peli.pelinode = pelinode[0]
+    pelinode = PeliNode.objects.get(hostname=nodename)
+    uus_peli.pelinode = pelinode
     uus_peli.save()
     return HttpResponse(serializers.serialize("json", [uus_peli] ) )
 
@@ -46,8 +46,8 @@ def endgame( request, gameid ):
 
 def newplayer(request,playername,nodename=platform.node()+".local"):
     pelaaja = Pelaaja(nimi=playername)
-    pelinode = PeliNode.objects.filter(hostname=nodename)
-    pelaaja.pelinode = pelinode[0]
+    pelinode = PeliNode.objects.get(hostname=nodename)
+    pelaaja.pelinode = pelinode
     pelaaja.save()
     return HttpResponse(serializers.serialize("json", [pelaaja] ) )
 
