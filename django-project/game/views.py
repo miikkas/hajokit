@@ -14,12 +14,14 @@ def index(request):
     """For HTTP GETting the index page of the application."""
     return render_to_response('piirra_ja_arvaa.html',{})
 
-def newgame(request):
+def newgame(request, nodename= platform.node()+".local"):
     """ Request new game to be started """
     uus_peli = Peli()
     canvas = Piirros()
     canvas.save()
     uus_peli.canvas = canvas
+    pelinode = PeliNode.objects.filter(hostname=nodename)
+    uus_peli.pelinode = pelinode[0]
     uus_peli.save()
     return HttpResponse(serializers.serialize("json", [uus_peli] ) )
 
@@ -42,9 +44,9 @@ def endgame( request, gameid ):
     return HttpResponse(serializers.serialize("json", Peli.objects.all() ) )
 
 
-def newplayer(request,playername):
+def newplayer(request,playername,nodename=platform.node()+".local"):
     pelaaja = Pelaaja(nimi=playername)
-    pelinode = PeliNode.objects.filter(hostname=platform.node()+".local")
+    pelinode = PeliNode.objects.filter(hostname=nodename)
     pelaaja.pelinode = pelinode[0]
     pelaaja.save()
     return HttpResponse(serializers.serialize("json", [pelaaja] ) )

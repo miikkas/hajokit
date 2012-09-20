@@ -29,6 +29,7 @@ class Pelaaja(models.Model):
 #Pelitilanne, kuka on piirtomuodossa ja mitä on piirretty
 class Peli(models.Model):
     pelikaynnissa = models.BooleanField(default=False)
+    pelinode      = models.ForeignKey(PeliNode)
     pelaajat      = models.ManyToManyField(Pelaaja)
     canvas        = models.ForeignKey(Piirros)
     piirtaja      = models.OneToOneField(Pelaaja,blank=True,null=True,related_name='+')
