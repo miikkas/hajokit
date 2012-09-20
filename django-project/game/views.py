@@ -28,7 +28,7 @@ def newgame(request, nodename= platform.node()+".local"):
     if nodename == platform.node()+".local":
        for node in PeliNode.objects.exclude(hostname=platform.node()+".local"):
          try:
-           newplayer = urllib2.urlopen("http://"+node.hostname+":"+node.port+node.path+"/games/new/"+platform.node()+".local").read()
+           newplayer = urllib2.urlopen("http://"+node.hostname+":"+str(node.port)+node.path+"/games/new/"+platform.node()+".local").read()
          except:
            pass
     return HttpResponse(serializers.serialize("json", [uus_peli] ) )
@@ -60,7 +60,7 @@ def newplayer(request,playername,nodename=platform.node()+".local"):
     if nodename == platform.node()+".local":
        for node in PeliNode.objects.exclude(hostname=platform.node()+".local"):
          try:
-           newplayer = urllib2.urlopen("http://"+node.hostname+":"+node.port+node.path+"/player/create/"+urllib.quote(playername)+"/"+platform.node()+".local").read()
+           newplayer = urllib2.urlopen("http://"+node.hostname+":"+str(node.port)+node.path+"/player/create/"+urllib.quote(playername)+"/"+platform.node()+".local").read()
          except:
            pass
     return HttpResponse(serializers.serialize("json", [pelaaja] ) )
