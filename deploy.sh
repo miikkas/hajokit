@@ -26,5 +26,5 @@ cd django-project && python manage.py syncdb --noinput
 sudo chown www-data .
 sudo chown www-data dag.db
 sudo chmod g+w .
-sudo chmod g+w dab.db
+sudo chmod g+w dag.db
 
