@@ -35,7 +35,7 @@ def joingame( request, playerid, gameid ):
     return HttpResponse(serializers.serialize("json", [pelaaja] ) )
 
 def listgames( request ):
-    return HttpResponse( serializers.serialise("json", Peli.objects.all() ) )
+    return HttpResponse( serializers.serialize("json", Peli.objects.all() ) )
 
 def endgame( request, gameid ):
     peli = Peli.objects.get(pk=gameid)
