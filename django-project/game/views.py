@@ -3,6 +3,7 @@ import json
 import platform
 import urllib2
 import urllib
+import uuid
 
 from django.http import HttpResponse
 from django.core import serializers
@@ -23,20 +24,18 @@ def replicate(request, nodename):
         print "HTTPError:",e.reason
         
 
-    
-
 def index(request):
     """For HTTP GETting the index page of the application."""
     return render_to_response('piirra_ja_arvaa.html',{})
 
-def newgame(request, nodename= platform.node()+".local"):
+def newgame(request, nodename=platform.node()+".local", uuid=None):
     """ Request new game to be started """
-    uus_peli = Peli()
     canvas = Piirros()
     canvas.save()
-    uus_peli.canvas = canvas
     pelinode = PeliNode.objects.get(hostname=nodename)
-    uus_peli.pelinode = pelinode
+    if uuid is None:
+       uuid = uuid.uuid4()
+    uus_peli = Peli(canvas=canvas,pelinode=pelinode,uuid=uuid)
     uus_peli.save()
     replicate(request,nodename)
     return HttpResponse(serializers.serialize("json", [uus_peli] ) )

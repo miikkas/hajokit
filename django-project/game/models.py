@@ -28,6 +28,7 @@ class Pelaaja(models.Model):
 
 #Pelitilanne, kuka on piirtomuodossa ja mitä on piirretty
 class Peli(models.Model):
+    uuid          = models.CharField(max_length=32,primary_key=True)
     pelikaynnissa = models.BooleanField(default=False)
     pelinode      = models.ForeignKey(PeliNode)
     pelaajat      = models.ManyToManyField(Pelaaja)
