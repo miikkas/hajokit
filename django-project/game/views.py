@@ -40,22 +40,24 @@ def newgame(request, nodename=platform.node()+".local", uuid=None):
     replicate(request,nodename)
     return HttpResponse(serializers.serialize("json", [uus_peli] ) )
 
-def joingame( request, playerid, gameid ):
+def joingame( request, playerid, gameid, nodename=platform.node()+".local" ):
     peli = Peli.objects.get(pk=gameid)
     pelaaja = Pelaaja.objects.get(pk=playerid)
     pelaaja.peli=peli
     peli.pelaajat.add(pelaaja)
     peli.save()
     pelaaja.save()
+    replicate(request,nodename)
     return HttpResponse(serializers.serialize("json", [pelaaja] ) )
 
 def listgames( request ):
     return HttpResponse( serializers.serialize("json", Peli.objects.all() ) )
 
-def endgame( request, gameid ):
+def endgame( request, gameid, nodename=platform.node()+".local"):
     peli = Peli.objects.get(pk=gameid)
     peli.canvas.delete()
     peli.delete()
+    replicate(request,nodename)
     return HttpResponse(serializers.serialize("json", Peli.objects.all() ) )
 
 
