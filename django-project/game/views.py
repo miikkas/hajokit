@@ -18,7 +18,7 @@ def replicate(request, nodename):
        return
     for node in PeliNode.objects.exclude(hostname=platform.node()+".local"):
       try:
-        newplayer = urllib2.urlopen("http://"+node.hostname+":"+str(node.port)+node.path+request.path_info+platform.node()+".local").read()
+        newplayer = urllib2.urlopen("http://%s:%d%s/%s" %(node.hostname,node.port,node.path,request.path_info,platform.node()+".local")).read()
       except urllib2.HTTPError as e:
         print "HTTPError:",e.reason
         
