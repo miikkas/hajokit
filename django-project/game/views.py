@@ -68,9 +68,11 @@ def endgame( request, gameid, nodename=platform.node()+".local"):
     return HttpResponse(serializers.serialize("json", Peli.objects.all() ) )
 
 
-def newplayer(request,playername,nodename=platform.node()+".local"):
-    pelaaja = Pelaaja(nimi=playername)
-    logger.debug("Creating player %s" %(playername))
+def newplayer(request,playername,uuid=None,nodename=platform.node()+".local"):
+    if uuid is None:
+       uuid = uuid.uuid4()
+    pelaaja = Pelaaja(nimi=playername,uuid=uuid)
+    logger.debug("Creating player %s uuid %s" %(playername,uuid))
     pelinode = PeliNode.objects.get(hostname=nodename)
     pelaaja.pelinode = pelinode
     pelaaja.save()
