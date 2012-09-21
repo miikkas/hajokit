@@ -23,6 +23,7 @@ class PeliNode(models.Model):
 
 #Pelaaja, pidetään tallessa missä nodessa on kiinni ja tunniste
 class Pelaaja(models.Model):
+    uuid     = models.CharField(max_length=32,primary_key=True)
     pelinode = models.ForeignKey(PeliNode)
     nimi     = models.CharField(max_length=256)
 
