@@ -12,6 +12,19 @@ from game.models import PeliNode
 from game.models import Peli,Pelaaja
 from game.models import Piirros,Muutos
 
+#Replicates request to all the other nodes if needed
+def replicate(request, nodename):
+    if nodename != platform.node()+".local":
+       return
+    for node in PeliNode.objects.exclude(hostname=platform.node()+".local"):
+      try:
+        newplayer = urllib2.urlopen("http://"+node.hostname+":"+str(node.port)+node.path+request.path_info+platform.node()+".local").read()
+      except urllib2.HTTPError as e:
+        print "HTTPError:",e.reason
+        
+
+    
+
 def index(request):
     """For HTTP GETting the index page of the application."""
     return render_to_response('piirra_ja_arvaa.html',{})
@@ -25,12 +38,7 @@ def newgame(request, nodename= platform.node()+".local"):
     pelinode = PeliNode.objects.get(hostname=nodename)
     uus_peli.pelinode = pelinode
     uus_peli.save()
-    if nodename == platform.node()+".local":
-       for node in PeliNode.objects.exclude(hostname=platform.node()+".local"):
-         try:
-           newplayer = urllib2.urlopen("http://"+node.hostname+":"+str(node.port)+node.path+"/games/new/"+platform.node()+".local").read()
-         except:
-           pass
+    replicate(request,nodename)
     return HttpResponse(serializers.serialize("json", [uus_peli] ) )
 
 def joingame( request, playerid, gameid ):
@@ -57,12 +65,7 @@ def newplayer(request,playername,nodename=platform.node()+".local"):
     pelinode = PeliNode.objects.get(hostname=nodename)
     pelaaja.pelinode = pelinode
     pelaaja.save()
-    if nodename == platform.node()+".local":
-       for node in PeliNode.objects.exclude(hostname=platform.node()+".local"):
-         try:
-           newplayer = urllib2.urlopen("http://"+node.hostname+":"+str(node.port)+node.path+"/player/create/"+urllib.quote(playername)+"/"+platform.node()+".local").read()
-         except:
-           pass
+    replicate(request,nodename)
     return HttpResponse(serializers.serialize("json", [pelaaja] ) )
 
 def players(request):
