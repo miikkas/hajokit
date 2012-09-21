@@ -5,6 +5,8 @@ import urllib2
 import urllib
 import uuid
 
+import logging
+
 from django.http import HttpResponse
 from django.core import serializers
 from django.template import RequestContext
@@ -17,11 +19,13 @@ from game.models import Piirros,Muutos
 def replicate(request, nodename):
     if nodename != platform.node()+".local":
        return
+    logger.debug("Replicatin request %s"%(request.path_info))
     for node in PeliNode.objects.exclude(hostname=platform.node()+".local"):
+      logger.debug("Replicating data to host %s" %(node.hostname))
       try:
         newplayer = urllib2.urlopen("http://%s:%d%s%s/%s" %(node.hostname,node.port,node.path,request.path_info,platform.node()+".local")).read()
       except urllib2.HTTPError as e:
-        print "HTTPError:",e.reason
+        logger.error("HTTPError: %s" % (e.reason))
         
 
 def index(request):
@@ -35,6 +39,9 @@ def newgame(request, nodename=platform.node()+".local", uuid=None):
     pelinode = PeliNode.objects.get(hostname=nodename)
     if uuid is None:
        uuid = uuid.uuid4()
+       logger.debug("UUID created as %s" %(uuid))
+    else:
+       logger.debug("UUID given as %s" %(uuid))
     uus_peli = Peli(canvas=canvas,pelinode=pelinode,uuid=uuid)
     uus_peli.save()
     replicate(request,nodename)
@@ -63,6 +70,7 @@ def endgame( request, gameid, nodename=platform.node()+".local"):
 
 def newplayer(request,playername,nodename=platform.node()+".local"):
     pelaaja = Pelaaja(nimi=playername)
+    logger.debug("Creating player %s" %(playername))
     pelinode = PeliNode.objects.get(hostname=nodename)
     pelaaja.pelinode = pelinode
     pelaaja.save()
