@@ -145,9 +145,9 @@ function sendDiff(path) {
     //Do something with the id.
     $.ajax ({
         type: "POST",
-        url: "canvas/jokuid/" + path.segments,
+        url: "canvas/jokuid/",
         dataType: "json", 
-        data: "crap=" + diff
+        data: diff
     }).done(function (response) {
         //Nothing to do here.
     });
