@@ -1,6 +1,6 @@
 ﻿paper.install(window);
 /*
- * Globaalit muuttujat, jotta niitä voi muokata html:stä käsin.
+ * Global variables so that they can be accessed via HTML.
  */
 
 var pencil, line, rect, circle, eraser, fill;
@@ -16,7 +16,7 @@ window.onload = function() {
     var path;
     var startingpoint;
 
-    //Igor, kynä!
+    //Igor, pencil!
     pencil.onMouseDown = function(event) {
         path = new Path();
         path.strokeColor = drawcolor;
@@ -32,7 +32,7 @@ window.onload = function() {
         }
     };
     
-    //line
+    //Line
     line.onMouseDown = function(event) {
         path = new Path();
         path.strokeColor = drawcolor;
@@ -52,7 +52,7 @@ window.onload = function() {
         }
     };
 
-    //Ympyrä
+    //Circle
     ympyra.onMouseDown = function(event) {
         startingpoint = event.point;
     };
@@ -71,7 +71,7 @@ window.onload = function() {
     };
 
 
-    //rect
+    //Rectangle
     rect.onMouseDown = function(event) {
         startingpoint = event.point;
     };
@@ -90,12 +90,15 @@ window.onload = function() {
 
 function changeColor(color) {
     /*
-     * Vaihda kalun väriä colorin mukaiseksi.
+     * Change the color of the tool.
      */
     drawcolor = color;
 }
 
 function changeSize(size) {
+    /*
+     * Change the size of the tool.
+     */
     drawsize = size;
 }
 
