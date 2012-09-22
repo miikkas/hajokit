@@ -12,35 +12,35 @@
 
 <div class="piirtoalue">
 
-<canvas id="piirtocanvas" width="550" height="700" style="border:2px solid #000000;">
+<canvas id="drawingcanvas" width="550" height="700" style="border:2px solid #000000;">
 
 
 </canvas>
 </div>
 
 <div class="tyokalut">
-    <a href="#" onClick="javascript:kyna.activate();">Kynä</a>
-    <a href="#" onClick="javascript:viiva.activate();">Viiva</a>
-    <a href="#" onClick="javascript:ympyra.activate();">Ympyrä</a>
-    <a href="#" onClick="javascript:nelikulmio.activate();">Nelikulmio</a>
-    <!--<a href="javascript:taytto.activate();">Ämpäri</a>
-    <a href="javascript:kumi.activate();">Gumi</a>-->
+    <a href="#" onClick="javascript:pencil.activate();">Kynä</a>
+    <a href="#" onClick="javascript:line.activate();">Viiva</a>
+    <a href="#" onClick="javascript:circle.activate();">Ympyrä</a>
+    <a href="#" onClick="javascript:rect.activate();">Nelikulmio</a>
+    <!--<a href="javascript:fill.activate();">Ämpäri</a>
+    <a href="javascript:eraser.activate();">Gumi</a>-->
 </div>
 
 <div class="varit">
-    <a href="#" onClick="javascript:muutaVaria('black');" id="black">MUSTA</a>
-    <a href="#" onClick="javascript:muutaVaria('red');" id="red">Punainen</a>
-    <a href="#" onClick="javascript:muutaVaria('green');" id="green">Vihreä</a>
-    <a href="#" onClick="javascript:muutaVaria('blue');" id="blue">Sininen</a>
-    <a href="#" onClick="javascript:muutaVaria('yellow');" id="yellow">Keltainen</a>
+    <a href="#" onClick="javascript:changeColor('black');" id="black">MUSTA</a>
+    <a href="#" onClick="javascript:changeColor('red');" id="red">Punainen</a>
+    <a href="#" onClick="javascript:changeColor('green');" id="green">Vihreä</a>
+    <a href="#" onClick="javascript:changeColor('blue');" id="blue">Sininen</a>
+    <a href="#" onClick="javascript:changeColor('yellow');" id="yellow">Keltainen</a>
 </div>
 
 <div class="koot">
-    <a href="#" onClick="javascript:muutaKokoa(1);" id="koko1">1</a>
-    <a href="#" onClick="javascript:muutaKokoa(2);" id="koko2">2</a>
-    <a href="#" onClick="javascript:muutaKokoa(5);" id="koko5">5</a>
-    <a href="#" onClick="javascript:muutaKokoa(7);" id="koko7">7</a>
-    <a href="#" onClick="javascript:muutaKokoa(10);" id="koko10">10</a>
+    <a href="#" onClick="javascript:changeSize(1);" id="koko1">1</a>
+    <a href="#" onClick="javascript:changeSize(2);" id="koko2">2</a>
+    <a href="#" onClick="javascript:changeSize(5);" id="koko5">5</a>
+    <a href="#" onClick="javascript:changeSize(7);" id="koko7">7</a>
+    <a href="#" onClick="javascript:changeSize(10);" id="koko10">10</a>
 </div>
 
 <div class="arvausalue">

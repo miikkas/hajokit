@@ -2,14 +2,12 @@
 
     function lahetaCanvas() {
         /*
-         * Lähetä canvasin sisältö palvelimelle.
+         * Send canvas contents to server.
          */
         
-        var canvas = document.getElementById('piirtocanvas');
+        var canvas = document.getElementById('drawingcanvas');
         var image = canvas.toDataURL("image/png");
-        //Sinänsä kai ei tarvi odottaa palvelimelta mitään, joten 
-        //voisi käyttää jotain pelkkää postia esim.
-        //muista id
+        //Not expecting anything meaningful back from the server.
         $.ajax ({
             type: "POST",
             url: "canvas/jokuid",
