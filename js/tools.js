@@ -28,7 +28,7 @@ window.onload = function() {
     pencil.onMouseUp = function(event) {
         path.simplify();
         if (path.segments.length != 0) {
-            sendPath(path);
+            sendDiff(path);
         }
     };
     
@@ -48,7 +48,7 @@ window.onload = function() {
     line.onMouseUp = function(event) {
         path.add(event.point);
         if (startingpoint.getDistance(event.point, false) > 0) {
-            sendPath(path);
+            sendDiff(path);
         }
     };
 
@@ -65,7 +65,7 @@ window.onload = function() {
     };
     ympyra.onMouseUp = function(event) {
         if (rad > 0) {
-            sendPath(path);
+            sendDiff(path);
         }
         rad = 0;
     };
@@ -83,7 +83,7 @@ window.onload = function() {
     };
     rect.onMouseUp = function(event) {
         if (startingpoint.getDistance(event.point, false) > 0) {
-            sendPath(path);
+            sendDiff(path);
         }
     };
 };
@@ -102,13 +102,53 @@ function changeSize(size) {
     drawsize = size;
 }
 
-function sendPath(path) {
+function pathToObject(path) {
+    /*
+     * Turn the paper.js path into a JSON object, with color 
+     * and size info with all the segments that the path includes.
+     */
+    
+    var segObj = segmentsToObject(path.segments);
+    var diffObj = {
+        color: drawColor,
+        size: drawSize, 
+        segments: segObj
+    }
+    return diffObj;
+}
+
+function segmentsToObject(segments) {
+    /*
+     * Turn the segments of a path into JSON objects.
+     */
+    
+    var segObj = {};
+    for (var i = 0; i < segments.length; i++) {
+        segObj[i] = {
+            pointx: segments[i].point.x, 
+            pointy: segments[i].point.y, 
+            handleInx: segments[i].handleIn.x, 
+            handleIny: segments[i].handleIn.y, 
+            handleOutx: segments[i].handleOut.x, 
+            handleOuty: segments[i].handleOut.y
+        }
+    }
+    return segObj;
+}
+
+function sendDiff(path) {
+    /*
+     * POST the path that was drawn to the server in JSON.
+     */
+    
+    var diff = pathToObject(path);
+    //Do something with the id.
     $.ajax ({
         type: "POST",
-        url: "canvas/jokuid/",
-        dataType: "text", 
-        data: path.segments
+        url: "canvas/jokuid/" + path.segments,
+        dataType: "json", 
+        data: "crap=" + diff
     }).done(function (response) {
-        //do something
+        //Nothing to do here.
     });
 }
