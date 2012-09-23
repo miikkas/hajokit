@@ -142,7 +142,7 @@ def service_resolved(*args):
         log("New entry to DB:"+args[2]+" ")
         cursor.execute('INSERT INTO game_pelinode(hostname,port,path) VALUES(?,?,?)', serviceentry)
         conn.commit()
-        urllib2.urlopen("http://localhost/refresh/%s" %(args[2]+".local"))
+        urllib2.urlopen("http://localhost/refresh/%s" %(args[2]+".local")).read()
 
 
 def print_error(*args):
@@ -156,7 +156,7 @@ def remove_service( interface, protocol, name, stype, domain, flags):
     log("Removing service:"+name)
     cursor.execute('DELETE FROM game_pelinode where hostname = ?',(name+".local",))
     conn.commit()
-    urllib2.urlopen("http://localhost/remove/%s" %(name+".local"))
+    urllib2.urlopen("http://localhost/remove/%s" %(name+".local")).read()
 
 def new_service( interface, protocol, name, stype, domain, flags):
 
