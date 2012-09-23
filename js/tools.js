@@ -131,7 +131,7 @@ function pathToObject(path) {
         size: drawsize, 
         segments: segObj
     }
-    return segObj;
+    return diffObj;
 }
 
 function segmentsToObject(segments) {
