@@ -5,7 +5,6 @@ import urllib2
 import urllib
 import uuid
 
-import logging
 
 from django.http import HttpResponse
 from django.core import serializers
@@ -16,16 +15,16 @@ from game.models import Peli,Pelaaja
 from game.models import Piirros,Muutos
 
 #Replicates request to all the other nodes if needed
-def replicate(request, nodename):
+def replicate(request, nodename, uuid=""):
     if nodename != platform.node()+".local":
        return
-    logger.debug("Replicatin request %s"%(request.path_info))
+    print("Replicatin request %s"%(request.path_info))
     for node in PeliNode.objects.exclude(hostname=platform.node()+".local"):
-      logger.debug("Replicating data to host %s" %(node.hostname))
+      print("Replicating data to host %s" %(node.hostname))
       try:
-        newplayer = urllib2.urlopen("http://%s:%d%s%s/%s" %(node.hostname,node.port,node.path,request.path_info,platform.node()+".local")).read()
+        newplayer = urllib2.urlopen("http://%s:%d%s%s/%s/%s" %(node.hostname,node.port,node.path,request.path_info,uuid,platform.node()+".local")).read()
       except urllib2.HTTPError as e:
-        logger.error("HTTPError: %s" % (e.reason))
+        print("HTTPError from %s: %s" % (node.hostname,e.reason))
         
 
 def index(request):
@@ -39,12 +38,12 @@ def newgame(request, nodename=platform.node()+".local", game_uuid=None):
     pelinode = PeliNode.objects.get(hostname=nodename)
     if game_uuid is None:
        game_uuid = uuid.uuid4()
-       logger.debug("UUID created as %s" %(game_uuid))
+       print("UUID created as %s" %(game_uuid))
     else:
-       logger.debug("UUID given as %s" %(game_uuid))
+       print("UUID given as %s" %(game_uuid))
     uus_peli = Peli(canvas=canvas,pelinode=pelinode,uuid=game_uuid)
     uus_peli.save()
-    replicate(request,nodename)
+    replicate(request,nodename, game_uuid)
     return HttpResponse(serializers.serialize("json", [uus_peli] ) )
 
 def joingame( request, playerid, gameid, nodename=platform.node()+".local" ):
@@ -72,11 +71,11 @@ def newplayer(request,playername,player_uuid=None,nodename=platform.node()+".loc
     if player_uuid is None:
        player_uuid = uuid.uuid4()
     pelaaja = Pelaaja(nimi=playername,uuid=player_uuid)
-    logger.debug("Creating player %s uuid %s" %(playername,player_uuid))
+    print("Creating player %s uuid %s" %(playername,player_uuid))
     pelinode = PeliNode.objects.get(hostname=nodename)
     pelaaja.pelinode = pelinode
     pelaaja.save()
-    replicate(request,nodename)
+    replicate(request,nodename, player_uuid)
     return HttpResponse(serializers.serialize("json", [pelaaja] ) )
 
 def players(request):
