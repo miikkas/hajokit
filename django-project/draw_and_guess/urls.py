@@ -22,6 +22,8 @@ urlpatterns = patterns('',
     url(r'^guesses/$', 'game.views.guesses'),
     url(r'^guess/$', 'game.views.guess'),
     url(r'^nodes/$', 'game.views.nodes'),
+    url(r'^refresh/(?P<nodename>[\w\.]+)$', 'game.views.refresh'),
+    url(r'^remove/(?P<nodename>[\w\.]+)$', 'game.views.remove'),
 
     # The admin URL:
     url(r'^admin/', include(admin.site.urls)),
