@@ -10,7 +10,7 @@ $(document).ready(function () {
     drawView = new View('piirtocanvas');
     paper.setup('piirtocanvas');
     getDiff();
-    //Set a minute timeout for the requests to enable long polling.
+    // Set a minute timeout for the requests to enable long polling.
     $.ajaxSetup({
            timeout: 1000*60
     });
@@ -24,11 +24,17 @@ function getDiff() {
     
     $.ajax ({
         type: "GET",
-        url: "../test.php",
-        //url: "canvas/id/diff",
+        url: "canvas/id/diff",
         dataType: "json"
     }).done(function (response) {
         drawDiff(response);
+        getDiff();
+    }).done(function (response, textStatus, xhr) {
+        // Server responds with 304 status code, if there's 
+        // nothing new to draw.
+        if (xhr.status != 304) {
+            drawDiff(response);
+        }
         getDiff();
     });
 }
