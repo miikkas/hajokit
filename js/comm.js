@@ -40,7 +40,7 @@
         //Not expecting anything meaningful back from the server.
         $.ajax ({
             type: "POST",
-            url: "canvas/1",
+            url: "canvas/1/",
             data: data
         }).done(function (response) {
             alert('yay: ' + response);
