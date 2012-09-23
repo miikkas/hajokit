@@ -34,7 +34,9 @@
          */
         var canvas = document.getElementById('drawingcanvas');
         var image = canvas.toDataURL("image/png");
-        var datashit = [{"pk": 1, "model": "game.piirros", "fields": {"aikaleima": "2012-09-23T16:45:19.388Z", "tilanne": image}}];
+        //alert(image);
+        var datashit = [{"pk": "1", "model": "game.piirros", "fields": {"aikaleima": "2012-09-23T16:45:19.388Z", "tilanne": image}}];
+        //alert(datashit[1].aikaleima);
         //Not expecting anything meaningful back from the server.
         $.ajax ({
             type: "POST",
@@ -42,6 +44,8 @@
             data: datashit
         }).done(function (response) {
             alert('yay: ' + response);
+        }).fail(function(response) { 
+            alert('ei mennyt nappiin: ' + response); 
         });
     }
 });
