@@ -32,17 +32,17 @@ def index(request):
     """For HTTP GETting the index page of the application."""
     return render_to_response('piirra_ja_arvaa.html',{})
 
-def newgame(request, nodename=platform.node()+".local", uuid=None):
+def newgame(request, nodename=platform.node()+".local", game_uuid=None):
     """ Request new game to be started """
     canvas = Piirros()
     canvas.save()
     pelinode = PeliNode.objects.get(hostname=nodename)
-    if uuid is None:
-       uuid = uuid.uuid4()
-       logger.debug("UUID created as %s" %(uuid))
+    if game_uuid is None:
+       game_uuid = uuid.uuid4()
+       logger.debug("UUID created as %s" %(game_uuid))
     else:
-       logger.debug("UUID given as %s" %(uuid))
-    uus_peli = Peli(canvas=canvas,pelinode=pelinode,uuid=uuid)
+       logger.debug("UUID given as %s" %(game_uuid))
+    uus_peli = Peli(canvas=canvas,pelinode=pelinode,uuid=game_uuid)
     uus_peli.save()
     replicate(request,nodename)
     return HttpResponse(serializers.serialize("json", [uus_peli] ) )
@@ -68,11 +68,11 @@ def endgame( request, gameid, nodename=platform.node()+".local"):
     return HttpResponse(serializers.serialize("json", Peli.objects.all() ) )
 
 
-def newplayer(request,playername,uuid=None,nodename=platform.node()+".local"):
-    if uuid is None:
-       uuid = uuid.uuid4()
-    pelaaja = Pelaaja(nimi=playername,uuid=uuid)
-    logger.debug("Creating player %s uuid %s" %(playername,uuid))
+def newplayer(request,playername,player_uuid=None,nodename=platform.node()+".local"):
+    if player_uuid is None:
+       player_uuid = uuid.uuid4()
+    pelaaja = Pelaaja(nimi=playername,uuid=player_uuid)
+    logger.debug("Creating player %s uuid %s" %(playername,player_uuid))
     pelinode = PeliNode.objects.get(hostname=nodename)
     pelaaja.pelinode = pelinode
     pelaaja.save()
