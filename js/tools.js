@@ -127,8 +127,8 @@ function pathToObject(path) {
     
     var segObj = segmentsToObject(path.segments);
     var diffObj = {
-        color: drawColor,
-        size: drawSize, 
+        color: drawcolor,
+        size: drawsize, 
         segments: segObj
     }
     return diffObj;
