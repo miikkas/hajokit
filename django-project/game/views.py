@@ -12,7 +12,7 @@ from django.core import serializers
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from game.models import PeliNode
-from game.models import Peli,Pelaaja
+from game.models import Peli,Pelaaja,Guess
 from game.models import Piirros,Muutos
 
 #Remove all the data related to given node
