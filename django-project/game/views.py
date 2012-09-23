@@ -129,18 +129,19 @@ def canvasdiff( request, canvas_id ):
     else:
      return HttpResponse( serializers.serialize("json",  canvas.muutos_set, ensure_ascii=False) )
 
-def guesses(request, timestamp = datetime.datetime.fromtimestamp(0)):
+def guesses(request, timestamp = 0):
+    aika = datetime.datetime.fromtimestamp(timestamp)):
     """For HTTP GETting the guesses made on the current game, JSON encoded.
        If timestamp is given, give guesses that are younger than timestamp
        or block until such guess is made"""
     polling_time=600.0 #10min
-    while len(Guess.objects.filter(aikaleima__gte=timestamp)) == 0:
+    while len(Guess.objects.filter(aikaleima__gte=aika)) == 0:
           time.sleep(0.2)
           polling_time -= 0.2
           #If we have waited 10mins already, give not modified back
           if polling_time <= 0.0:
              return HttpResponse(status=304)
-    return HttpResponse( serializers.serialize("json", Guess.objects.filter(aikaleima__gte=timestamp), ensure_ascii=False))
+    return HttpResponse( serializers.serialize("json", Guess.objects.filter(aikaleima__gte=aika), ensure_ascii=False))
 
 def guess(request):
     """For HTTP POSTing a guess to the current game, JSON encoded(?)."""
