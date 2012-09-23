@@ -13,6 +13,7 @@ window.onload = function() {
     line = new Tool();
     ympyra = new Tool();
     rect = new Tool();
+    eraser = new Tool();
     var path;
     var startingpoint;
 
