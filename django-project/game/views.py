@@ -22,7 +22,7 @@ def replicate(request, nodename, uuid=""):
     for node in PeliNode.objects.exclude(hostname=platform.node()+".local"):
       print("Replicating data to host %s" %(node.hostname))
       try:
-        newplayer = urllib2.urlopen("http://%s:%d%s%s/%s/%s" %(node.hostname,node.port,node.path,request.path_info,uuid,platform.node()+".local")).read()
+        newplayer = urllib2.urlopen("http://%s:%d%s%s/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(request.path_info),uuid,platform.node()+".local")).read()
       except urllib2.HTTPError as e:
         print("HTTPError from %s: %s" % (node.hostname,e.reason))
         
