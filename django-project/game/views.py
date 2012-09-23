@@ -4,6 +4,7 @@ import platform
 import urllib2
 import urllib
 import uuid
+import time
 
 
 from django.http import HttpResponse
@@ -26,7 +27,7 @@ def remove(request,nodename):
 def refresh(request,nodename):
     node = PeliNode.objects.get(pk=nodename)
     if nodename == platform.node()+".local":
-       return HttpResponse(serializers.serialize("json", [node] ) )
+       return HttpResponse(serializers.serialize("json", [node], ensure_ascii=False ) )
     #create all the players we have
     for player in Pelaaja.objects.filter(pelinode=platform.node()+".local"):
         print("Replicating player %s to node %s"%(player,nodename))
@@ -34,7 +35,7 @@ def refresh(request,nodename):
     for game in Peli.objects.filter(pelinode=platform.node()+".local"):
         print("Replicating game %s to node %s"%(game.uuid,nodename))
         newplayer = urllib2.urlopen("http://%s:%d%s/game/new/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(game_uuid.name),platform.node()+".local")).read()
-    return HttpResponse(serializers.serialize("json", [node] ) )
+    return HttpResponse(serializers.serialize("json", [node], ensure_ascii=False ) )
 
 #Replicates request to all the other nodes if needed
 def replicate(request, nodename, uuid=""):
@@ -66,7 +67,7 @@ def newgame(request, nodename=platform.node()+".local", game_uuid=None):
     uus_peli = Peli(canvas=canvas,pelinode=pelinode,uuid=game_uuid)
     uus_peli.save()
     replicate(request,nodename, game_uuid)
-    return HttpResponse(serializers.serialize("json", [uus_peli] ) )
+    return HttpResponse(serializers.serialize("json", [uus_peli], ensure_ascii=False ) )
 
 def joingame( request, playerid, gameid, nodename=platform.node()+".local" ):
     peli = Peli.objects.get(pk=gameid)
@@ -76,17 +77,17 @@ def joingame( request, playerid, gameid, nodename=platform.node()+".local" ):
     peli.save()
     pelaaja.save()
     replicate(request,nodename)
-    return HttpResponse(serializers.serialize("json", [pelaaja] ) )
+    return HttpResponse(serializers.serialize("json", [pelaaja], ensure_ascii=False ) )
 
 def listgames( request ):
-    return HttpResponse( serializers.serialize("json", Peli.objects.all() ) )
+    return HttpResponse( serializers.serialize("json", Peli.objects.all(), ensure_ascii=False ) )
 
 def endgame( request, gameid, nodename=platform.node()+".local"):
     peli = Peli.objects.get(pk=gameid)
     peli.canvas.delete()
     peli.delete()
     replicate(request,nodename)
-    return HttpResponse(serializers.serialize("json", Peli.objects.all() ) )
+    return HttpResponse(serializers.serialize("json", Peli.objects.all(), ensure_ascii=False ) )
 
 
 def newplayer(request,playername,player_uuid=None,nodename=platform.node()+".local"):
@@ -98,15 +99,15 @@ def newplayer(request,playername,player_uuid=None,nodename=platform.node()+".loc
     pelaaja.pelinode = pelinode
     pelaaja.save()
     replicate(request,nodename, player_uuid)
-    return HttpResponse(serializers.serialize("json", [pelaaja] ) )
+    return HttpResponse(serializers.serialize("json", [pelaaja], ensure_ascii=False ) )
 
 def players(request):
     """For HTTP GETting the data of the current players, JSON encoded."""
-    return HttpResponse(serializers.serialize("json", Pelaaja.objects.all() ) )
+    return HttpResponse(serializers.serialize("json", Pelaaja.objects.all(), ensure_ascii=False ) )
 
 def canvasall(request):
     """For HTTP GETting the current canvas data, base 64 encoded, JSON encoded."""
-    return HttpResponse(serializers.serialize("json", Piirros.objects.all() ))
+    return HttpResponse(serializers.serialize("json", Piirros.objects.all(), ensure_ascii=False ))
 
 def canvas( request, canvas_id ):
     if request.method == "POST":
@@ -116,7 +117,7 @@ def canvas( request, canvas_id ):
      for canvas in serializers.deserialize("json", request.POST ):
        canvas.save()
     else:
-     return HttpResponse( serializers.serialize("json", [ Piirros.objects.get(pk=canvas_id ) ] ) )
+     return HttpResponse( serializers.serialize("json", [ Piirros.objects.get(pk=canvas_id ) ], ensure_ascii=False ) )
 
 def canvasdiff( request, canvas_id ):
     canvas = Piirros.objects.get(pk=canvas_id)
@@ -126,17 +127,24 @@ def canvasdiff( request, canvas_id ):
         muutos.save()
      canvas.save()
     else:
-     return HttpResponse( serializers.serialize("json", canvas.muutos_set) )
+     return HttpResponse( serializers.serialize("json",  canvas.muutos_set, ensure_ascii=False) )
 
-def guesses(request):
-    """For HTTP GETting the guesses made on the current game, JSON encoded."""
-    pass
+def guesses(request, timestamp = 0):
+    """For HTTP GETting the guesses made on the current game, JSON encoded.
+       If timestamp is given, give guesses that are younger than timestamp
+       or block until such guess is made"""
+    while Guess.objects.filter(timestamp>timestamp) is None:
+          time.sleep(0.2)
+    return HttpResponse( serializers.serialize("json", Guess.objects.filter(timestamp>timestamp), ensure_ascii=False))
 
 def guess(request):
     """For HTTP POSTing a guess to the current game, JSON encoded(?)."""
-    pass
-
+    if requests.method == "POST":
+      for guess in serializers.deserialize("json",request.POST ):
+          guess.save()
+      return HttpResponse("ok")
+    return HttpResponse("not ok, use POST")
 
 def nodes(request):
     all_the_nodes = PeliNode.objects.all()
-    return HttpResponse( serializers.serialize("json", all_the_nodes ) )
+    return HttpResponse( serializers.serialize("json", all_the_nodes, ensure_ascii=False ) )

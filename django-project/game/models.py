@@ -8,12 +8,14 @@ from django.db import models
 #Piirros on base64 koodattu piirrostilanne, tämän lisäksi muutokset
 # kun pelaaja liittyy
 class Piirros(models.Model):
-    tilanne  = models.TextField()
+    tilanne   = models.TextField()
+    aikaleima = models.DateTimeField(auto_now=True)
 
 #Muutos on Piirrokseen tulleet muutokset
 class Muutos(models.Model):
-    muutos   = models.TextField()
-    alku     = models.ForeignKey(Piirros)
+    muutos    = models.TextField()
+    aikaleima = models.DateTimeField(auto_now=True)
+    alku      = models.ForeignKey(Piirros)
 
 #Pelinode, eli virtuaali kone jossa joku pelaaja on kiinni
 class PeliNode(models.Model):
@@ -35,3 +37,10 @@ class Peli(models.Model):
     pelaajat      = models.ManyToManyField(Pelaaja)
     canvas        = models.ForeignKey(Piirros)
     piirtaja      = models.OneToOneField(Pelaaja,blank=True,null=True,related_name='+')
+
+#Guess that some player have made for game
+class Guess(models.Model):
+    aikaleima = models.DateTimeField(auto_now=True)
+    pelaaja   = models.ForeignKey(Pelaaja)
+    peli      = models.ForeignKey(Peli)
+    arvaus    = models.TextField()
