@@ -86,6 +86,22 @@ window.onload = function() {
             sendDiff(path);
         }
     };
+
+    //Eraser. Like pencil, but always white.
+    eraser.onMouseDown = function(event) {
+        path = new Path();
+        path.strokeColor = 'white';
+        path.strokeWidth = drawsize;
+    };
+    eraser.onMouseDrag = function(event) {
+        path.add(event.point);
+    };
+    eraser.onMouseUp = function(event) {
+        path.simplify();
+        if (path.segments.length != 0) {
+            sendDiff(path);
+        }
+    };
 };
 
 function changeColor(color) {
