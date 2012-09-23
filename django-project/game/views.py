@@ -134,13 +134,13 @@ def guesses(request, timestamp = datetime.datetime.fromtimestamp(0)):
        If timestamp is given, give guesses that are younger than timestamp
        or block until such guess is made"""
     polling_time=600.0 #10min
-    while Guess.objects.filter(aikaleima__gte=timestamp) is None:
+    while len(Guess.objects.filter(aikaleima__gte=timestamp)) == 0:
           time.sleep(0.2)
           polling_time -= 0.2
           #If we have waited 10mins already, give not modified back
           if polling_time <= 0.0:
              return HttpResponse(status=304)
-    return HttpResponse( serializers.serialize("json", Guess.objects.filter(aikaleima_gte=timestamp), ensure_ascii=False))
+    return HttpResponse( serializers.serialize("json", Guess.objects.filter(aikaleima__gte=timestamp), ensure_ascii=False))
 
 def guess(request):
     """For HTTP POSTing a guess to the current game, JSON encoded(?)."""
