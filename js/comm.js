@@ -41,6 +41,7 @@
         $.ajax ({
             type: "POST",
             url: "canvas/1/",
+            dataType: "json", 
             data: data
         }).done(function (response) {
             alert('yay: ' + response);
