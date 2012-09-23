@@ -16,22 +16,22 @@ from game.models import Piirros,Muutos
 
 #Remove all the data related to given node
 def remove(request,nodename):
-    for game in Peli.object.filter(pelinode=nodename):
+    for game in Peli.objects.filter(pelinode=nodename):
         game.delete()
-    for player in Pelaaja.object.filter(pelinode=nodename):
+    for player in Pelaaja.objects.filter(pelinode=nodename):
         player.delete()
-    return HttpRedirect("/nodes")
+    return HttpResponse("ok")
 
 #Refresh new node with our data
 def refresh(request,nodename):
     node = PeliNode.objects.get(pk=nodename)
-    if nodename == platform.node()+".local")
+    if nodename == platform.node()+".local":
        return HttpResponse(serializers.serialize("json", [node] ) )
     #create all the players we have
-    for player in Pelaaja.object.filter(pelinode=platform.node()+".local"):
+    for player in Pelaaja.objects.filter(pelinode=platform.node()+".local"):
         print("Replicating player %s to node %s"%(player,nodename))
         newplayer = urllib2.urlopen("http://%s:%d%s/player/create/%s/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(player.name),player.uuid,platform.node()+".local")).read()
-    for game in Peli.object.filter(pelinode=platform.node()+".local"):
+    for game in Peli.objects.filter(pelinode=platform.node()+".local"):
         print("Replicating game %s to node %s"%(game.uuid,nodename))
         newplayer = urllib2.urlopen("http://%s:%d%s/game/new/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(game_uuid.name),platform.node()+".local")).read()
     return HttpResponse(serializers.serialize("json", [node] ) )
