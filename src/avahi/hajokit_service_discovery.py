@@ -14,7 +14,7 @@ from dbus import DBusException
 import prctl
 
 #signaloidaan refresh djangolle
-import urllib
+import urllib2
 
 #daemoning, saadaan SIGTERM
 import signal
