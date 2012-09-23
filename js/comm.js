@@ -34,7 +34,7 @@
          */
         var canvas = document.getElementById('drawingcanvas');
         var image = canvas.toDataURL("image/png");
-        var data = [{"pk": 1, "model": "game.piirros", "fields": {"aikaleima": "2012-09-23T16:45:19.388Z", "tilanne": image}}]
+        var data = [{"pk": 1, "model": "game.piirros", "fields": {"aikaleima": "2012-09-23T16:45:19.388Z", "tilanne": image}}];
         //Not expecting anything meaningful back from the server.
         $.ajax ({
             type: "POST",
