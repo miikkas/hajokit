@@ -162,7 +162,7 @@ function sendDiff(path) {
     //Do something with the id.
     $.ajax ({
         type: "POST",
-        url: "canvas/jokuid/",
+        url: "canvas/1/",
         dataType: "json", 
         data: diff
     }).done(function (response) {
