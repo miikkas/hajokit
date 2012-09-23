@@ -4,7 +4,7 @@ import platform
 import urllib2
 import urllib
 import uuid
-import time
+import datetime
 
 
 from django.http import HttpResponse
