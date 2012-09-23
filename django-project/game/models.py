@@ -17,7 +17,7 @@ class Muutos(models.Model):
 
 #Pelinode, eli virtuaali kone jossa joku pelaaja on kiinni
 class PeliNode(models.Model):
-    hostname = models.CharField(max_length=256)
+    hostname = models.CharField(max_length=256,primary_key=True)
     port     = models.PositiveIntegerField()
     path     = models.CharField(max_length=256)
 
