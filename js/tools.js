@@ -158,7 +158,7 @@ function sendDiff(path) {
      * POST the path that was drawn to the server in JSON.
      */
     
-    var diff = pathToObject(path);
+    var diff = JSON.stringify(pathToObject(path));
     //Do something with the id.
     $.ajax ({
         type: "POST",
