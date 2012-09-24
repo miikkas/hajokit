@@ -17,16 +17,22 @@ class SegmentGroup(models.Model):
     size        = models.PositiveIntegerField()
     segments    = models.ForeignKey(Piirros)
 
+    def __unicode__(self):
+       return "<Segmentgroup %d: color:%s size:%d paths:%s>" %(self.id,self.color,self.size,self.path_set.all())
+
 #Muutos on Piirrokseen tulleet muutokset
 class Path(models.Model):
     aikaleima   = models.DateTimeField(auto_now=True)
     segment     = models.ForeignKey(SegmentGroup)
     pointy      = models.PositiveIntegerField()
     pointx      = models.PositiveIntegerField()
-    handleInt   = models.FloatField()
+    handleIny   = models.FloatField()
     handleInx   = models.FloatField()
     handleOuty  = models.FloatField()
     handleOutx  = models.FloatField()
+
+    def __unicode__(self):
+       return "<Path %d: point(%d,%d) in(%f,%f) out(%f,%f)>" %(self.id, self.pointx,self.pointy,self.handleInx,self.handleIny,self.handleOutx,self.handleOuty)
 
 #Pelinode, eli virtuaali kone jossa joku pelaaja on kiinni
 class PeliNode(models.Model):
