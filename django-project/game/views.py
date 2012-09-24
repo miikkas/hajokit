@@ -12,6 +12,7 @@ from django.core import serializers
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import simplejson
 from game.models import PeliNode
 from game.models import Peli,Pelaaja,Guess
 from game.models import Piirros,Muutos
@@ -114,10 +115,8 @@ def canvasall(request):
 def canvas( request, canvas_id ):
     if request.method == "POST":
      canvas = Piirros.objects.get(pk=canvas_id)
-     canvas.muutos_set.clear()
-     canvas.muutos_set.delete()
-     for canvas in serializers.deserialize("json", request.POST ):
-       canvas.save()
+     for muutos in simplejson.loads(urllib.unquote(request.body)):
+        print muutos
     else:
      return HttpResponse( serializers.serialize("json", [ Piirros.objects.get(pk=canvas_id ) ], ensure_ascii=False ) )
 
@@ -125,11 +124,10 @@ def canvas( request, canvas_id ):
 def canvasdiff( request, canvas_id, timestamp = 0 ):
     canvas = Piirros.objects.get(pk=canvas_id)
     if requests.method == "POST":
-     for muutos in serializers.deserialize("json", request.POST ):
-        canvas.add(muutos)
-        muutos.save()
+     for muutos in simplejson.loads(urllib.unquote(request.body)):
+         print muutos
      canvas.save()
-     return HttpResponse("Ok")
+     return HttpResponse(simplejson.dumps([{"response":"ok"}]))
     else:
      aika = datetime.datetime.fromtimestamp(timestamp)
      polling_time=600.0 #10min
