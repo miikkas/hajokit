@@ -115,8 +115,12 @@ def canvasall(request):
 def canvas( request, canvas_id ):
     if request.method == "POST":
      canvas = Piirros.objects.get(pk=canvas_id)
-     for muutos in simplejson.loads(urllib.unquote(request.body)):
-        print muutos
+     parametrit = simplejson.loads(urllib.unquote(request.body))
+     if "data" in parametrit:
+        canvas.tilanne=parametrit['data']
+        canvas.segments.clear()
+        canvas.save()
+        return HttpResponse( simplejson.dump([{"Response":"ok"}]) )
     else:
      return HttpResponse( serializers.serialize("json", [ Piirros.objects.get(pk=canvas_id ) ], ensure_ascii=False ) )
 
@@ -124,19 +128,26 @@ def canvas( request, canvas_id ):
 def canvasdiff( request, canvas_id, timestamp = 0 ):
     canvas = Piirros.objects.get(pk=canvas_id)
     if request.method == "POST":
-     for muutos in simplejson.loads(urllib.unquote(request.body)):
-         print muutos
+     parametrit = simplejson.loads(urllib.unquote(request.body))
+     segmentgroup = SegmentGroup(color=parametrit['color'],size=parametrit['size'])
+     segmentgroup.save()
+     for segment in parametrit['segments']:
+         segmentti = Path(segment)
+         segmentgroup.add(segmentti)
+         segmentti.save()
+     canvas.add(segmentgroup)
+     segmentgroup.save()
      canvas.save()
      return HttpResponse(simplejson.dumps([{"response":"ok"}]))
     else:
      aika = datetime.datetime.fromtimestamp(timestamp)
      polling_time=600.0 #10min
-     while len(canvas.muutos_set) == 0:
+     while len(canvas.segments_set) == 0:
         time.sleep(0.2)
         polling_time -= 0.2
         if polling_time <= 0.0:
            return HttpResponse(status=304)
-     return HttpResponse( serializers.serialize("json",  canvas.muutos_set, ensure_ascii=False) )
+     return HttpResponse( serializers.serialize("json",  canvas.segments_set, ensure_ascii=False) )
 
 def guesses(request, timestamp = 0):
     aika = datetime.datetime.fromtimestamp(timestamp)
