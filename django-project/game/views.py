@@ -15,7 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils import simplejson
 from game.models import PeliNode
 from game.models import Peli,Pelaaja,Guess
-from game.models import Piirros,Muutos
+from game.models import Piirros,SegmentGroup,Path
 
 #Remove all the data related to given node
 def remove(request,nodename):
