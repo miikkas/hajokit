@@ -11,11 +11,22 @@ class Piirros(models.Model):
     tilanne   = models.TextField()
     aikaleima = models.DateTimeField(auto_now=True)
 
+class SegmentGroup(models.Model):
+    aikaleima   = models.DateTimeField(auto_now=True)
+    color       = models.CharField(max_length=32)
+    size        = models.PositiveIntegerField()
+    segments    = models.ForeignKey(Piirros)
+
 #Muutos on Piirrokseen tulleet muutokset
-class Muutos(models.Model):
-    muutos    = models.TextField()
-    aikaleima = models.DateTimeField(auto_now=True)
-    alku      = models.ForeignKey(Piirros)
+class Path(models.Model):
+    aikaleima   = models.DateTimeField(auto_now=True)
+    segment     = models.ForeignKey(SegmentGroup)
+    pointy      = models.PositiveIntegerField()
+    pointx      = models.PositiveIntegerField()
+    handleInt   = models.FloadField()
+    handleInx   = models.FloadField()
+    handleOuty  = models.FloadField()
+    handleOutx  = models.FloadField()
 
 #Pelinode, eli virtuaali kone jossa joku pelaaja on kiinni
 class PeliNode(models.Model):
