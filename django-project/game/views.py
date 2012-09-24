@@ -123,7 +123,7 @@ def canvas( request, canvas_id ):
 @csrf_exempt
 def canvasdiff( request, canvas_id, timestamp = 0 ):
     canvas = Piirros.objects.get(pk=canvas_id)
-    if requests.method == "POST":
+    if request.method == "POST":
      for muutos in simplejson.loads(urllib.unquote(request.body)):
          print muutos
      canvas.save()
