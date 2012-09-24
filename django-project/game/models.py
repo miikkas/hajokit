@@ -23,10 +23,10 @@ class Path(models.Model):
     segment     = models.ForeignKey(SegmentGroup)
     pointy      = models.PositiveIntegerField()
     pointx      = models.PositiveIntegerField()
-    handleInt   = models.FloadField()
-    handleInx   = models.FloadField()
-    handleOuty  = models.FloadField()
-    handleOutx  = models.FloadField()
+    handleInt   = models.FloatField()
+    handleInx   = models.FloatField()
+    handleOuty  = models.FloatField()
+    handleOutx  = models.FloatField()
 
 #Pelinode, eli virtuaali kone jossa joku pelaaja on kiinni
 class PeliNode(models.Model):
