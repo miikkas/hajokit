@@ -11,6 +11,7 @@ from django.http import HttpResponse
 from django.core import serializers
 from django.template import RequestContext
 from django.shortcuts import render_to_response
+from django.views.decorators.csrf import csrf_exempt
 from game.models import PeliNode
 from game.models import Peli,Pelaaja,Guess
 from game.models import Piirros,Muutos
@@ -109,6 +110,7 @@ def canvasall(request):
     """For HTTP GETting the current canvas data, base 64 encoded, JSON encoded."""
     return HttpResponse(serializers.serialize("json", Piirros.objects.all(), ensure_ascii=False ))
 
+@csrf_exempt
 def canvas( request, canvas_id ):
     if request.method == "POST":
      canvas = Piirros.objects.get(pk=canvas_id)
@@ -119,6 +121,7 @@ def canvas( request, canvas_id ):
     else:
      return HttpResponse( serializers.serialize("json", [ Piirros.objects.get(pk=canvas_id ) ], ensure_ascii=False ) )
 
+@csrf_exempt
 def canvasdiff( request, canvas_id, timestamp = 0 ):
     canvas = Piirros.objects.get(pk=canvas_id)
     if requests.method == "POST":
