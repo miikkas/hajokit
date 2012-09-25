@@ -27,7 +27,7 @@ function getDiff() {
     $.ajax ({
         type: "GET",
         url: "canvas/1/diff",
-        dataType: "text"
+        dataType: "json"
     }).done(function (response, textStatus, xhr) {
         // Server responds with 304 status code, if there's 
         alert('PERSERSER');
