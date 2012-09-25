@@ -32,10 +32,9 @@ function getDiff() {
         // Server responds with 304 status code, if there's 
         // nothing new to draw.
         try {
-            var jason = jQuery.parseJSON('{' + response.replace(/\[/g, '"array":[').replace(/\]"array"/g, '],"array"') + '}');
             //alert(jason);
             if (xhr.status != 304) {
-                drawDiff(jason);
+                drawDiff(JSONize(response));
             }
         }
         catch (e) {
@@ -52,7 +51,9 @@ function drawDiff(json) {
     
     var path = new Path();
     var point, handleIn, handleOut;
-        console.log(json);
+    $.each(json, function(key,valueObj){
+        console.log(key + ', ' + valueObj);
+    });
         /*path.strokeColor = json.color;
         path.strokeWidth = json.size;
         point = new Point(valueObj.pointx, valueObj.pointy);
@@ -60,6 +61,16 @@ function drawDiff(json) {
         handleOut = new Point(valueObj.handleOutx, valueObj.handleOuty);
         path.add(point, handleIn, handleOut);*/
     //view.draw();
+}
+
+function JSONize(string) {
+    /*
+     * Because JQuery seems really picky nowadays, do some 
+     * hasty repairs to the given string (that by all accounts 
+     * already is JSON), and return the results.
+     */
+    
+    return jQuery.parseJSON('{' + string.replace(/\[/g, '"array":[').replace(/\]"array"/g, '],"array"') + '}');
 }
 
 function reDraw() {
