@@ -8,6 +8,7 @@
 $(document).ready(function () {
     paper.install(window);
     drawView = new View('piirtocanvas');
+    console.log('testataan konsolin toimintaa saatana');
     paper.setup('piirtocanvas');
     $("#button").live("click", function(event){
         getDiff();
