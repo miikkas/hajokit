@@ -120,41 +120,36 @@ def canvas( request, canvas_id ):
         canvas.tilanne=parametrit['data']
         return HttpResponse( simplejson.dump([{"Response":"ok"}]) )
     else:
-     return HttpResponse( serializers.serialize("json", [ canvas.segmentgroup_set.all() ], ensure_ascii=False ) )
+     return HttpResponse( serializers.serialize("json", [ canvas.path_set.all() ], ensure_ascii=False ) )
 
 @csrf_exempt
 def canvasdiff( request, canvas_id, timestamp = 0 ):
     canvas = Piirros.objects.select_related().get(pk=canvas_id)
     if request.method == "POST":
      parametrit = simplejson.loads(urllib.unquote(request.body))
-     segmentgroup = SegmentGroup(color=parametrit['color'],size=parametrit['size'])
-     canvas.segmentgroup_set.add(segmentgroup)
-     canvas.save()
      for segment in parametrit['segments']:
          datat = parametrit['segments'][segment]
          segmentti = Path()
+         segmentti.color = parametrit['color']
+         segmentti.size  = parametrit['size']
          segmentti.pointx = datat['pointx']
          segmentti.pointy = datat['pointy']
          segmentti.handleInx = datat['handleInx']
          segmentti.handleIny = datat['handleIny']
          segmentti.handleOutx = datat['handleOutx']
          segmentti.handleOuty = datat['handleOuty']
-         segmentgroup.path_set.add(segmentti)
-         segmentti.save()
-     segmentgroup.save()
+         canvas.path_set.add(segmentti)
+     canvas.save()
      return HttpResponse(simplejson.dumps([{"response":"ok"}]))
     else:
      aika = datetime.datetime.fromtimestamp(timestamp)
      polling_time=600.0 #10min
-     while canvas.segmentgroup_set.count() == 0:
+     while canvas.path_set.count() == 0:
         time.sleep(0.2)
         polling_time -= 0.2
         if polling_time <= 0.0:
            return HttpResponse(status=304)
-     result=list(canvas.segmentgroup_set.all())
-     for segmentgroup in canvas.segmentgroup_set.all():
-         if segmentgroup.path_set.count():
-             result = result + list(segmentgroup.path_set.all())
+     result=list(canvas.path_set.select_related().all()) + list(SegmentGroup.objects.select_related().all())
      print result
      return HttpResponse( serializers.serialize("json", result ) )
 

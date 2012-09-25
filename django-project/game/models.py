@@ -15,18 +15,10 @@ class SegmentGroup(models.Model):
     aikaleima   = models.DateTimeField(auto_now=True)
     color       = models.CharField(max_length=32)
     size        = models.PositiveIntegerField()
-    segments    = models.ForeignKey(Piirros)
-
-    def __unicode__(self):
-       return u"{'Segmentgroup': %d, 'color':'%s', 'size':%d, paths:%s}" %(self.id,self.color,self.size, self.path_set.all())
-
-    def __str__(self):
-       return self.__unicode__()
 
 #Muutos on Piirrokseen tulleet muutokset
-class Path(models.Model):
-    aikaleima   = models.DateTimeField(auto_now=True)
-    segment     = models.ForeignKey(SegmentGroup)
+class Path(SegmentGroup):
+    segments    = models.ForeignKey(Piirros)
     pointy      = models.PositiveIntegerField()
     pointx      = models.PositiveIntegerField()
     handleIny   = models.FloatField()
