@@ -113,16 +113,14 @@ def canvasall(request):
 
 @csrf_exempt
 def canvas( request, canvas_id ):
+    canvas = Piirros.objects.get(pk=canvas_id)
     if request.method == "POST":
-     canvas = Piirros.objects.get(pk=canvas_id)
      parametrit = simplejson.loads(urllib.unquote(request.body))
      if "data" in parametrit:
         canvas.tilanne=parametrit['data']
-        canvas.segments.clear()
-        canvas.save()
         return HttpResponse( simplejson.dump([{"Response":"ok"}]) )
     else:
-     return HttpResponse( serializers.serialize("json", [ Piirros.objects.get(pk=canvas_id ) ], ensure_ascii=False ) )
+     return HttpResponse( serializers.serialize("json", [ canvas.segmentgroup_set.all() ], ensure_ascii=False ) )
 
 @csrf_exempt
 def canvasdiff( request, canvas_id, timestamp = 0 ):
@@ -130,24 +128,35 @@ def canvasdiff( request, canvas_id, timestamp = 0 ):
     if request.method == "POST":
      parametrit = simplejson.loads(urllib.unquote(request.body))
      segmentgroup = SegmentGroup(color=parametrit['color'],size=parametrit['size'])
-     segmentgroup.save()
-     for segment in parametrit['segments']:
-         segmentti = Path(segment)
-         segmentgroup.add(segmentti)
-         segmentti.save()
-     canvas.add(segmentgroup)
-     segmentgroup.save()
+     canvas.segmentgroup_set.add(segmentgroup)
      canvas.save()
+     for segment in parametrit['segments']:
+         datat = parametrit['segments'][segment]
+         segmentti = Path()
+         segmentti.pointx = datat['pointx']
+         segmentti.pointy = datat['pointy']
+         segmentti.handleInx = datat['handleInx']
+         segmentti.handleIny = datat['handleIny']
+         segmentti.handleOutx = datat['handleOutx']
+         segmentti.handleOuty = datat['handleOuty']
+         segmentgroup.path_set.add(segmentti)
+         segmentti.save()
+     segmentgroup.save()
      return HttpResponse(simplejson.dumps([{"response":"ok"}]))
     else:
      aika = datetime.datetime.fromtimestamp(timestamp)
      polling_time=600.0 #10min
-     while len(canvas.segments_set) == 0:
+     while canvas.segmentgroup_set.count() == 0:
         time.sleep(0.2)
         polling_time -= 0.2
         if polling_time <= 0.0:
            return HttpResponse(status=304)
-     return HttpResponse( serializers.serialize("json",  canvas.segments_set, ensure_ascii=False) )
+     result=[]
+     for segmentgroup in canvas.segmentgroup_set.all():
+         if segmentgroup.path_set.count():
+            result.extend(serializers.serialize("json",[segmentgroup]))
+            result.append(serializers.serialize("json",segmentgroup.path_set.all()))
+     return HttpResponse( result )
 
 def guesses(request, timestamp = 0):
     aika = datetime.datetime.fromtimestamp(timestamp)

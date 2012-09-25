@@ -40,9 +40,8 @@ bus = None
 rename_count = 12
 
 #django sqlite kanta
-import sqlite3
+import MySQLdb
 #kannan sijainti
-djangoDB = '/home/hajokit/hajokit/django-project/dag.db'
 conn = None 
 cursor = None
 
@@ -55,7 +54,7 @@ from daemonize import createDaemon
 
 def initdb():
     global conn, cursor
-    conn = sqlite3.connect(djangoDB)
+    conn = MySQLdb.connect("localhost","root","hajarit2012","hajokit")
     cursor = conn.cursor()
 
 def stop(signum, frame):
@@ -136,11 +135,11 @@ def entry_group_state_changed( state, error):
 
 #Discovery parts
 def service_resolved(*args):
-    if cursor.execute("SELECT * FROM game_pelinode where hostname = ?",(args[2]+".local",)).fetchone() is None:
+    if cursor.execute("SELECT * FROM game_pelinode where hostname = %s",(args[2]+".local",))==0:
         txt = dict(item.split('=') for item in avahi.txt_array_to_string_array(args[9]))
         serviceentry = (args[2]+".local",args[8],txt["path"])
         log("New entry to DB:"+args[2]+" ")
-        cursor.execute('INSERT INTO game_pelinode(hostname,port,path) VALUES(?,?,?)', serviceentry)
+        cursor.execute('INSERT INTO game_pelinode(hostname,port,path) VALUES(%s,%s,%s)', serviceentry)
         conn.commit()
         urllib2.urlopen("http://localhost/refresh/%s" %(args[2]+".local")).read()
 
@@ -154,7 +153,7 @@ def remove_service( interface, protocol, name, stype, domain, flags):
         pass
 
     log("Removing service:"+name)
-    cursor.execute('DELETE FROM game_pelinode where hostname = ?',(name+".local",))
+    cursor.execute('DELETE FROM game_pelinode where hostname = %s',(name+".local",))
     conn.commit()
     urllib2.urlopen("http://localhost/remove/%s" %(name+".local")).read()
 
