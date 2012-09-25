@@ -32,7 +32,7 @@ function getDiff() {
         // Server responds with 304 status code, if there's 
         // nothing new to draw.
         try {
-            var jason = jQuery.parseJSON('{"fancyname:", ' + response + '}');
+            var jason = jQuery.parseJSON('{"fancyname:" ' + response + '}');
             alert(jason);
             /*if (xhr.status != 304) {
                 drawDiff(response);
