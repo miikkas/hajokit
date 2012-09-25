@@ -35,7 +35,7 @@ function getDiff() {
             //var jason = jQuery.parseJSON(response);
             //alert(jason);
             if (xhr.status != 304) {
-                drawDiff(response);
+                //drawDiff(response);
             }
         }
         catch (e) {
