@@ -32,7 +32,7 @@ function getDiff() {
         // Server responds with 304 status code, if there's 
         // nothing new to draw.
         try {
-            console.log('{"arrays":{"array":' + response.replace(/\]\[/g, '],"array":[') + '}}');
+            console.log('{"thing":' + response.replace(/\]\[/g, '],"thing":[') + '}');
             //alert(jason);
             if (xhr.status != 304) {
                 drawDiff(JSONize(response));
@@ -71,7 +71,7 @@ function JSONize(string) {
      * already is JSON), and return the results.
      */
     
-    return jQuery.parseJSON('{"arrays":{"array":{' + string.replace(/\]\[/g, ']},"array":{[') + '}}');
+    return jQuery.parseJSON('{"thing":' + string.replace(/\]\[/g, '],"thing":[') + '}');
 }
 
 function reDraw() {
