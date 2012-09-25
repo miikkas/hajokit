@@ -9,11 +9,13 @@ $(document).ready(function () {
     paper.install(window);
     drawView = new View('piirtocanvas');
     paper.setup('piirtocanvas');
-    getDiff();
-    // Set a minute timeout for the requests to enable long polling.
-    $.ajaxSetup({
-           timeout: 1000*60
+    $("#button").live("click", function(event){
+        getDiff();
     });
+    // Set a minute timeout for the requests to enable long polling.
+    /*$.ajaxSetup({
+           timeout: 1000*60
+    });*/
 });
 
 function getDiff() {
@@ -35,26 +37,27 @@ function getDiff() {
         if (xhr.status != 304) {
             drawDiff(response);
         }
-        getDiff();
+        //getDiff();
     });
 }
 
-function drawDiff(diff) {
+function drawDiff(json) {
     /*
      * Draw a path described in the diff on the canvas.
      */
     
     var path = new Path();
     var point, handleIn, handleOut;
-    path.strokeColor = diff.color;
-    path.strokeWidth = diff.size;
-    $.each(diff.segments, function(key,valueObj){
+    $.each(json, function(key,valueObj){
+        console.log(json[i].model);
+        /*path.strokeColor = json.color;
+        path.strokeWidth = json.size;
         point = new Point(valueObj.pointx, valueObj.pointy);
         handleIn = new Point(valueObj.handleInx, valueObj.handleIny);
         handleOut = new Point(valueObj.handleOutx, valueObj.handleOuty);
-        path.add(point, handleIn, handleOut);
+        path.add(point, handleIn, handleOut);*/
     });
-    view.draw();
+    //view.draw();
 }
 
 function reDraw() {
