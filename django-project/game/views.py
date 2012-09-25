@@ -154,9 +154,10 @@ def canvasdiff( request, canvas_id, timestamp = 0 ):
      result=[]
      for segmentgroup in canvas.segmentgroup_set.all():
          if segmentgroup.path_set.count():
-            result.extend(serializers.serialize("json",[segmentgroup]))
-            result.append(serializers.serialize("json",segmentgroup.path_set.all()))
-     return HttpResponse( result )
+            result.extend(serializers.serialize("json",[segmentgroup]) + serializers.serialize("json",segmentgroup.path_set.all()))
+     print type("".join(result))
+     print len(result)
+     return HttpResponse( ''.join(result).replace("][",",") ,mimetype="application/json")
 
 def guesses(request, timestamp = 0):
     aika = datetime.datetime.fromtimestamp(timestamp)
