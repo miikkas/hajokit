@@ -24,14 +24,14 @@ function getDiff() {
      * polling.
      */
     
-    $.ajax ({
-        type: "GET",
-        url: "canvas/1/diff",
-        dataType: "text"
-    }).done(function (response, textStatus, xhr) {
-        // Server responds with 304 status code, if there's 
-        // nothing new to draw.
-        try {
+    try {
+        $.ajax ({
+            type: "GET",
+            url: "canvas/1/diff",
+            dataType: "json"
+        }).done(function (response, textStatus, xhr) {
+            // Server responds with 304 status code, if there's 
+            // nothing new to draw.
             //console.log('{"thing":' + response.replace(/\]\[/g, '],"thing":[') + '}');
             //alert(jason);
             if (xhr.status != 304) {
