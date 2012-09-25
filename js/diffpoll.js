@@ -5,7 +5,7 @@
  * on the client's canvas.
  */
 
-window.onload = function() {
+$(document).ready(function () {
     paper.install(window);
     drawView = new View('piirtocanvas');
     paper.setup('piirtocanvas');
