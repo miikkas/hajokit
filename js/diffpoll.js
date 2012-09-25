@@ -52,7 +52,7 @@ function drawDiff(json) {
     
     var path = new Path();
     var point, handleIn, handleOut;
-        console.log('json');
+        console.log(json);
         /*path.strokeColor = json.color;
         path.strokeWidth = json.size;
         point = new Point(valueObj.pointx, valueObj.pointy);
