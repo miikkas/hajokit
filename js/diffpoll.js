@@ -8,7 +8,7 @@
 $(document).ready(function () {
     paper.install(window);
     drawView = new View('piirtocanvas');
-    console.log('testataan konsolin toimintaa saatana');
+    window.console.log('testataan konsolin toimintaa saatana');
     paper.setup('piirtocanvas');
     $("#button").live("click", function(event){
         getDiff();
@@ -33,7 +33,7 @@ function getDiff() {
         // Server responds with 304 status code, if there's 
         // nothing new to draw.
         if (xhr.status != 304) {
-            console.log('data saatiin');
+            window.console.log('data saatiin');
             drawDiff(response);
         }
         //getDiff();
@@ -47,7 +47,7 @@ function drawDiff(json) {
     
     var path = new Path();
     var point, handleIn, handleOut;
-    console.log('nyt sopis parsia');
+    window.console.log('nyt sopis parsia');
     /*$.each(json, function(key,valueObj){
         console.log(json[i].model);
         /*path.strokeColor = json.color;
