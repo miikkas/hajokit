@@ -71,7 +71,7 @@ function JSONize(string) {
      * already is JSON), and return the results.
      */
     
-    return jQuery.parseJSON('{"array":[' + string.replace(/\]\[/g, '],"array"[') + '}');
+    return jQuery.parseJSON('{"array":[' + string.replace(/\]\[/g, '],"array":[') + '}');
 }
 
 function reDraw() {
