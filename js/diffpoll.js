@@ -32,7 +32,7 @@ function getDiff() {
         // Server responds with 304 status code, if there's 
         // nothing new to draw.
         try {
-            console.log('{"array":' + response.replace(/\]\[/g, '],"array":[') + '}');
+            console.log('{"arrays":{"array":' + response.replace(/\]\[/g, '],"array":[') + '}}');
             //alert(jason);
             if (xhr.status != 304) {
                 drawDiff(JSONize(response));
@@ -52,7 +52,7 @@ function drawDiff(json) {
     
     var path = new Path();
     var point, handleIn, handleOut;
-    $.each(json.array, function(key,valueObj){
+    $.each(json, function(key,valueObj){
         console.log(key + ', ' + valueObj.pk);
     });
         /*path.strokeColor = json.color;
@@ -71,7 +71,7 @@ function JSONize(string) {
      * already is JSON), and return the results.
      */
     
-    return jQuery.parseJSON('{"array":' + string.replace(/\]\[/g, '],"array":[') + '}');
+    return jQuery.parseJSON('{"arrays":{"array":' + response.replace(/\]\[/g, '],"array":[') + '}}');
 }
 
 function reDraw() {
