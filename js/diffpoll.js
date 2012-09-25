@@ -32,11 +32,11 @@ function getDiff() {
         // Server responds with 304 status code, if there's 
         // nothing new to draw.
         try {
-            var jason = jQuery.parseJSON(response);
-            alert(jason);
-            /*if (xhr.status != 304) {
+            //var jason = jQuery.parseJSON(response);
+            //alert(jason);
+            if (xhr.status != 304) {
                 drawDiff(response);
-            }*/
+            }
         }
         catch (e) {
             window.console.log('error: ' + e);
@@ -52,15 +52,15 @@ function drawDiff(json) {
     
     var path = new Path();
     var point, handleIn, handleOut;
-    /*$.each(json, function(key,valueObj){
-        console.log(json[i].model);
+    $.each(json, function(key,valueObj){
+        console.log(json[i]);
         /*path.strokeColor = json.color;
         path.strokeWidth = json.size;
         point = new Point(valueObj.pointx, valueObj.pointy);
         handleIn = new Point(valueObj.handleInx, valueObj.handleIny);
         handleOut = new Point(valueObj.handleOutx, valueObj.handleOuty);
         path.add(point, handleIn, handleOut);*/
-    //});
+    });
     //view.draw();
 }
 
