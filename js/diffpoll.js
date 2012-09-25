@@ -35,7 +35,7 @@ function getDiff() {
             //var jason = jQuery.parseJSON(response);
             //alert(jason);
             if (xhr.status != 304) {
-                //drawDiff(response);
+                drawDiff('{' + response.replace(/[/g, '"array":[').replace(/]"array"/g, '],"array"') + '}');
             }
         }
         catch (e) {
@@ -52,15 +52,13 @@ function drawDiff(json) {
     
     var path = new Path();
     var point, handleIn, handleOut;
-    $.each(json, function(key,valueObj){
-        console.log(key + ', ' + valueObj);
+        console.log('json');
         /*path.strokeColor = json.color;
         path.strokeWidth = json.size;
         point = new Point(valueObj.pointx, valueObj.pointy);
         handleIn = new Point(valueObj.handleInx, valueObj.handleIny);
         handleOut = new Point(valueObj.handleOutx, valueObj.handleOuty);
         path.add(point, handleIn, handleOut);*/
-    });
     //view.draw();
 }
 
