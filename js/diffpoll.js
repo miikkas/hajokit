@@ -28,13 +28,11 @@ function getDiff() {
         type: "GET",
         url: "canvas/1/diff",
         dataType: "json"
-    }).done(function (response) {
-        drawDiff(response);
-        getDiff();
     }).done(function (response, textStatus, xhr) {
         // Server responds with 304 status code, if there's 
         // nothing new to draw.
         if (xhr.status != 304) {
+            console.log('data saatiin');
             drawDiff(response);
         }
         //getDiff();
@@ -48,7 +46,7 @@ function drawDiff(json) {
     
     var path = new Path();
     var point, handleIn, handleOut;
-    console.log(json);
+    console.log('nyt sopis parsia');
     /*$.each(json, function(key,valueObj){
         console.log(json[i].model);
         /*path.strokeColor = json.color;
