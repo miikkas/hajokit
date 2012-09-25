@@ -16,7 +16,7 @@ $(document).ready(function () {
     /*$.ajaxSetup({
            timeout: 1000*60
     });*/
-};
+});
 
 function getDiff() {
     /*
