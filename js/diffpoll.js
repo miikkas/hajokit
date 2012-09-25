@@ -26,7 +26,7 @@ function getDiff() {
     
     $.ajax ({
         type: "GET",
-        url: "canvas/id/diff",
+        url: "canvas/1/diff",
         dataType: "json"
     }).done(function (response) {
         drawDiff(response);
