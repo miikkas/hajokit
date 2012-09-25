@@ -38,11 +38,11 @@ function getDiff() {
                 drawDiff(response);
             }
         }
+    });
         catch (e) {
             window.console.log('error: ' + e);
         }
         //getDiff();
-    });
 }
 
 function drawDiff(json) {
