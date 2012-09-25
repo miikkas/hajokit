@@ -124,7 +124,7 @@ def canvas( request, canvas_id ):
 
 @csrf_exempt
 def canvasdiff( request, canvas_id, timestamp = 0 ):
-    canvas = Piirros.objects.get(pk=canvas_id)
+    canvas = Piirros.objects.select_related().get(pk=canvas_id)
     if request.method == "POST":
      parametrit = simplejson.loads(urllib.unquote(request.body))
      segmentgroup = SegmentGroup(color=parametrit['color'],size=parametrit['size'])
@@ -151,13 +151,12 @@ def canvasdiff( request, canvas_id, timestamp = 0 ):
         polling_time -= 0.2
         if polling_time <= 0.0:
            return HttpResponse(status=304)
-     result=[]
+     result=list(canvas.segmentgroup_set.all())
      for segmentgroup in canvas.segmentgroup_set.all():
          if segmentgroup.path_set.count():
-            result.extend(serializers.serialize("json",[segmentgroup]) + serializers.serialize("json",segmentgroup.path_set.all()))
-     print type("".join(result))
-     print len(result)
-     return HttpResponse( ''.join(result).replace("][",",") ,mimetype="application/json")
+             result = result + list(segmentgroup.path_set.all())
+     print result
+     return HttpResponse( serializers.serialize("json", result ) )
 
 def guesses(request, timestamp = 0):
     aika = datetime.datetime.fromtimestamp(timestamp)
