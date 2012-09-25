@@ -48,7 +48,8 @@ function drawDiff(json) {
     
     var path = new Path();
     var point, handleIn, handleOut;
-    $.each(json, function(key,valueObj){
+    console.log(json);
+    /*$.each(json, function(key,valueObj){
         console.log(json[i].model);
         /*path.strokeColor = json.color;
         path.strokeWidth = json.size;
@@ -56,7 +57,7 @@ function drawDiff(json) {
         handleIn = new Point(valueObj.handleInx, valueObj.handleIny);
         handleOut = new Point(valueObj.handleOutx, valueObj.handleOuty);
         path.add(point, handleIn, handleOut);*/
-    });
+    //});
     //view.draw();
 }
 
