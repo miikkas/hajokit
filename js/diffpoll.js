@@ -5,7 +5,7 @@
  * on the client's canvas.
  */
 
-$(document).ready(function () {
+window.onload = function() {
     paper.install(window);
     drawView = new View('piirtocanvas');
     paper.setup('piirtocanvas');
@@ -16,7 +16,7 @@ $(document).ready(function () {
     /*$.ajaxSetup({
            timeout: 1000*60
     });*/
-});
+};
 
 function getDiff() {
     /*
@@ -27,13 +27,15 @@ function getDiff() {
     $.ajax ({
         type: "GET",
         url: "canvas/1/diff",
-        dataType: "json"
+        dataType: "text"
     }).done(function (response, textStatus, xhr) {
         // Server responds with 304 status code, if there's 
+        alert('PERSERSER');
+        alert(response);
         // nothing new to draw.
-        if (xhr.status != 304) {
+        /*if (xhr.status != 304) {
             drawDiff(response);
-        }
+        }*/
         //getDiff();
     });
 }
