@@ -52,7 +52,7 @@ function drawDiff(json) {
     
     var path = new Path();
     var point, handleIn, handleOut;
-    $.each(json, function(key,valueObj){
+    $.each(json.array, function(key,valueObj){
         console.log(key + ', ' + valueObj);
     });
         /*path.strokeColor = json.color;
