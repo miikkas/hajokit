@@ -27,12 +27,17 @@ function getDiff() {
     $.ajax ({
         type: "GET",
         url: "canvas/1/diff",
-        dataType: "json"
+        dataType: "text"
     }).done(function (response, textStatus, xhr) {
         // Server responds with 304 status code, if there's 
-        alert('PERSERSER');
-        alert(response);
         // nothing new to draw.
+        try {
+            var jason = jQuery.parseJSON(response);
+            alert(jason);
+        }
+        catch (e) {
+            alert('shit: ' + e);
+        }
         /*if (xhr.status != 304) {
             drawDiff(response);
         }*/
