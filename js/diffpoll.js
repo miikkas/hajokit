@@ -37,12 +37,12 @@ function getDiff() {
             if (xhr.status != 304) {
                 drawDiff(response);
             }
-        }
-    });
-        catch (e) {
-            window.console.log('error: ' + e);
-        }
-        //getDiff();
+        });
+    }
+    catch (e) {
+        window.console.log('error: ' + e);
+    }
+    //getDiff();
 }
 
 function drawDiff(json) {
