@@ -9,23 +9,33 @@ $(document).ready(function () {
     paper.install(window);
     drawView = new View('piirtocanvas');
     paper.setup('piirtocanvas');
+    //var id = getGameID();
     // Initially get all diffs, then start long polling for 
     // new diffs.
-    getAllDiffs();
+    getAllDiffs("1");
 });
 
-function getAllDiffs() {
+function getGameID() {
+    /*
+     * Get an ID for a game that will then be joined.
+     */
+    
+    //TO-DO: functionality
+}
+
+function getAllDiffs(id) {
     /*
      * Get a new path to be drawn from the server using long 
      * polling.
      */
     
     window.console.log('Getting all the paths');
+    var url = "canvas/" + id + "/";
     $.ajax ({
         type: "GET",
-        url: "canvas/1/",
+        url: url,
         dataType: "text", 
-        complete: getDiff, 
+        complete: function(){getDiff(id);}, 
         timeout: 10000
     }).done(function (response, textStatus, xhr) {
         // Server responds with 304 status code, if there's 
@@ -48,7 +58,7 @@ function getAllDiffs() {
     //getDiff();
 }
 
-function getDiff() {
+function getDiff(id) {
     /*
      * Get a new path to be drawn from the server using long 
      * polling.
@@ -56,12 +66,12 @@ function getDiff() {
     
     // Get a UNIX timestamp.
     var timestamp = Math.round((new Date()).getTime() / 1000);
-    var url = "canvas/1/" + timestamp;
+    var url = "canvas/" + id + "/" + timestamp;
     $.ajax ({
         type: "GET",
         url: url,
         dataType: "text", 
-        complete: getDiff, 
+        complete: function(){getDiff(id);}, 
         timeout: 10000
 
     }).done(function (response, textStatus, xhr) {
