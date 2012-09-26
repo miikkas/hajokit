@@ -24,7 +24,9 @@ function getAllDiffs() {
     $.ajax ({
         type: "GET",
         url: "canvas/1/",
-        dataType: "text"
+        dataType: "text", 
+        complete: getDiff, 
+        timeout: 10000
     }).done(function (response, textStatus, xhr) {
         // Server responds with 304 status code, if there's 
         // nothing new to draw.
@@ -43,7 +45,7 @@ function getAllDiffs() {
         }
         window.console.log('Gon start polling now.');
     });
-    getDiff();
+    //getDiff();
 }
 
 function getDiff() {
@@ -58,7 +60,10 @@ function getDiff() {
     $.ajax ({
         type: "GET",
         url: url,
-        dataType: "text"
+        dataType: "text", 
+        complete: getDiff, 
+        timeout: 10000
+
     }).done(function (response, textStatus, xhr) {
         // Server responds with 304 status code, if there's 
         // nothing new to draw.
@@ -77,7 +82,7 @@ function getDiff() {
         }
         window.console.log('Gon poll again soon.');
     });
-    getDiff();
+    //getDiff();
 }
 
 function drawDiff(json) {
