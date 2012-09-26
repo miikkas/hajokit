@@ -9,14 +9,39 @@ $(document).ready(function () {
     paper.install(window);
     drawView = new View('piirtocanvas');
     paper.setup('piirtocanvas');
-    $("#button").live("click", function(event){
-        getDiff();
-    });
-    // Set a minute timeout for the requests to enable long polling.
-    /*$.ajaxSetup({
-           timeout: 1000*60
-    });*/
+    // Initially get all diffs, then start long polling for 
+    // new diffs.
+    getAllDiffs();
 });
+
+function getAllDiffs() {
+    /*
+     * Get a new path to be drawn from the server using long 
+     * polling.
+     */
+    
+    $.ajax ({
+        type: "GET",
+        url: "canvas/1/",
+        dataType: "text"
+    }).done(function (response, textStatus, xhr) {
+        // Server responds with 304 status code, if there's 
+        // nothing new to draw.
+        if (xhr.status == 200) {
+            try {
+                var jason = jQuery.parseJSON(response);
+                drawDiff(jason);
+            }
+            catch (e) {
+                window.console.log('error: ' + e);
+            }
+        }
+        else {
+            window.console.log(xhr.status + ' occurred.');
+        }
+        setTimeout('getDiff()', 5000);
+    });
+}
 
 function getDiff() {
     /*
@@ -24,26 +49,30 @@ function getDiff() {
      * polling.
      */
     
-        $.ajax ({
-            type: "GET",
-            url: "canvas/1/",
-            dataType: "text"
-        }).done(function (response, textStatus, xhr) {
-            // Server responds with 304 status code, if there's 
-            // nothing new to draw.
-            //console.log('{"thing":' + response.replace(/\]\[/g, '],"thing":[') + '}');
-            //alert(jason);
-            if (xhr.status != 304) {
-                try {
-                    var jason = jQuery.parseJSON(response);
-                    drawDiff(jason);
-                }
-                catch (e) {
-                    window.console.log('error: ' + e);
-                }
+    // Get a UNIX timestamp.
+    var timestamp = Math.round((new Date()).getTime() / 1000);
+    var url = "canvas/1/" + timestamp;
+    $.ajax ({
+        type: "GET",
+        url: url,
+        dataType: "text"
+    }).done(function (response, textStatus, xhr) {
+        // Server responds with 304 status code, if there's 
+        // nothing new to draw.
+        if (xhr.status == 200) {
+            try {
+                var jason = jQuery.parseJSON(response);
+                drawDiff(jason);
             }
-        });
-    //getDiff();
+            catch (e) {
+                window.console.log('error: ' + e);
+            }
+        }
+        else {
+            window.console.log(xhr.status + ' occurred.');
+        }
+        setTimeout('getDiff()', 5000);
+    });
 }
 
 function drawDiff(json) {
