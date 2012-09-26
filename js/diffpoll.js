@@ -26,7 +26,7 @@ function getDiff() {
     
         $.ajax ({
             type: "GET",
-            url: "canvas/1/diff",
+            url: "canvas/1/",
             dataType: "text"
         }).done(function (response, textStatus, xhr) {
             // Server responds with 304 status code, if there's 
