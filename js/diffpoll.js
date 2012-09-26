@@ -67,7 +67,7 @@ function drawDiff(json) {
          point = new Point(valueObj.pointx, valueObj.pointy);
          handleIn = new Point(valueObj.handleInx, valueObj.handleIny);
          handleOut = new Point(valueObj.handleOutx, valueObj.handleOuty);
-         path.add(point, handleIn, handleOut);
+         path.add(new Segment(point, handleIn, handleOut) );
         }
     });
     view.draw();
