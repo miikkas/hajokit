@@ -144,14 +144,12 @@ def canvasdiff( request, canvas_id, timestamp = 0 ):
     else:
      aika = datetime.datetime.fromtimestamp(timestamp)
      polling_time=600.0 #10min
-     while canvas.path_set.count() == 0:
+     while canvas.path_set.filter(aikaleima__gte=aika).count() == 0:
         time.sleep(0.2)
         polling_time -= 0.2
         if polling_time <= 0.0:
            return HttpResponse(status=304)
-     result=list(canvas.path_set.select_related().all()) + list(SegmentGroup.objects.select_related().all())
-     print result
-     return HttpResponse( serializers.serialize("json", result ) )
+     return HttpResponse( serializers.serialize("json", canvas.path_set.filter(aikaleima_gte=aika) ) )
 
 def guesses(request, timestamp = 0):
     aika = datetime.datetime.fromtimestamp(timestamp)
