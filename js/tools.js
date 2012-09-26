@@ -11,7 +11,7 @@ window.onload = function() {
     paper.setup('drawingcanvas');
     pencil = new Tool();
     line = new Tool();
-    ympyra = new Tool();
+    circle = new Tool();
     rect = new Tool();
     eraser = new Tool();
     var path;
