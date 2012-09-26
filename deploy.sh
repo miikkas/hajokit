@@ -27,9 +27,5 @@ echo "CREATE DATABASE IF NOT EXISTS hajokit; GRANT ALL PRIVILEGES ON hajokit.* T
 
 #tehdään tyhjä kanta jos ei ole olemassa
 cd django-project && python manage.py syncdb --noinput
-#apassille oikeudet fileen
-sudo chown www-data .
-sudo chown www-data dag.db
-sudo chmod g+w .
-sudo chmod g+w dag.db
 
+echo "Done"
