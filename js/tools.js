@@ -166,9 +166,9 @@ function sendDiff(path) {
         dataType: "json", 
         data: diff
     }).done(function (response) {
-            alert('yay: ' + response);
+            //alert('yay: ' + response);
     }).fail(function(response) {
-        alert('ei mennyt nappiin'); 
+        //alert('ei mennyt nappiin'); 
         $.each(response, function(key,valueObj){
             console.log(key + ': ' + valueObj);
         });
