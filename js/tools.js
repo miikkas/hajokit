@@ -165,12 +165,12 @@ function sendDiff(path) {
         url: "canvas/1/",
         dataType: "json", 
         data: diff
-    }).done(function (response) {
-            //alert('yay: ' + response);
-    }).fail(function(response) {
-        //alert('ei mennyt nappiin'); 
-        $.each(response, function(key,valueObj){
-            console.log(key + ': ' + valueObj);
-        });
+    }).done(function (response, textStatus, xhr) {
+        if (xhr.status == 200) {
+            console.log('A path was succesfully sent.');
+        }
+        else {
+            console.log('Failed to send path.');
+        }
     });
 }
