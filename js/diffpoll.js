@@ -61,6 +61,7 @@ function getDiff() {
         // nothing new to draw.
         if (xhr.status == 200) {
             try {
+                window.console.log('received paths from server');
                 var jason = jQuery.parseJSON(response);
                 drawDiff(jason);
             }
@@ -80,6 +81,7 @@ function drawDiff(json) {
      * Draw a path described in the diff on the canvas.
      */
     
+    window.console.log('attempting to draw stuff');
     var path = null,timestamp=0;
     var point, handleIn, handleOut;
     console.log(json)
