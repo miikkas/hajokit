@@ -41,9 +41,9 @@ function getAllDiffs() {
         else {
             window.console.log(xhr.status + ' occurred while getting all the paths.');
         }
-        window.console.log('Gon poll again soon.');
-        getDiff();
+        window.console.log('Gon start polling now.');
     });
+    getDiff();
 }
 
 function getDiff() {
@@ -76,8 +76,8 @@ function getDiff() {
             window.console.log(xhr.status + ' occurred while getting the latest paths.');
         }
         window.console.log('Gon poll again soon.');
-        getDiff();
     });
+    getDiff();
 }
 
 function drawDiff(json) {
