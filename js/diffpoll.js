@@ -36,11 +36,11 @@ function getDiff() {
             if (xhr.status != 304) {
                 try {
                     var jason = jQuery.parseJSON(response);
+                    drawDiff(jason);
                 }
                 catch (e) {
                     window.console.log('error: ' + e);
                 }
-                drawDiff(response);
             }
         });
     //getDiff();
@@ -53,16 +53,24 @@ function drawDiff(json) {
     
     var path = new Path();
     var point, handleIn, handleOut;
+    console.log(json)
     $.each(json, function(key,valueObj){
         console.log(key + ', ' + valueObj.pk);
+        /*
+         * Parse path info if json contains game.path model
+         */
+        if (valueObj.model == "game.path" )
+        {
+         valueObj = valueObj.fields;
+         path.strokeColor = valueObj.color;
+         path.strokeWidth = valueObj.size;
+         point = new Point(valueObj.pointx, valueObj.pointy);
+         handleIn = new Point(valueObj.handleInx, valueObj.handleIny);
+         handleOut = new Point(valueObj.handleOutx, valueObj.handleOuty);
+         path.add(point, handleIn, handleOut);
+        }
     });
-        /*path.strokeColor = json.color;
-        path.strokeWidth = json.size;
-        point = new Point(valueObj.pointx, valueObj.pointy);
-        handleIn = new Point(valueObj.handleInx, valueObj.handleIny);
-        handleOut = new Point(valueObj.handleOutx, valueObj.handleOuty);
-        path.add(point, handleIn, handleOut);*/
-    //view.draw();
+    view.draw();
 }
 
 function JSONize(string) {
