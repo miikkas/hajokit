@@ -51,7 +51,7 @@ function drawDiff(json) {
      * Draw a path described in the diff on the canvas.
      */
     
-    var path = new Path();
+    var path = null,timestamp=0;
     var point, handleIn, handleOut;
     console.log(json)
     $.each(json, function(key,valueObj){
@@ -62,6 +62,11 @@ function drawDiff(json) {
         if (valueObj.model == "game.path" )
         {
          valueObj = valueObj.fields;
+         if( timestamp != valueObj.aikaleima )
+         {
+            path = new Path();
+            timestamp = valueObj.aikaleima;
+         }
          path.strokeColor = valueObj.color;
          path.strokeWidth = valueObj.size;
          point = new Point(valueObj.pointx, valueObj.pointy);
