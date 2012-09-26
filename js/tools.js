@@ -14,8 +14,7 @@ window.onload = function() {
     circle = new Tool();
     rect = new Tool();
     eraser = new Tool();
-    var path;
-    var startingpoint;
+    var path, startingpoint, rad;
 
     //Igor, pencil!
     pencil.onMouseDown = function(event) {
@@ -58,7 +57,7 @@ window.onload = function() {
         startingpoint = event.point;
     };
     circle.onMouseDrag = function(event) {
-        var rad = startingpoint.getDistance(event.point, false);
+        rad = startingpoint.getDistance(event.point, false);
         path = new Path.Circle(startingpoint, rad);
         path.strokeColor = drawcolor;
         path.strokeWidth = drawsize;
