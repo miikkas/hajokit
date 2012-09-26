@@ -41,6 +41,7 @@ window.onload = function() {
             path.add(event.point);
         }
         path.add(event.point);
+        startingpoint = event.point;
     };
     line.onMouseDrag = function(event) {
         path.lastSegment.point = event.point;
