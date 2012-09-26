@@ -13,6 +13,9 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import simplejson
+
+from django.utils.timezone import utc
+
 from game.models import HostNode
 from game.models import Game,Player,Guess
 from game.models import Canvas,Path
@@ -142,7 +145,8 @@ def canvasdiff( request, canvas_id, timestamp = 0 ):
      canvas.save()
      return HttpResponse(simplejson.dumps([{"response":"ok"}]))
     else:
-     aika = datetime.datetime.fromtimestamp(timestamp)
+     print type(float(timestamp))
+     aika = datetime.datetime.utcfromtimestamp(float(timestamp)).replace(tzinfo=utc)
      polling_time=600.0 #10min
      while canvas.path_set.filter(aikaleima__gte=aika).count() == 0:
         time.sleep(0.2)
@@ -152,7 +156,7 @@ def canvasdiff( request, canvas_id, timestamp = 0 ):
      return HttpResponse( serializers.serialize("json", canvas.path_set.filter(aikaleima__gte=aika) ) )
 
 def guesses(request, timestamp = 0):
-    aika = datetime.datetime.fromtimestamp(timestamp)
+    aika = datetime.datetime.utcfromtimestamp(timestamp).replace(tzinfo=utc)
     """For HTTP GETting the guesses made on the current game, JSON encoded.
        If timestamp is given, give guesses that are younger than timestamp
        or block until such guess is made"""
