@@ -64,7 +64,7 @@ def stop(signum, frame):
     if group:
        group.Free()
     log("Siivotaan tietokanta")
-    cursor.execute('DELETE FROM game_gamenode')
+    cursor.execute('DELETE FROM game_hostnode')
     conn.commit()
     conn.close()
     gobject.MainLoop().quit()
@@ -135,11 +135,11 @@ def entry_group_state_changed( state, error):
 
 #Discovery parts
 def service_resolved(*args):
-    if cursor.execute("SELECT * FROM game_gamenode where hostname = %s",(args[2]+".local",))==0:
+    if cursor.execute("SELECT * FROM game_hostnode where hostname = %s",(args[2]+".local",))==0:
         txt = dict(item.split('=') for item in avahi.txt_array_to_string_array(args[9]))
         serviceentry = (args[2]+".local",args[8],txt["path"])
         log("New entry to DB:"+args[2]+" ")
-        cursor.execute('INSERT INTO game_gamenode(hostname,port,path) VALUES(%s,%s,%s)', serviceentry)
+        cursor.execute('INSERT INTO game_hostnode(hostname,port,path) VALUES(%s,%s,%s)', serviceentry)
         conn.commit()
         urllib2.urlopen("http://localhost/refresh/%s" %(args[2]+".local")).read()
 
@@ -153,7 +153,7 @@ def remove_service( interface, protocol, name, stype, domain, flags):
         pass
 
     log("Removing service:"+name)
-    cursor.execute('DELETE FROM game_gamenode where hostname = %s',(name+".local",))
+    cursor.execute('DELETE FROM game_hostnode where hostname = %s',(name+".local",))
     conn.commit()
     urllib2.urlopen("http://localhost/remove/%s" %(name+".local")).read()
 
@@ -180,7 +180,7 @@ if __name__ == "__main__":
    initdb()
 
    log("Cleaning up DB")
-   cursor.execute('DELETE FROM game_gamenode')
+   cursor.execute('DELETE FROM game_hostnode')
    conn.commit()
 
 
