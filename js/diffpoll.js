@@ -20,6 +20,7 @@ function getAllDiffs() {
      * polling.
      */
     
+    window.console.log('Getting all the paths');
     $.ajax ({
         type: "GET",
         url: "canvas/1/",
@@ -30,14 +31,15 @@ function getAllDiffs() {
         if (xhr.status == 200) {
             try {
                 var jason = jQuery.parseJSON(response);
+                window.console.log('Got all the paths');
                 drawDiff(jason);
             }
             catch (e) {
-                window.console.log('error: ' + e);
+                window.console.log('Error while getting all the paths: ' + e);
             }
         }
         else {
-            window.console.log(xhr.status + ' occurred.');
+            window.console.log(xhr.status + ' occurred while getting all the paths.');
         }
         setTimeout('getDiff()', 5000);
     });
@@ -61,16 +63,16 @@ function getDiff() {
         // nothing new to draw.
         if (xhr.status == 200) {
             try {
-                window.console.log('received paths from server');
+                window.console.log('Received the latest paths from server');
                 var jason = jQuery.parseJSON(response);
                 drawDiff(jason);
             }
             catch (e) {
-                window.console.log('error: ' + e);
+                window.console.log('Error while getting the latest paths: ' + e);
             }
         }
         else {
-            window.console.log(xhr.status + ' occurred.');
+            window.console.log(xhr.status + ' occurred while getting the latest paths.');
         }
         setTimeout('getDiff()', 5000);
     });
