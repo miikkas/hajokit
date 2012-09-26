@@ -97,10 +97,10 @@ function drawDiff(json) {
         if (valueObj.model == "game.path" )
         {
          valueObj = valueObj.fields;
-         if( timestamp != valueObj.aikaleima )
+         if( timestamp != valueObj.epoch)
          {
             path = new Path();
-            timestamp = valueObj.aikaleima;
+            timestamp = valueObj.epoch;
          }
          path.strokeColor = valueObj.color;
          path.strokeWidth = valueObj.size;

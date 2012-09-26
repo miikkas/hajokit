@@ -131,11 +131,12 @@ def canvasdiff( request, canvas_id, timestamp = 0 ):
     if request.method == "POST":
      parametrit = simplejson.loads(urllib.unquote(request.body))
      aikaleima = datetime.datetime.utcnow().replace(tzinfo=utc)
+     epoch     = time.time()
      for segment in parametrit['segments']:
          datat = parametrit['segments'][segment]
          segmentti = Path()
          segmentti.ordernumber = segment
-         segmentti.aikaleima = aikaleima
+         segmentti.epoch = epoch
          segmentti.color = parametrit['color']
          segmentti.size  = parametrit['size']
          segmentti.pointx = datat['pointx']
