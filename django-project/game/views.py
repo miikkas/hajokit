@@ -149,7 +149,7 @@ def canvasdiff( request, canvas_id, timestamp = 0 ):
         polling_time -= 0.2
         if polling_time <= 0.0:
            return HttpResponse(status=304)
-     return HttpResponse( serializers.serialize("json", canvas.path_set.filter(aikaleima_gte=aika) ) )
+     return HttpResponse( serializers.serialize("json", canvas.path_set.filter(aikaleima__gte=aika) ) )
 
 def guesses(request, timestamp = 0):
     aika = datetime.datetime.fromtimestamp(timestamp)
