@@ -41,6 +41,7 @@ function getAllDiffs() {
         else {
             window.console.log(xhr.status + ' occurred while getting all the paths.');
         }
+        window.console.log('Gon poll again soon.');
         setTimeout('getDiff()', 5000);
     });
 }
@@ -74,6 +75,7 @@ function getDiff() {
         else {
             window.console.log(xhr.status + ' occurred while getting the latest paths.');
         }
+        window.console.log('Gon poll again soon.');
         setTimeout('getDiff()', 5000);
     });
 }
