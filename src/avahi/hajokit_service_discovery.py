@@ -54,7 +54,7 @@ from daemonize import createDaemon
 
 def initdb():
     global conn, cursor
-    conn = MySQLdb.connect("localhost","root","hajarit2012","hajokit")
+    conn = MySQLdb.connect("localhost","hajokit","hajarit2012","hajokit")
     cursor = conn.cursor()
 
 def stop(signum, frame):
