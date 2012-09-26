@@ -83,7 +83,7 @@ function drawDiff(json) {
      * Draw a path described in the diff on the canvas.
      */
     
-    window.console.log('attempting to draw stuff');
+    window.console.log('Attempting to draw stuff');
     var path = null,timestamp=0;
     var point, handleIn, handleOut;
     //console.log(json)
@@ -108,6 +108,7 @@ function drawDiff(json) {
          path.add(new Segment(point, handleIn, handleOut) );
         }
     });
+    window.console.log('Managed to draw stuff');
     view.draw();
 }
 
@@ -125,5 +126,6 @@ function reDraw() {
     /*
      * Redraw the canvas to show any changes.
      */
+    window.console.log('Redraw!');
     view.draw();
 }
