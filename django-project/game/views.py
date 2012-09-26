@@ -13,28 +13,28 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import simplejson
-from game.models import PeliNode
-from game.models import Peli,Pelaaja,Guess
-from game.models import Piirros,SegmentGroup,Path
+from game.models import HostNode
+from game.models import Game,Player,Guess
+from game.models import Canvas,Path
 
 #Remove all the data related to given node
 def remove(request,nodename):
-    for game in Peli.objects.filter(pelinode=nodename):
+    for game in Game.objects.filter(pelinode=nodename):
         game.delete()
-    for player in Pelaaja.objects.filter(pelinode=nodename):
+    for player in Player.objects.filter(pelinode=nodename):
         player.delete()
     return HttpResponse("ok")
 
 #Refresh new node with our data
 def refresh(request,nodename):
-    node = PeliNode.objects.get(pk=nodename)
+    node = HostNode.objects.get(pk=nodename)
     if nodename == platform.node()+".local":
        return HttpResponse(serializers.serialize("json", [node], ensure_ascii=False ) )
     #create all the players we have
-    for player in Pelaaja.objects.filter(pelinode=platform.node()+".local"):
+    for player in Player.objects.filter(pelinode=platform.node()+".local"):
         print("Replicating player %s to node %s"%(player,nodename))
         newplayer = urllib2.urlopen("http://%s:%d%s/player/create/%s/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(player.name),player.uuid,platform.node()+".local")).read()
-    for game in Peli.objects.filter(pelinode=platform.node()+".local"):
+    for game in Game.objects.filter(pelinode=platform.node()+".local"):
         print("Replicating game %s to node %s"%(game.uuid,nodename))
         newplayer = urllib2.urlopen("http://%s:%d%s/game/new/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(game_uuid.name),platform.node()+".local")).read()
     return HttpResponse(serializers.serialize("json", [node], ensure_ascii=False ) )
@@ -44,7 +44,7 @@ def replicate(request, nodename, uuid=""):
     if nodename != platform.node()+".local":
        return
     print("Replicatin request %s"%(request.path_info))
-    for node in PeliNode.objects.exclude(hostname=platform.node()+".local"):
+    for node in HostNode.objects.exclude(hostname=platform.node()+".local"):
       print("Replicating data to host %s" %(node.hostname))
       try:
         newplayer = urllib2.urlopen("http://%s:%d%s%s/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(request.path_info),uuid,platform.node()+".local")).read()
@@ -58,22 +58,22 @@ def index(request):
 
 def newgame(request, nodename=platform.node()+".local", game_uuid=None):
     """ Request new game to be started """
-    canvas = Piirros()
+    canvas = Canvas()
     canvas.save()
-    pelinode = PeliNode.objects.get(hostname=nodename)
+    pelinode = HostNode.objects.get(hostname=nodename)
     if game_uuid is None:
        game_uuid = uuid.uuid4()
        print("UUID created as %s" %(game_uuid))
     else:
        print("UUID given as %s" %(game_uuid))
-    uus_peli = Peli(canvas=canvas,pelinode=pelinode,uuid=game_uuid)
+    uus_peli = Game(canvas=canvas,pelinode=pelinode,uuid=game_uuid)
     uus_peli.save()
     replicate(request,nodename, game_uuid)
     return HttpResponse(serializers.serialize("json", [uus_peli], ensure_ascii=False ) )
 
 def joingame( request, playerid, gameid, nodename=platform.node()+".local" ):
-    peli = Peli.objects.get(pk=gameid)
-    pelaaja = Pelaaja.objects.get(pk=playerid)
+    peli = Game.objects.get(pk=gameid)
+    pelaaja = Player.objects.get(pk=playerid)
     pelaaja.peli=peli
     peli.pelaajat.add(pelaaja)
     peli.save()
@@ -82,22 +82,22 @@ def joingame( request, playerid, gameid, nodename=platform.node()+".local" ):
     return HttpResponse(serializers.serialize("json", [pelaaja], ensure_ascii=False ) )
 
 def listgames( request ):
-    return HttpResponse( serializers.serialize("json", Peli.objects.all(), ensure_ascii=False ) )
+    return HttpResponse( serializers.serialize("json", Game.objects.all(), ensure_ascii=False ) )
 
 def endgame( request, gameid, nodename=platform.node()+".local"):
-    peli = Peli.objects.get(pk=gameid)
+    peli = Game.objects.get(pk=gameid)
     peli.canvas.delete()
     peli.delete()
     replicate(request,nodename)
-    return HttpResponse(serializers.serialize("json", Peli.objects.all(), ensure_ascii=False ) )
+    return HttpResponse(serializers.serialize("json", Game.objects.all(), ensure_ascii=False ) )
 
 
 def newplayer(request,playername,player_uuid=None,nodename=platform.node()+".local"):
     if player_uuid is None:
        player_uuid = uuid.uuid4()
-    pelaaja = Pelaaja(nimi=playername,uuid=player_uuid)
+    pelaaja = Player(nimi=playername,uuid=player_uuid)
     print("Creating player %s uuid %s" %(playername,player_uuid))
-    pelinode = PeliNode.objects.get(hostname=nodename)
+    pelinode = HostNode.objects.get(hostname=nodename)
     pelaaja.pelinode = pelinode
     pelaaja.save()
     replicate(request,nodename, player_uuid)
@@ -105,15 +105,15 @@ def newplayer(request,playername,player_uuid=None,nodename=platform.node()+".loc
 
 def players(request):
     """For HTTP GETting the data of the current players, JSON encoded."""
-    return HttpResponse(serializers.serialize("json", Pelaaja.objects.all(), ensure_ascii=False ) )
+    return HttpResponse(serializers.serialize("json", Player.objects.all(), ensure_ascii=False ) )
 
 def canvasall(request):
     """For HTTP GETting the current canvas data, base 64 encoded, JSON encoded."""
-    return HttpResponse(serializers.serialize("json", Piirros.objects.all(), ensure_ascii=False ))
+    return HttpResponse(serializers.serialize("json", Canvas.objects.all(), ensure_ascii=False ))
 
 @csrf_exempt
 def canvas( request, canvas_id ):
-    canvas = Piirros.objects.get(pk=canvas_id)
+    canvas = Canvas.objects.get(pk=canvas_id)
     if request.method == "POST":
      parametrit = simplejson.loads(urllib.unquote(request.body))
      if "data" in parametrit:
@@ -124,7 +124,7 @@ def canvas( request, canvas_id ):
 
 @csrf_exempt
 def canvasdiff( request, canvas_id, timestamp = 0 ):
-    canvas = Piirros.objects.select_related().get(pk=canvas_id)
+    canvas = Canvas.objects.select_related().get(pk=canvas_id)
     if request.method == "POST":
      parametrit = simplejson.loads(urllib.unquote(request.body))
      for segment in parametrit['segments']:
@@ -176,5 +176,5 @@ def guess(request):
     return HttpResponse("not ok, use POST")
 
 def nodes(request):
-    all_the_nodes = PeliNode.objects.all()
+    all_the_nodes = HostNode.objects.all()
     return HttpResponse( serializers.serialize("json", all_the_nodes, ensure_ascii=False ) )

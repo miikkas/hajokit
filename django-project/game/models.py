@@ -2,23 +2,18 @@
 # -*- encoding: utf-8 -*-
 from django.db import models
 
-# Create your models here.
 
-
-#Piirros on base64 koodattu piirrostilanne, tämän lisäksi muutokset
-# kun pelaaja liittyy
-class Piirros(models.Model):
+#Canvas is the id of the drawingboard that is used in game
+class Canvas(models.Model):
     tilanne   = models.TextField()
     aikaleima = models.DateTimeField(auto_now=True)
 
-class SegmentGroup(models.Model):
+#Path contains all the paths that are places on canvas
+class Path(models.Model):
     aikaleima   = models.DateTimeField(auto_now=True)
     color       = models.CharField(max_length=32)
     size        = models.PositiveIntegerField()
-
-#Muutos on Piirrokseen tulleet muutokset
-class Path(SegmentGroup):
-    segments    = models.ForeignKey(Piirros)
+    segments    = models.ForeignKey(Canvas)
     pointy      = models.PositiveIntegerField()
     pointx      = models.PositiveIntegerField()
     handleIny   = models.FloatField()
@@ -26,36 +21,30 @@ class Path(SegmentGroup):
     handleOuty  = models.FloatField()
     handleOutx  = models.FloatField()
 
-    def __unicode__(self):
-       return u"{'path':%d, 'pointx':%d,'pointy':%d, 'handleInx':%f,'handleIny':%f, 'handleOutx':%f, 'handleOuty':%f}" %(self.id, self.pointx,self.pointy,self.handleInx,self.handleIny,self.handleOutx,self.handleOuty)
-
-    def __str__(self):
-       return self.__unicode__()
-
-#Pelinode, eli virtuaali kone jossa joku pelaaja on kiinni
-class PeliNode(models.Model):
+#Gamenode, Info about hosts that are discovered
+class HostNode(models.Model):
     hostname = models.CharField(max_length=255,primary_key=True)
     port     = models.PositiveIntegerField()
     path     = models.CharField(max_length=255)
 
-#Pelaaja, pidetään tallessa missä nodessa on kiinni ja tunniste
-class Pelaaja(models.Model):
+#Player, info about the player that either draws or guesses
+class Player(models.Model):
     uuid     = models.CharField(max_length=64,primary_key=True)
-    pelinode = models.ForeignKey(PeliNode)
+    pelinode = models.ForeignKey(HostNode)
     nimi     = models.CharField(max_length=255)
 
-#Pelitilanne, kuka on piirtomuodossa ja mitä on piirretty
-class Peli(models.Model):
+#Game, state of the game, who is drawing and the players who are joined
+class Game(models.Model):
     uuid          = models.CharField(max_length=64,primary_key=True)
     pelikaynnissa = models.BooleanField(default=False)
-    pelinode      = models.ForeignKey(PeliNode)
-    pelaajat      = models.ManyToManyField(Pelaaja)
-    canvas        = models.ForeignKey(Piirros)
-    piirtaja      = models.OneToOneField(Pelaaja,blank=True,null=True,related_name='+')
+    pelinode      = models.ForeignKey(HostNode)
+    pelaajat      = models.ManyToManyField(Player)
+    canvas        = models.ForeignKey(Canvas)
+    piirtaja      = models.OneToOneField(Player,blank=True,null=True,related_name='+')
 
 #Guess that some player have made for game
 class Guess(models.Model):
     aikaleima = models.DateTimeField(auto_now=True)
-    pelaaja   = models.ForeignKey(Pelaaja)
-    peli      = models.ForeignKey(Peli)
+    pelaaja   = models.ForeignKey(Player)
+    peli      = models.ForeignKey(Game)
     arvaus    = models.TextField()
