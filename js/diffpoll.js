@@ -84,9 +84,9 @@ function drawDiff(json) {
     window.console.log('attempting to draw stuff');
     var path = null,timestamp=0;
     var point, handleIn, handleOut;
-    console.log(json)
+    //console.log(json)
     $.each(json, function(key,valueObj){
-        console.log(key + ', ' + valueObj.pk);
+        //console.log(key + ', ' + valueObj.pk);
         /*
          * Parse path info if json contains game.path model
          */
