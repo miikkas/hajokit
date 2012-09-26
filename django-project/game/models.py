@@ -11,6 +11,7 @@ class Canvas(models.Model):
 #Path contains all the paths that are places on canvas
 class Path(models.Model):
     aikaleima   = models.DateTimeField(auto_now=True)
+    ordernumber = models.PositiveIntegerField()
     color       = models.CharField(max_length=32)
     size        = models.PositiveIntegerField()
     segments    = models.ForeignKey(Canvas)
@@ -20,6 +21,9 @@ class Path(models.Model):
     handleInx   = models.FloatField()
     handleOuty  = models.FloatField()
     handleOutx  = models.FloatField()
+
+    class Meta:
+       ordering = ["aikaleima","ordernumber"]
 
 #Gamenode, Info about hosts that are discovered
 class HostNode(models.Model):
