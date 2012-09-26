@@ -54,17 +54,17 @@ window.onload = function() {
     };
 
     //Circle
-    ympyra.onMouseDown = function(event) {
+    circle.onMouseDown = function(event) {
         startingpoint = event.point;
     };
-    ympyra.onMouseDrag = function(event) {
+    circle.onMouseDrag = function(event) {
         var rad = startingpoint.getDistance(event.point, false);
         path = new Path.Circle(startingpoint, rad);
         path.strokeColor = drawcolor;
         path.strokeWidth = drawsize;
         path.removeOnDrag();
     };
-    ympyra.onMouseUp = function(event) {
+    circle.onMouseUp = function(event) {
         if (rad > 0) {
             sendDiff(path);
         }
