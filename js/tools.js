@@ -163,7 +163,7 @@ function sendDiff(path) {
     //Do something with the id.
     $.ajax ({
         type: "POST",
-        url: "canvas/1/",
+        url: "canvas/" + gameid + "/",
         dataType: "json", 
         data: diff
     }).done(function (response, textStatus, xhr) {
@@ -174,6 +174,28 @@ function sendDiff(path) {
             console.log('Failed to send path.');
         }
     }).fail(function (response, textStatus, xhr) {
-        console.log(response);
+        console.log('Vituixmän polun lähetys: ' + xhr.status + ', ' + textStatus);
     });
 }
+
+function getGameID() {
+    /*
+     * Get an ID for a game that will then be joined.
+     */
+    
+    window.console.log('Getting ID for the game.');
+    $.ajax ({
+        type: "GET",
+        url: "games/",
+        dataType: "text"
+    }).done(function (response, textStatus, xhr) {
+        window.console.log(response);
+        try {
+            gameid = jQuery.parseJSON(response)[0].fields.canvas;
+        } catch (e) {
+            window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
+        }
+        window.console.log('Got ID ' + id);
+    });
+}
+
