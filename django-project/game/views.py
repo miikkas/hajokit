@@ -23,6 +23,7 @@ from game.models import Canvas,Path
 #Remove all the data related to given node
 def remove(request,nodename):
     for game in Game.objects.filter(pelinode=nodename):
+        game.canvas.delete()
         game.delete()
     for player in Player.objects.filter(pelinode=nodename):
         player.delete()
@@ -44,7 +45,8 @@ def refresh(request,nodename):
 
 #Replicates request to all the other nodes if needed
 def replicate(request, nodename=platform.node()+".local", uuid=""):
-    if nodename != platform.node()+".local":
+    if not request.is_ajax():
+       print "No need to replicate non-ajax request"
        return
     print("Replicatin request %s"%(request.path_info))
     for node in HostNode.objects.exclude(hostname=platform.node()+".local"):
