@@ -24,8 +24,8 @@ window.onload = function() {
     //Igor, pencil!
     pencil.onMouseDown = function(event) {
         path = new Path();
-        path.strokeColor = drawcolor;
-        path.strokeWidth = drawsize;
+        //path.strokeColor = drawcolor;
+        //path.strokeWidth = drawsize;
     };
     pencil.onMouseDrag = function(event) {
         path.add(event.point);
@@ -40,8 +40,8 @@ window.onload = function() {
     //Line
     line.onMouseDown = function(event) {
         path = new Path();
-        path.strokeColor = drawcolor;
-        path.strokeWidth = drawsize;
+        //path.strokeColor = drawcolor;
+        //path.strokeWidth = drawsize;
         if (path.segments.length === 0) {
             path.add(event.point);
         }
@@ -65,8 +65,8 @@ window.onload = function() {
     circle.onMouseDrag = function(event) {
         rad = startingpoint.getDistance(event.point, false);
         path = new Path.Circle(startingpoint, rad);
-        path.strokeColor = drawcolor;
-        path.strokeWidth = drawsize;
+        //path.strokeColor = drawcolor;
+        //path.strokeWidth = drawsize;
         path.removeOnDrag();
     };
     circle.onMouseUp = function(event) {
@@ -83,8 +83,8 @@ window.onload = function() {
     };
     rect.onMouseDrag = function(event) {
         path = new Path.Rectangle(startingpoint, event.point);
-        path.strokeColor = drawcolor;
-        path.strokeWidth = drawsize;
+        //path.strokeColor = drawcolor;
+        //path.strokeWidth = drawsize;
         path.removeOnDrag();
     };
     rect.onMouseUp = function(event) {
@@ -97,8 +97,8 @@ window.onload = function() {
     eraser.onMouseDown = function(event) {
         oldstrokecolor = drawcolor;
         path = new Path();
-        changeColor('white');
-        path.strokeWidth = drawsize;
+        //changeColor('white');
+        //path.strokeWidth = drawsize;
     };
     eraser.onMouseDrag = function(event) {
         path.add(event.point);
@@ -108,7 +108,7 @@ window.onload = function() {
         if (path.segments.length != 0) {
             sendDiff(path);
         }
-        changeColor(oldstrokecolor);
+        drawcolor = oldstrokecolor;
     };
 };
 
