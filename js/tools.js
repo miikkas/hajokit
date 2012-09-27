@@ -10,9 +10,6 @@ var gameid = '-1';
 
 window.onload = function() {
     getGameID();
-};
-
-function crap(id) {
     paper.setup('drawingcanvas');
     pencil = new Tool();
     line = new Tool();
@@ -108,7 +105,7 @@ function crap(id) {
             sendDiff(path);
         }
     };
-}
+};
 
 function changeColor(color) {
     /*
