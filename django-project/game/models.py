@@ -5,7 +5,7 @@ from django.db import models
 
 #Canvas is the id of the drawingboard that is used in game
 class Canvas(models.Model):
-    tilanne   = models.TextField()
+    uuid      = models.CharField(max_length=64,primary_key=True)
     aikaleima = models.DateTimeField(auto_now=True)
 
 #Path contains all the paths that are places on canvas
