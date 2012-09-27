@@ -50,9 +50,12 @@ def replicate(request, nodename, uuid=""):
     for node in HostNode.objects.exclude(hostname=platform.node()+".local"):
       print("Replicating data to host %s" %(node.hostname))
       try:
-        newplayer = urllib2.urlopen("http://%s:%d%s%s/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(request.path_info),uuid,platform.node()+".local")).read()
+        if not len(request.body):
+         newplayer = urllib2.urlopen("http://%s:%d%s%s/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(request.path_info),uuid,platform.node()+".local")).read()
+        else: #HTTP POST
+         newplayer = urllib2.urlopen("http://%s:%d%s%s" %(node.hostname,node.port,node.path,urllib.quote(request.path_info)),request.body).read()
       except urllib2.HTTPError as e:
-        print("HTTPError from %s: %s" % (node.hostname,e.reason))
+        print("HTTPError from %s: %d body:%s" % (node.hostname,e.code,e.read()))
         
 
 def index(request):
