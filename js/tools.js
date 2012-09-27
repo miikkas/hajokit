@@ -160,23 +160,27 @@ function sendDiff(path) {
      * POST the path that was drawn to the server in JSON.
      */
     
-    var diff = JSON.stringify(pathToObject(path));
-    //Do something with the id.
-    $.ajax ({
-        type: "POST",
-        url: "canvas/" + gameid + "/",
-        dataType: "json", 
-        data: diff
-    }).done(function (response, textStatus, xhr) {
-        if (xhr.status == 200) {
-            console.log('A path was succesfully sent.');
-        }
-        else {
-            console.log('Failed to send path.');
-        }
-    }).fail(function (response, textStatus, xhr) {
-        console.log('Vituixmän polun lähetys: ' + xhr.status + ', ' + textStatus);
-    });
+    if (gameid != '-1') {
+        var diff = JSON.stringify(pathToObject(path));
+        $.ajax ({
+            type: "POST",
+            url: "canvas/" + gameid + "/",
+            dataType: "json", 
+            data: diff
+        }).done(function (response, textStatus, xhr) {
+            if (xhr.status == 200) {
+                console.log('A path was succesfully sent.');
+            }
+            else {
+                console.log('Failed to send path.');
+            }
+        }).fail(function (response, textStatus, xhr) {
+            console.log('Vituixmän polun lähetys: ' + xhr.status + ', ' + textStatus);
+        });
+    }
+    else {
+        console.log("Won't send a path until there's a canvas id to send to.");
+    }
 }
 
 function getGameID() {
@@ -192,7 +196,7 @@ function getGameID() {
     }).done(function (response, textStatus, xhr) {
         window.console.log(response);
         try {
-            gameid = jQuery.parseJSON(response)[0].fields.canvas;
+            setGameID(jQuery.parseJSON(response)[0].fields.canvas);
         } catch (e) {
             window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
         }
@@ -200,3 +204,6 @@ function getGameID() {
     });
 }
 
+function setGameID(id) {
+    gameid = id;
+}
