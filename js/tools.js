@@ -9,7 +9,7 @@ var drawsize = 5;
 var gameid = '-1';
 
 window.onload = function() {
-    getGameID();
+    gameid = getGameID();
     paper.setup('drawingcanvas');
     pencil = new Tool();
     line = new Tool();
@@ -189,6 +189,7 @@ function getGameID() {
      */
     
     window.console.log('Getting ID for the game.');
+    var id;
     $.ajax ({
         type: "GET",
         url: "games/",
@@ -196,14 +197,16 @@ function getGameID() {
     }).done(function (response, textStatus, xhr) {
         window.console.log(response);
         try {
-            setGameID(jQuery.parseJSON(response)[0].fields.canvas);
+            id = jQuery.parseJSON(response)[0].fields.canvas;
         } catch (e) {
             window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
         }
         window.console.log('Got ID ' + id);
+        return id;
     });
 }
 
 function setGameID(id) {
+    hope
     gameid = id;
 }
