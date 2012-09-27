@@ -176,6 +176,12 @@ if __name__ == "__main__":
    initdb()
 
    log("Cleaning up DB")
+   cursor.execute('DELETE FROM game_path')
+   cursor.execute('DELETE FROM game_game')
+   cursor.execute('DELETE FROM game_canvas')
+   cursor.execute('DELETE FROM game_guess')
+   cursor.execute('DELETE FROM game_game_pelaajat')
+   cursor.execute('DELETE FROM game_player')
    cursor.execute('DELETE FROM game_hostnode')
    conn.commit()
 
