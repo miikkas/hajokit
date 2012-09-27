@@ -18,19 +18,19 @@ function getGameID() {
      */
     
     var id;
-    window.console.log('Getting ID for the game.');
+    //window.console.log('Getting ID for the game.');
     $.ajax ({
         type: "GET",
         url: "games/",
         dataType: "text"
     }).done(function (response, textStatus, xhr) {
-        window.console.log(response);
+        //window.console.log(response);
         try {
             id = jQuery.parseJSON(response)[0].fields.canvas;
         } catch (e) {
             window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
         }
-        window.console.log('Got ID ' + id);
+        //window.console.log('Got ID ' + id);
         getDiff(id, 0);
     });
 }
@@ -56,10 +56,10 @@ function getDiff(id,timestamp) {
         // nothing new to draw.
         if (xhr.status == 200) {
             try {
-                window.console.log('Received the latest paths from server');
+                //window.console.log('Received the latest paths from server');
                 var jason = jQuery.parseJSON(response);
                 next_timestamp = drawDiff(jason);
-                window.console.log("timestamp:"+ next_timestamp);
+                //window.console.log("timestamp:"+ next_timestamp);
             }
             catch (e) {
                 window.console.log('Error while getting the latest paths: ' + e);
@@ -68,7 +68,7 @@ function getDiff(id,timestamp) {
         else {
             window.console.log(xhr.status + ' occurred while getting the latest paths.');
         }
-        window.console.log('Gon poll again soon.');
+        //window.console.log('Gon poll again soon.');
     });
     //getDiff();
 }
@@ -78,7 +78,7 @@ function drawDiff(json) {
      * Draw a path described in the diff on the canvas.
      */
     
-    window.console.log('Attempting to draw stuff');
+    //window.console.log('Attempting to draw stuff');
     var path = null,timestamp=0;
     var point, handleIn, handleOut;
     //console.log(json)
@@ -103,7 +103,7 @@ function drawDiff(json) {
          path.add(new Segment(point, handleIn, handleOut) );
         }
     });
-    window.console.log('Managed to draw stuff');
+    //window.console.log('Managed to draw stuff');
     view.draw();
     return timestamp;
 }
@@ -122,6 +122,6 @@ function reDraw() {
     /*
      * Redraw the canvas to show any changes.
      */
-    window.console.log('Redraw!');
+    //window.console.log('Redraw!');
     view.draw();
 }
