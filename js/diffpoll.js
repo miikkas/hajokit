@@ -15,7 +15,7 @@ $(document).ready(function () {
     //var id = getGameID();
     // Initially get all diffs, then start long polling for 
     // new diffs.
-    getDiff("1",0);
+    //getDiff("1",0);
 });
 
 function getGameID() {
@@ -32,17 +32,13 @@ function getGameID() {
     }).done(function (response, textStatus, xhr) {
         window.console.log(response);
         try {
-            var json = jQuery.parseJSON(response);
-            id = json[0].fields.canvas;
-            //window.console.log('ID is supposed to be ' + json[0].fields.canvas);
+            id = jQuery.parseJSON(response)[0].fields.canvas;
         } catch (e) {
             window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
         }
         window.console.log('Got ID ' + id);
-        return id;
+        getDiff(id, 0);
     });
-    window.console.log('Returning ID ' + id);
-    return id;
 }
 
 function getDiff(id,timestamp) {
