@@ -192,20 +192,18 @@ function getGameID() {
     $.ajax ({
         type: "GET",
         url: "games/",
-        dataType: "text"
-    }).success(function (response, textStatus, xhr) {
-        window.console.log(response);
-        try {
-            id = jQuery.parseJSON(response)[0].fields.canvas;
-            setGameID(id);
-        } catch (e) {
-            window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
-        }
-        window.console.log('Got ID ' + id);
+        dataType: "text", 
+        done: setGameID(response)
     });
 }
 
-function setGameID(id) {
-    window.console.log('hurr');
-    gameid = id;
+function setGameID(json) {
+    window.console.log(json);
+    try {
+        id = jQuery.parseJSON(json)[0].fields.canvas;
+        window.console.log('Got ID ' + id);    window.console.log('hurr');
+        gameid = id;
+    } catch (e) {
+        window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
+    }
 }
