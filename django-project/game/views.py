@@ -35,7 +35,7 @@ def refresh(request,nodename):
        return HttpResponse(serializers.serialize("json", [node], ensure_ascii=False ) )
     #create all the players we have
     for player in Player.objects.filter(pelinode=platform.node()+".local"):
-        print("Replicating player %s to node %s"%(player,nodename))
+        print("Replicating player %s to node %s body %s"%(player,nodename,request.body))
         newplayer = urllib2.urlopen("http://%s:%d%s/player/create/%s/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(player.name),player.uuid,platform.node()+".local")).read()
     for game in Game.objects.filter(pelinode=platform.node()+".local"):
         print("Replicating game %s to node %s"%(game.uuid,nodename))
@@ -43,12 +43,13 @@ def refresh(request,nodename):
     return HttpResponse(serializers.serialize("json", [node], ensure_ascii=False ) )
 
 #Replicates request to all the other nodes if needed
-def replicate(request, nodename, uuid=""):
+def replicate(request, nodename=platform.node()+".local", uuid=""):
     if nodename != platform.node()+".local":
        return
     print("Replicatin request %s"%(request.path_info))
     for node in HostNode.objects.exclude(hostname=platform.node()+".local"):
-      print("Replicating data to host %s" %(node.hostname))
+      print("Replicating data to host %s body: %s" %(node.hostname,request.body))
+      newplayer=""
       try:
         if not len(request.body):
          newplayer = urllib2.urlopen("http://%s:%d%s%s/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(request.path_info),uuid,platform.node()+".local")).read()
@@ -56,7 +57,6 @@ def replicate(request, nodename, uuid=""):
          newplayer = urllib2.urlopen("http://%s:%d%s%s" %(node.hostname,node.port,node.path,urllib.quote(request.path_info)),request.body).read()
       except urllib2.HTTPError as e:
         print("HTTPError from %s: %d body:%s" % (node.hostname,e.code,e.read()))
-        
 
 def index(request):
     """For HTTP GETting the index page of the application."""
@@ -150,6 +150,7 @@ def canvasdiff( request, canvas_id, timestamp = 0 ):
          segmentti.handleOuty = datat['handleOuty']
          canvas.path_set.add(segmentti)
      canvas.save()
+     replicate( request )
      return HttpResponse(simplejson.dumps([{"response":"ok"}]))
     else:
      polling_time=600.0 #10min
