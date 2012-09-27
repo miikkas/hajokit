@@ -194,7 +194,7 @@ function getGameID() {
         type: "GET",
         url: "games/",
         dataType: "text"
-    }).done(function (response, textStatus, xhr) {
+    }).success(function (response, textStatus, xhr) {
         window.console.log(response);
         try {
             id = jQuery.parseJSON(response)[0].fields.canvas;
@@ -202,8 +202,8 @@ function getGameID() {
             window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
         }
         window.console.log('Got ID ' + id);
-        return id;
     });
+    return id;
 }
 
 function setGameID(id) {
