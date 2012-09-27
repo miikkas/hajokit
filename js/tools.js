@@ -172,15 +172,9 @@ function sendDiff(path) {
             //url: "canvas/" + gameid + "/",
             dataType: "json", 
             data: diff
-        }).done(function (response, textStatus, xhr) {
-            if (xhr.status == 200) {
-                console.log('A path was succesfully sent.');
-            }
-            else {
-                console.log('Failed to send path.');
-            }
         }).fail(function (response, textStatus, xhr) {
-            console.log('Vituixmän polun lähetys: ' + xhr.status + ', ' + textStatus);
+            console.log('Vituixmän polun lähetys');
+            sendDiff(path);
         });
 }
 
