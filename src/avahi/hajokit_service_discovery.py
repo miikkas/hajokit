@@ -63,9 +63,7 @@ def stop(signum, frame):
     log("Pysäytetään serveri ja siivotaan")
     if group:
        group.Free()
-    log("Siivotaan tietokanta")
-    cursor.execute('DELETE FROM game_hostnode')
-    conn.commit()
+    log("Suljetaan tietokanta")
     conn.close()
     gobject.MainLoop().quit()
 
