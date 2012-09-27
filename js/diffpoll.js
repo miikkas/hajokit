@@ -34,12 +34,14 @@ function getGameID() {
         try {
             var json = jQuery.parseJSON(response);
             id = json[0].fields.canvas;
-            window.console.log('ID is supposed to be ' + json[0].fields.canvas);
+            //window.console.log('ID is supposed to be ' + json[0].fields.canvas);
         } catch (e) {
             window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
         }
+        window.console.log('Got ID ' + id);
+        return id;
     });
-    window.console.log('Got ID ' + id);
+    window.console.log('Returning ID ' + id);
     return id;
 }
 
