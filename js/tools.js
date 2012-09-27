@@ -9,7 +9,10 @@ var drawsize = 5;
 var gameid = '-1';
 
 window.onload = function() {
-    gameid = getGameID();
+    getGameID();
+};
+
+function crap(id) {
     paper.setup('drawingcanvas');
     pencil = new Tool();
     line = new Tool();
@@ -105,7 +108,7 @@ window.onload = function() {
             sendDiff(path);
         }
     };
-};
+}
 
 function changeColor(color) {
     /*
@@ -194,12 +197,12 @@ function getGameID() {
         window.console.log(response);
         try {
             id = jQuery.parseJSON(response)[0].fields.canvas;
+            crap(id);
         } catch (e) {
             window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
         }
         window.console.log('Got ID ' + id);
     });
-    return id;
 }
 
 function setGameID(id) {
