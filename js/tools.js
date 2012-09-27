@@ -206,5 +206,6 @@ function getGameID() {
 }
 
 function setGameID(id) {
+    window.console.log('hurr');
     gameid = id;
 }
