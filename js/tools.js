@@ -9,6 +9,9 @@ var drawsize = 5;
 var gameid = '-1';
 
 window.onload = function() {
+    $("#button").live("click", function(event){
+        alert(gameid);
+    });
     getGameID();
     paper.setup('drawingcanvas');
     pencil = new Tool();
@@ -194,7 +197,7 @@ function getGameID() {
         window.console.log(response);
         try {
             id = jQuery.parseJSON(response)[0].fields.canvas;
-            crap(id);
+            setGameID(id);
         } catch (e) {
             window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
         }
@@ -203,6 +206,5 @@ function getGameID() {
 }
 
 function setGameID(id) {
-    hope
     gameid = id;
 }
