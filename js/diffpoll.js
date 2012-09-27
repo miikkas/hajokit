@@ -31,10 +31,12 @@ function getGameID() {
         dataType: "text"
     }).done(function (response, textStatus, xhr) {
         window.console.log(response);
-        var json = jQuery.parseJSON(response);
-        $.each(json, function(key,valueObj){
-            window.console.log(key + ', ' + valueObj);
-        });
+        try {
+            var json = jQuery.parseJSON(response);
+            id = json[0].fields.canvas;
+        } catch (e) {
+            window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
+        }
     });
     window.console.log('Got ID ' + id);
     return id;
