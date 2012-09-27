@@ -9,6 +9,9 @@ $(document).ready(function () {
     paper.install(window);
     drawView = new View('piirtocanvas');
     paper.setup('piirtocanvas');
+    $("#button").live("click", function(event){
+        getGameID();
+    });
     //var id = getGameID();
     // Initially get all diffs, then start long polling for 
     // new diffs.
@@ -20,42 +23,21 @@ function getGameID() {
      * Get an ID for a game that will then be joined.
      */
     
-    //TO-DO: functionality
-}
-
-function getAllDiffs(id) {
-    /*
-     * Get a new path to be drawn from the server using long 
-     * polling.
-     */
-    
-    window.console.log('Getting all the paths');
-    var url = "canvas/" + id + "/";
+    var id;
+    window.console.log('Getting ID for the game.');
     $.ajax ({
         type: "GET",
-        url: url,
-        dataType: "text", 
-        complete: function(){getDiff(id);}, 
-        timeout: 10000
+        url: "games/",
+        dataType: "text"
     }).done(function (response, textStatus, xhr) {
-        // Server responds with 304 status code, if there's 
-        // nothing new to draw.
-        if (xhr.status == 200) {
-            try {
-                var jason = jQuery.parseJSON(response);
-                window.console.log('Got all the paths');
-                drawDiff(jason);
-            }
-            catch (e) {
-                window.console.log('Error while getting all the paths: ' + e);
-            }
-        }
-        else {
-            window.console.log(xhr.status + ' occurred while getting all the paths.');
-        }
-        window.console.log('Gon start polling now.');
+        window.console.log(response);
+        var json = jQuery.parseJSON(response);
+        $.each(json, function(key,valueObj){
+            id = valueObj.canvas;
+        });
     });
-    //getDiff();
+    window.console.log('Got ID ' + id);
+    return id;
 }
 
 function getDiff(id,timestamp) {
