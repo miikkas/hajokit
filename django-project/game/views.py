@@ -64,14 +64,14 @@ def index(request):
 
 def newgame(request, nodename=platform.node()+".local", game_uuid=None):
     """ Request new game to be started """
-    canvas = Canvas()
-    canvas.save()
     pelinode = HostNode.objects.get(hostname=nodename)
     if game_uuid is None:
        game_uuid = uuid.uuid4()
        print("UUID created as %s" %(game_uuid))
     else:
        print("UUID given as %s" %(game_uuid))
+    canvas = Canvas(uuid=game_uuid)
+    canvas.save()
     uus_peli = Game(canvas=canvas,pelinode=pelinode,uuid=game_uuid)
     uus_peli.save()
     replicate(request,nodename, game_uuid)
