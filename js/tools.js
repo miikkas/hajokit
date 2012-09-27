@@ -9,6 +9,7 @@ var drawsize = 5;
 var gameid = '-1';
 
 window.onload = function() {
+    getGameID();
     paper.setup('drawingcanvas');
     pencil = new Tool();
     line = new Tool();
