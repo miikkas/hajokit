@@ -33,7 +33,7 @@ function getGameID() {
         window.console.log(response);
         var json = jQuery.parseJSON(response);
         $.each(json, function(key,valueObj){
-            id = valueObj.canvas;
+            window.console.log(key + ', ' + valueObj);
         });
     });
     window.console.log('Got ID ' + id);
