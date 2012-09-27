@@ -151,8 +151,6 @@ def remove_service( interface, protocol, name, stype, domain, flags):
         pass
 
     log("Removing service:"+name)
-    cursor.execute('DELETE FROM game_hostnode where hostname = %s',(name+".local",))
-    conn.commit()
     urllib2.urlopen("http://localhost/remove/%s" %(name+".local")).read()
 
 def new_service( interface, protocol, name, stype, domain, flags):
