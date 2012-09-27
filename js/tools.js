@@ -19,7 +19,7 @@ window.onload = function() {
     circle = new Tool();
     rect = new Tool();
     eraser = new Tool();
-    var path, startingpoint, rad;
+    var path, startingpoint, rad, oldstrokecolor;
 
     //Igor, pencil!
     pencil.onMouseDown = function(event) {
@@ -95,8 +95,9 @@ window.onload = function() {
 
     //Eraser. Like pencil, but always white.
     eraser.onMouseDown = function(event) {
+        oldstrokecolor = drawcolor;
         path = new Path();
-        path.strokeColor = 'white';
+        changeColor('white');
         path.strokeWidth = drawsize;
     };
     eraser.onMouseDrag = function(event) {
@@ -107,6 +108,7 @@ window.onload = function() {
         if (path.segments.length != 0) {
             sendDiff(path);
         }
+        changeColor(oldstrokecolor);
     };
 };
 
