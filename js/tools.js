@@ -163,7 +163,7 @@ function sendDiff(path) {
     //Do something with the id.
     $.ajax ({
         type: "POST",
-        url: "canvas/1",
+        url: "canvas/1/",
         dataType: "json", 
         data: diff
     }).done(function (response, textStatus, xhr) {
