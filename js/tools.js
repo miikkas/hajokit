@@ -124,15 +124,15 @@ function changeSize(size) {
     drawsize = size;
 }
 
-function pathToObject(path) {
+function pathToObject(poth) {
     /*
      * Turn the paper.js path into a JSON object, with color 
      * and size info with all the segments that the path includes.
      */
     
-    var segObj = segmentsToObject(path.segments);
+    var segObj = segmentsToObject(poth.segments);
     var diffObj = {
-        color: path.strokeColor,
+        color: poth.strokeColor,
         size: drawsize, 
         segments: segObj
     }
