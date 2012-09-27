@@ -12,7 +12,7 @@ $(document).ready(function () {
     //var id = getGameID();
     // Initially get all diffs, then start long polling for 
     // new diffs.
-    getAllDiffs("1");
+    getDiff("1",0);
 });
 
 function getGameID() {
@@ -58,21 +58,21 @@ function getAllDiffs(id) {
     //getDiff();
 }
 
-function getDiff(id) {
+function getDiff(id,timestamp) {
     /*
      * Get a new path to be drawn from the server using long 
      * polling.
      */
     
     // Get a UNIX timestamp.
-    var timestamp = Math.round((new Date()).getTime() / 1000);
+    var next_timestamp=timestamp
     var url = "canvas/" + id + "/" + timestamp;
     $.ajax ({
         type: "GET",
         url: url,
         dataType: "text", 
-        complete: function(){getDiff(id);}, 
-        timeout: 10000
+        complete: function(){getDiff(id,next_timestamp);}, 
+        timeout: 60000
 
     }).done(function (response, textStatus, xhr) {
         // Server responds with 304 status code, if there's 
@@ -81,7 +81,8 @@ function getDiff(id) {
             try {
                 window.console.log('Received the latest paths from server');
                 var jason = jQuery.parseJSON(response);
-                drawDiff(jason);
+                next_timestamp = drawDiff(jason);
+                window.console.log("timestamp:"+ next_timestamp);
             }
             catch (e) {
                 window.console.log('Error while getting the latest paths: ' + e);
@@ -127,6 +128,7 @@ function drawDiff(json) {
     });
     window.console.log('Managed to draw stuff');
     view.draw();
+    return timestamp;
 }
 
 function JSONize(string) {
