@@ -6,6 +6,7 @@
 var pencil, line, rect, circle, eraser, fill;
 var drawcolor = 'black';
 var drawsize = 5;
+var gameid = '-1';
 
 window.onload = function() {
     paper.setup('drawingcanvas');
@@ -162,7 +163,7 @@ function sendDiff(path) {
     //Do something with the id.
     $.ajax ({
         type: "POST",
-        url: "canvas/1/",
+        url: "canvas/1",
         dataType: "json", 
         data: diff
     }).done(function (response, textStatus, xhr) {
@@ -172,5 +173,7 @@ function sendDiff(path) {
         else {
             console.log('Failed to send path.');
         }
+    }).fail(function (response, textStatus, xhr) {
+        console.log(response);
     });
 }
