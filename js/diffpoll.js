@@ -9,13 +9,7 @@ $(document).ready(function () {
     paper.install(window);
     drawView = new View('piirtocanvas');
     paper.setup('piirtocanvas');
-    $("#button").live("click", function(event){
-        getGameID();
-    });
-    //var id = getGameID();
-    // Initially get all diffs, then start long polling for 
-    // new diffs.
-    //getDiff("1",0);
+    getGameID();
 });
 
 function getGameID() {
