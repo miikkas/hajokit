@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
     var player = 'gunther';
-    $("#guessbox").keyup(function(event){
+    $("#arvaussyotto").keyup(function(event){
         if(event.keyCode == 13){
             sendGuess(player, $('#arvaussyotto').val());
 	    $('#arvaussyotto').val("");
