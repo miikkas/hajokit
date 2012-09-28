@@ -125,29 +125,33 @@ def canvasall(request):
     """For HTTP GETting the all canvas, JSON encoded."""
     return HttpResponse(serializers.serialize("json", Canvas.objects.all(), ensure_ascii=False ))
 
+@transaction.commit_on_success
+def path_import( canvas, parameters ):
+   epoch     = time.time()
+   for segment in parametrit['segments']:
+       datat = parametrit['segments'][segment]
+       segmentti = Path()
+       segmentti.ordernumber = segment
+       segmentti.epoch = epoch
+       segmentti.color = parametrit['color']
+       segmentti.size  = parametrit['size']
+       segmentti.pointx = datat['pointx']
+       segmentti.pointy = datat['pointy']
+       segmentti.handleInx = datat['handleInx']
+       segmentti.handleIny = datat['handleIny']
+       segmentti.handleOutx = datat['handleOutx']
+       segmentti.handleOuty = datat['handleOuty']
+       canvas.path_set.add(segmentti)
+   canvas.save()
+   return
+
 #Give all the paths for given canvas from timestamp onward
 @csrf_exempt
 def canvasdiff( request, canvas_id, timestamp = 0 ):
     canvas = Canvas.objects.select_related().get(pk=canvas_id)
     if request.method == "POST":
      parametrit = simplejson.loads(urllib.unquote(request.body))
-     aikaleima = datetime.datetime.utcnow().replace(tzinfo=utc)
-     epoch     = time.time()
-     for segment in parametrit['segments']:
-         datat = parametrit['segments'][segment]
-         segmentti = Path()
-         segmentti.ordernumber = segment
-         segmentti.epoch = epoch
-         segmentti.color = parametrit['color']
-         segmentti.size  = parametrit['size']
-         segmentti.pointx = datat['pointx']
-         segmentti.pointy = datat['pointy']
-         segmentti.handleInx = datat['handleInx']
-         segmentti.handleIny = datat['handleIny']
-         segmentti.handleOutx = datat['handleOutx']
-         segmentti.handleOuty = datat['handleOuty']
-         canvas.path_set.add(segmentti)
-     canvas.save()
+     path_import( canvas, parametrit )
      replicate( request )
      return HttpResponse(simplejson.dumps([{"response":"ok"}]))
     else:
