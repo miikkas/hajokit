@@ -38,6 +38,7 @@ function segmentsToObject(segments, closed) {
             handleOutx: segments[i].handleOut.x, 
             handleOuty: segments[i].handleOut.y
         };
+        console.log(segObj[i]);
         i++;
     }
     if (closed) {
@@ -49,6 +50,7 @@ function segmentsToObject(segments, closed) {
             handleOutx: segments[0].handleOut.x, 
             handleOuty: segments[0].handleOut.y
         };
+        console.log(segObj[i]);
     }
     return segObj;
 }
@@ -84,7 +86,7 @@ function sendDiff(path, color, size, closed) {
             dataType: "json", 
             data: diff
         }).fail(function (response, textStatus, xhr) {
-            console.log('Vituixmän polun lähetys');
+            console.log('Vituixmän polun lähetys: ' + response);
             //TO-DO: resend?
         });
     }
