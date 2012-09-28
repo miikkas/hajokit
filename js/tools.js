@@ -175,7 +175,7 @@ function sendDiff(path) {
             data: diff
         }).fail(function (response, textStatus, xhr) {
             console.log('Vituixmän polun lähetys');
-            sendDiff(path);
+            //sendDiff(path);
         });
 }
 
