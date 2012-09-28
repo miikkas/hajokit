@@ -27,6 +27,7 @@ function getGameID() {
         //window.console.log(response);
         try {
             id = jQuery.parseJSON(response)[0].fields.canvas;
+            jQuery.data(document.body, 'canvasid', jQuery.parseJSON(json)[0].fields.canvas);
         } catch (e) {
             window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
         }

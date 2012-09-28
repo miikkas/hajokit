@@ -75,38 +75,6 @@ function sendDiff(path) {
     });
 }
 
-function getGameID() {
-    /*
-     * Get an ID for a game that will then be joined.
-     */
-    
-    console.log('Getting ID for the game.');
-    alert('getgameid');
-    $.ajax ({
-        type: "GET",
-        url: "games/",
-        dataType: "text"
-    }).done(function (response, textStatus, xhr) {
-        setGameID(response);
-     });
-}
-
-function setGameID(json) {
-    alert('setgameid');
-    window.console.log('got game id response, parsing');
-    try {
-        jQuery.data(document.body, 'canvasid', jQuery.parseJSON(json)[0].fields.canvas);
-        window.console.log('Got ID ' + id);
-    } catch (e) {
-        window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
-    }
-}
-
-$(document).ready(function() {
-    window.console.log('getting da fuken game id');
-    getGameID();
-});
-
 window.onload = function() {
     window.console.log('window loaded');
     //alert('perkele');
