@@ -91,7 +91,7 @@ window.onload = function() {
         path = new Path();
         path.add(new Point(280, 0));
         path.add(new Point(280, 599));
-        path.strokeColor = 'white';
+        path.strokeColor = 'red';
         path.strokeWidth = 280;
         sendDiff(path, drawcolor, drawsize);
     });
