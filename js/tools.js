@@ -88,7 +88,7 @@ window.onload = function() {
 
     //Igor, pencil!
     pencil.onMouseDown = function(event) {
-        var path = new Path();
+        path = new Path();
         path.strokeColor = drawcolor;
         path.strokeWidth = drawsize;
     };
@@ -104,7 +104,7 @@ window.onload = function() {
     
     //Line
     line.onMouseDown = function(event) {
-        var path = new Path();
+        path = new Path();
         path.strokeColor = drawcolor;
         path.strokeWidth = drawsize;
         if (path.segments.length === 0) {
@@ -162,7 +162,7 @@ window.onload = function() {
 
     //Eraser. Like pencil, but always white.
     eraser.onMouseDown = function(event) {
-        var eraserpath = new Path();
+        eraserpath = new Path();
         eraserpath.strokeWidth = drawsize;
         eraserpath.strokeColor = 'white';
     };
