@@ -103,12 +103,13 @@ function setGameID(json) {
 }
 
 $(document).ready(function() {
+    window.console.log('getting da fuken game id');
     getGameID();
 });
 
 window.onload = function() {
-    window.console.log('perkele');
-    alert('perkele');
+    window.console.log('window loaded');
+    //alert('perkele');
     $("#button").live("click", function(event){
         //alert(gameid);
         alert(jQuery.data(document.body, 'canvasid'));
