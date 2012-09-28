@@ -1,0 +1,43 @@
+body {
+  background-color:#FFFFFF;
+}
+
+.piirtoalue {
+  position:absolute;
+  left:10px;
+  top:170px;
+  width:550px;
+  height:600px;
+  background-color:#FFFFFF;
+}
+
+.tyokalut {
+  position:absolute;
+  left:20px;
+  top:780px;
+  width:550px;
+  background-color:#FFFFFF;
+}
+
+.arvausalue {
+  position:absolute;
+  left:570px;
+  top:170px;
+  width:440px;
+  height:600px;
+  background-color:#b3bbcf;
+}
+
+.painikkeet {
+  position:absolute;
+  left:570px;
+  top:780px;
+  width:440px;
+  background-color:#FFFFFF;
+}
+
+h1 {
+  color:#D2691E;
+  font-size:120px;
+  font-family: 
+}
