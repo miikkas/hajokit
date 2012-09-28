@@ -40,6 +40,16 @@ function segmentsToObject(segments, closed) {
         };
     }
     console.log(segments.length);
+    if (closed) {
+        segObj[segments.length] = {
+            pointx: segments[0].point.x, 
+            pointy: segments[0].point.y, 
+            handleInx: segments[0].handleIn.x, 
+            handleIny: segments[0].handleIn.y, 
+            handleOutx: segments[0].handleOut.x, 
+            handleOuty: segments[0].handleOut.y
+        };
+    }
     return segObj;
 }
 
