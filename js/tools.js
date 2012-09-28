@@ -91,11 +91,11 @@ window.onload = function() {
 
     $('#button').live("click", function (event) {
         //context.clearRect (0, 0 , canvas.width , canvas.height);
-        path = new Path.Circle(new Point(275, 300), 301);
-        path.strokeColor = 'white';
-        path.fillColor = 'white';
-        path.strokeWidth = drawsize;
-        sendDiff(path, 'white', drawsize);
+        var blankpath = new Path.Rectangle(new Point(0, 0), new Point(550, 600));
+        blankpath.strokeColor = 'white';
+        blankpath.fillColor = 'white';
+        blankpath.strokeWidth = drawsize;
+        sendDiff(blankpath, 'white', drawsize);
     });
 
     //Igor, pencil!
