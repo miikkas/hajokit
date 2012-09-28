@@ -36,7 +36,7 @@ function drawDiff(json) {
          path.add(new Segment(point, handleIn, handleOut) );
         }
     });
-    view.draw();
+    drawView.draw();
     return timestamp;
 }
 
