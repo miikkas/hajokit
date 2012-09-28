@@ -20,6 +20,9 @@ sudo ln -s $juurihakemisto/src/avahi/hajokit-zeroconf /etc/init.d/hajokit-zeroco
 sudo update-rc.d hajokit-zeroconf defaults 99
 
 #konffataan apache
+sed -i -e "s|/home/hajokit/hajokit/django-project/draw_and_guess/wsgi.py|$juurihakemisto/django-project/draw_and_guess/wsgi.py|g" ${juurihakemisto}/apache_sites/hajokit
+sed -i -e "s|/home/hajokit/hajokit/js|$juurihakemisto/js|g" ${juurihakemisto}/apache_sites/hajokit
+sed -i -e "s|/home/hajokit/hajokit/css|$juurihakemisto/css|g" ${juurihakemisto}/apache_sites/hajokit
 sudo cp apache_sites/hajokit /etc/apache2/sites-available/
 sudo a2dissite default
 sudo a2ensite hajokit

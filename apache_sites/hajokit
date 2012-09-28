@@ -1,6 +1,6 @@
 <VirtualHost *:80>
         DocumentRoot /var/www
-	    WSGIScriptAlias / /home/hajokit/hajokit/django-project/draw_and_guess/wsgi.py
+        WSGIScriptAlias / /home/hajokit/hajokit/django-project/draw_and_guess/wsgi.py
         Alias /js /home/hajokit/hajokit/js
         Alias /css /home/hajokit/hajokit/css
         CustomLog ${APACHE_LOG_DIR}/access.log combined
