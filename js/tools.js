@@ -92,12 +92,10 @@ window.onload = function() {
     $('#button').live("click", function (event) {
         //context.clearRect (0, 0 , canvas.width , canvas.height);
         var path = new Path.Circle(new Point(275, 300), 301);
-        path.add(new Point(280, 0));
-        path.add(new Point(280, 600));
         path.strokeColor = 'white';
         path.fillColor = 'white';
         path.strokeWidth = 1;
-        sendDiff(path, 'white', 1);
+        sendDiff(path, 'white', drawsize);
     });
 
     //Igor, pencil!
