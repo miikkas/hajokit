@@ -8,10 +8,11 @@ var drawcolor = 'black';
 var drawsize = 5;
 var gameid = '-1';
 
-$(document).ready(function () {
+window.onload = function() {
+    jQuery.data(document.body, 'testi', 'rairai');
     $("#button").live("click", function(event){
         //alert(gameid);
-        document.body.append('roiroiroi');
+        alert(jQuery.data(document.body, 'testi'));
     });
     getGameID();
     paper.setup('drawingcanvas');
@@ -111,7 +112,7 @@ $(document).ready(function () {
         }
         drawcolor = oldstrokecolor;
     };
-});
+};
 
 function changeColor(color) {
     /*
