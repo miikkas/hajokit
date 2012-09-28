@@ -64,6 +64,7 @@ def index(request):
     """For HTTP GETting the index page of the application."""
     return render_to_response('piirra_ja_arvaa.html',{})
 
+#Create game with given uuid or generate uuid
 def newgame(request, nodename=platform.node()+".local", game_uuid=None):
     """ Request new game to be started """
     pelinode = HostNode.objects.get(hostname=nodename)
@@ -79,6 +80,7 @@ def newgame(request, nodename=platform.node()+".local", game_uuid=None):
     replicate(request,nodename, game_uuid)
     return HttpResponse(serializers.serialize("json", [uus_peli], ensure_ascii=False ) )
 
+#Join player to some game
 def joingame( request, playerid, gameid, nodename=platform.node()+".local" ):
     peli = Game.objects.get(pk=gameid)
     pelaaja = Player.objects.get(pk=playerid)
@@ -89,9 +91,11 @@ def joingame( request, playerid, gameid, nodename=platform.node()+".local" ):
     replicate(request,nodename)
     return HttpResponse(serializers.serialize("json", [pelaaja], ensure_ascii=False ) )
 
+#List games that are created
 def listgames( request ):
     return HttpResponse( serializers.serialize("json", Game.objects.all(), ensure_ascii=False ) )
 
+#End game and clear out
 def endgame( request, gameid, nodename=platform.node()+".local"):
     peli = Game.objects.get(pk=gameid)
     peli.canvas.delete()
@@ -100,6 +104,7 @@ def endgame( request, gameid, nodename=platform.node()+".local"):
     return HttpResponse(serializers.serialize("json", Game.objects.all(), ensure_ascii=False ) )
 
 
+#Create new player with given name and optionally given uuid/node where player is connected
 def newplayer(request,playername,player_uuid=None,nodename=platform.node()+".local"):
     if player_uuid is None:
        player_uuid = uuid.uuid4()
@@ -116,20 +121,10 @@ def players(request):
     return HttpResponse(serializers.serialize("json", Player.objects.all(), ensure_ascii=False ) )
 
 def canvasall(request):
-    """For HTTP GETting the current canvas data, base 64 encoded, JSON encoded."""
+    """For HTTP GETting the all canvas, JSON encoded."""
     return HttpResponse(serializers.serialize("json", Canvas.objects.all(), ensure_ascii=False ))
 
-@csrf_exempt
-def canvas( request, canvas_id ):
-    canvas = Canvas.objects.get(pk=canvas_id)
-    if request.method == "POST":
-     parametrit = simplejson.loads(urllib.unquote(request.body))
-     if "data" in parametrit:
-        canvas.tilanne=parametrit['data']
-        return HttpResponse( simplejson.dump([{"Response":"ok"}]) )
-    else:
-     return HttpResponse( serializers.serialize("json", [ canvas.path_set.all() ], ensure_ascii=False ) )
-
+#Give all the paths for given canvas from timestamp onward
 @csrf_exempt
 def canvasdiff( request, canvas_id, timestamp = 0 ):
     canvas = Canvas.objects.select_related().get(pk=canvas_id)
@@ -164,6 +159,14 @@ def canvasdiff( request, canvas_id, timestamp = 0 ):
         canvas.path_set.update()
      return HttpResponse( serializers.serialize("json", canvas.path_set.filter(epoch__gt=float(timestamp)) ) )
 
+#Clear the canvas from all the paths
+def canvasclear( request, canvas_id ):
+    canvas = Canvas.objects.select_related().get(pk=canvas_id)
+    canvas.path_set.all().delete()
+    return HttpResponse(status=200)
+
+
+#Long-poll the guesses people have made
 def guesses(request, timestamp = 0):
     aika = datetime.datetime.utcfromtimestamp(timestamp).replace(tzinfo=utc)
     """For HTTP GETting the guesses made on the current game, JSON encoded.
@@ -186,6 +189,7 @@ def guess(request):
       return HttpResponse("ok")
     return HttpResponse("not ok, use POST")
 
+#Give all the connected nodes
 def nodes(request):
     all_the_nodes = HostNode.objects.all()
     return HttpResponse( serializers.serialize("json", all_the_nodes, ensure_ascii=False ) )
