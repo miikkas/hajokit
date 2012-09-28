@@ -7,12 +7,110 @@ var pencil, line, rect, circle, eraser, fill;
 var drawcolor = 'black';
 var drawsize = 5;
 
+
+function changeColor(color) {
+    /*
+     * Change the color of the tool.
+     */
+    drawcolor = color;
+}
+
+function changeSize(size) {
+    /*
+     * Change the size of the tool.
+     */
+    drawsize = size;
+}
+
+function pathToObject(path) {
+    /*
+     * Turn the paper.js path into a JSON object, with color 
+     * and size info with all the segments that the path includes.
+     */
+    
+    var segObj = segmentsToObject(path.segments);
+    var diffObj = {
+        color: drawcolor,
+        size: drawsize, 
+        segments: segObj
+    };
+    return diffObj;
+}
+
+function segmentsToObject(segments) {
+    /*
+     * Turn the segments of a path into JSON objects.
+     */
+    
+    var segObj = {};
+    for (var i = 0; i < segments.length; i++) {
+        segObj[i] = {
+            pointx: segments[i].point.x, 
+            pointy: segments[i].point.y, 
+            handleInx: segments[i].handleIn.x, 
+            handleIny: segments[i].handleIn.y, 
+            handleOutx: segments[i].handleOut.x, 
+            handleOuty: segments[i].handleOut.y
+        }
+    }
+    return segObj;
+}
+
+function sendDiff(path) {
+    /*
+     * POST the path that was drawn to the server in JSON.
+     */
+    
+        var diff = JSON.stringify(pathToObject(path));
+        var url = "canvas/" + jQuery.data(document.body, 'canvasid') + "/";
+        $.ajax ({
+            type: "POST",
+            url: url,
+            //url: "canvas/" + gameid + "/",
+            dataType: "json", 
+            data: diff
+        }).fail(function (response, textStatus, xhr) {
+            console.log('Vituixmän polun lähetys');
+            //sendDiff(path);
+        });
+}
+
+function getGameID() {
+    /*
+     * Get an ID for a game that will then be joined.
+     */
+    
+    console.log('Getting ID for the game.');
+    alert('getgameid');
+    var id;
+    $.ajax ({
+        type: "GET",
+        url: "games/",
+        dataType: "text", 
+        done: setGameID(response)
+    });
+}
+
+function setGameID(json) {
+    alert('setgameid');
+    window.console.log('got game id response, parsing');
+    try {
+        jQuery.data(document.body, 'canvasid', jQuery.parseJSON(json)[0].fields.canvas);
+        window.console.log('Got ID ' + id);
+    } catch (e) {
+        window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
+    }
+}
+
+$(document).ready(function() {
+    getGameID();
+});
+
 window.onload = function() {
     $("#button").live("click", function(event){
         //alert(gameid);
         alert(jQuery.data(document.body, 'canvasid'));
     });
-    getGameID();
     paper.setup('drawingcanvas');
     pencil = new Tool();
     line = new Tool();
@@ -111,97 +209,3 @@ window.onload = function() {
         drawcolor = oldstrokecolor;
     };
 };
-
-function changeColor(color) {
-    /*
-     * Change the color of the tool.
-     */
-    drawcolor = color;
-}
-
-function changeSize(size) {
-    /*
-     * Change the size of the tool.
-     */
-    drawsize = size;
-}
-
-function pathToObject(path) {
-    /*
-     * Turn the paper.js path into a JSON object, with color 
-     * and size info with all the segments that the path includes.
-     */
-    
-    var segObj = segmentsToObject(path.segments);
-    var diffObj = {
-        color: drawcolor,
-        size: drawsize, 
-        segments: segObj
-    };
-    return diffObj;
-}
-
-function segmentsToObject(segments) {
-    /*
-     * Turn the segments of a path into JSON objects.
-     */
-    
-    var segObj = {};
-    for (var i = 0; i < segments.length; i++) {
-        segObj[i] = {
-            pointx: segments[i].point.x, 
-            pointy: segments[i].point.y, 
-            handleInx: segments[i].handleIn.x, 
-            handleIny: segments[i].handleIn.y, 
-            handleOutx: segments[i].handleOut.x, 
-            handleOuty: segments[i].handleOut.y
-        }
-    }
-    return segObj;
-}
-
-function sendDiff(path) {
-    /*
-     * POST the path that was drawn to the server in JSON.
-     */
-    
-        var diff = JSON.stringify(pathToObject(path));
-        var url = "canvas/" + jQuery.data(document.body, 'canvasid') + "/";
-        $.ajax ({
-            type: "POST",
-            url: url,
-            //url: "canvas/" + gameid + "/",
-            dataType: "json", 
-            data: diff
-        }).fail(function (response, textStatus, xhr) {
-            console.log('Vituixmän polun lähetys');
-            //sendDiff(path);
-        });
-}
-
-function getGameID() {
-    /*
-     * Get an ID for a game that will then be joined.
-     */
-    
-    console.log('Getting ID for the game.');
-    alert('getgameid');
-    var id;
-    $.ajax ({
-        type: "GET",
-        url: "games/",
-        dataType: "text", 
-        done: setGameID(response)
-    });
-}
-
-function setGameID(json) {
-    alert('setgameid');
-    window.console.log('got game id response, parsing');
-    try {
-        jQuery.data(document.body, 'canvasid', jQuery.parseJSON(json)[0].fields.canvas);
-        window.console.log('Got ID ' + id);
-    } catch (e) {
-        window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
-    }
-}
