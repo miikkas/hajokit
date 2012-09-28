@@ -87,14 +87,14 @@ window.onload = function() {
     circle = new Tool();
     rect = new Tool();
     eraser = new Tool();
-    var path, eraserpath, startingpoint, rad, oldstrokecolor;
+    var path, eraserpath, startingpoint, rad;
 
     $('#button').live("click", function (event) {
         //context.clearRect (0, 0 , canvas.width , canvas.height);
-        var path = new Path.Circle(new Point(275, 300), 301);
+        path = new Path.Circle(new Point(275, 300), 301);
         path.strokeColor = 'white';
         path.fillColor = 'white';
-        path.strokeWidth = 1;
+        path.strokeWidth = drawsize;
         sendDiff(path, 'white', drawsize);
     });
 
@@ -141,7 +141,7 @@ window.onload = function() {
     };
     circle.onMouseDrag = function(event) {
         rad = startingpoint.getDistance(event.point, false);
-        var path = new Path.Circle(startingpoint, rad);
+        path = new Path.Circle(startingpoint, rad);
         path.strokeColor = drawcolor;
         path.strokeWidth = drawsize;
         path.removeOnDrag();
@@ -160,7 +160,7 @@ window.onload = function() {
         startingpoint = event.point;
     };
     rect.onMouseDrag = function(event) {
-        var path = new Path.Rectangle(startingpoint, event.point);
+        path = new Path.Rectangle(startingpoint, event.point);
         path.strokeColor = drawcolor;
         path.strokeWidth = drawsize;
         path.removeOnDrag();
