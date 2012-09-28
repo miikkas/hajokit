@@ -5,6 +5,10 @@
  * on the client's canvas.
  */
 
+paper.install(window);
+drawView = new View('piirtocanvas');
+paper.setup('piirtocanvas');
+
 function drawDiff(json) {
     /*
      * Draw a path described in the diff on the canvas.
@@ -117,8 +121,5 @@ $(document).ready(function () {
      * When the document has loaded, set up the canvas and 
      * get the canvas id from the server.
      */
-    paper.install(window);
-    drawView = new View('piirtocanvas');
-    paper.setup('piirtocanvas');
     getGameID();
 });
