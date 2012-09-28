@@ -52,13 +52,13 @@ function getDiff(id,timestamp) {
     $.ajax ({
         type: "GET",
         url: url,
-        dataType: "text", 
-        timeout: 60000
+        dataType: "text"
     }).done(function (response, textStatus, xhr) {
         // Server responds with 304 status code, if there's 
         // nothing new to draw.
         if (xhr.status == 200) {
             try {
+                window.console.log('Got new path');
                 var jason = jQuery.parseJSON(response);
                 next_timestamp = drawDiff(jason);
                 getDiff(id,next_timestamp);
