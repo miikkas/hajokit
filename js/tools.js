@@ -84,6 +84,7 @@ function clearCanvas() {
     blankpath.fillColor = 'white';
     blankpath.strokeWidth = drawsize;
     sendDiff(blankpath, 'white', drawsize);
+    var id = jQuery.data(document.body, 'canvasid');
     $.ajax ({
         type: "POST",
         url: "canvas/" + id + "/clear"
