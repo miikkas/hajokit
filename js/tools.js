@@ -68,6 +68,7 @@ function pathToObject(pathtosend, color, size, closed) {
         size: size, 
         segments: segObj
     };
+    window.console.log(diffObj);
     return diffObj;
 }
 
