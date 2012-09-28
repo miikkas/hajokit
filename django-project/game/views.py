@@ -163,6 +163,7 @@ def canvasdiff( request, canvas_id, timestamp = 0 ):
 def canvasclear( request, canvas_id ):
     canvas = Canvas.objects.select_related().get(pk=canvas_id)
     canvas.path_set.all().delete()
+    replicate( request )
     return HttpResponse(status=200)
 
 
