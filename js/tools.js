@@ -80,6 +80,8 @@ function sendDiff(path, color, size) {
 
 window.onload = function() {
     paper.setup('drawingcanvas');
+    var canvas = document.getElementById('drawingcanvas');
+    context = canvas.getContext('2d');
     pencil = new Tool();
     line = new Tool();
     circle = new Tool();
@@ -88,12 +90,13 @@ window.onload = function() {
     var path, eraserpath, startingpoint, rad, oldstrokecolor;
 
     $('#button').live("click", function (event) {
-        path = new Path();
+        context.clearRect (0, 0 , canvas.width , canvas.height);
+        /*path = new Path();
         path.add(new Point(280, 0));
         path.add(new Point(280, 600));
         path.strokeColor = 'white';
         path.strokeWidth = 552;
-        sendDiff(path, drawcolor, drawsize);
+        sendDiff(path, drawcolor, drawsize);*/
     });
 
     //Igor, pencil!
