@@ -127,7 +127,7 @@ def canvasall(request):
 
 #Give all the paths for given canvas from timestamp onward
 @csrf_exempt
-@transaction.commit_on_success
+@transaction.commit_manually
 def canvasdiff( request, canvas_id, timestamp = 0 ):
     canvas = Canvas.objects.select_related().get(pk=canvas_id)
     if request.method == "POST":
@@ -149,6 +149,7 @@ def canvasdiff( request, canvas_id, timestamp = 0 ):
          segmentti.handleOuty = datat['handleOuty']
          canvas.path_set.add(segmentti)
      canvas.save()
+     transaction.commit()
      replicate( request )
      return HttpResponse(simplejson.dumps([{"response":"ok"}]))
     else:
