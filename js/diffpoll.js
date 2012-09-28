@@ -52,7 +52,9 @@ function getDiff(id,timestamp) {
     $.ajax ({
         type: "GET",
         url: url,
-        dataType: "text"
+        dataType: "text",
+        complete: function(){getDiff(id,next_timestamp);},
+        timeout: 60000
     }).done(function (response, textStatus, xhr) {
         // Server responds with 304 status code, if there's 
         // nothing new to draw.
@@ -61,16 +63,13 @@ function getDiff(id,timestamp) {
                 window.console.log('Got new path');
                 var jason = jQuery.parseJSON(response);
                 next_timestamp = drawDiff(jason);
-                getDiff(id,next_timestamp);
             }
             catch (e) {
                 window.console.log('Error while getting the latest paths: ' + e);
-                setTimeout('getDiff(id,next_timestamp)', 10000);
             }
         }
         else {
             window.console.log(xhr.status + ' occurred while getting the latest paths.');
-            setTimeout('getDiff(id,next_timestamp)', 10000);
         }
     });
 }
