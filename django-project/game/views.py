@@ -13,6 +13,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import simplejson
+from django.db import transaction
 
 from django.utils.timezone import utc
 
@@ -126,6 +127,7 @@ def canvasall(request):
 
 #Give all the paths for given canvas from timestamp onward
 @csrf_exempt
+@transaction.commit_on_success
 def canvasdiff( request, canvas_id, timestamp = 0 ):
     canvas = Canvas.objects.select_related().get(pk=canvas_id)
     if request.method == "POST":
