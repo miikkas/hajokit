@@ -5,7 +5,7 @@ body {
 .piirtoalue {
   position:absolute;
   left:10px;
-  top:60px;
+  top:170px;
   width:550px;
   height:600px;
   background-color:#FFFFFF;
@@ -14,7 +14,7 @@ body {
 .tyokalut {
   position:absolute;
   left:20px;
-  top:700px;
+  top:780px;
   width:550px;
   background-color:#FFFFFF;
 }
@@ -22,7 +22,7 @@ body {
 .arvausalue {
   position:absolute;
   left:570px;
-  top:60px;
+  top:170px;
   width:440px;
   height:600px;
   background-color:#b3bbcf;
@@ -31,7 +31,7 @@ body {
 .painikkeet {
   position:absolute;
   left:570px;
-  top:700px;
+  top:780px;
   width:440px;
   background-color:#FFFFFF;
 }
