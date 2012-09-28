@@ -167,6 +167,7 @@ def canvasdiff( request, canvas_id, timestamp = 0 ):
      return HttpResponse( serializers.serialize("json", canvas.path_set.filter(epoch__gt=float(timestamp)) ) )
 
 #Clear the canvas from all the paths
+@transaction.commit_on_success
 def canvasclear( request, canvas_id ):
     canvas = Canvas.objects.select_related().get(pk=canvas_id)
     canvas.path_set.all().delete()
