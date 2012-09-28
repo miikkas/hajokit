@@ -39,6 +39,7 @@ function segmentsToObject(segments, closed) {
             handleOuty: segments[i].handleOut.y
         };
         window.console.log(segObj[i]);
+        window.console.log('kikki hiiri');
         i++;
     }
     if (closed) {
