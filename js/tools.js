@@ -61,18 +61,18 @@ function sendDiff(path) {
      * POST the path that was drawn to the server in JSON.
      */
     
-        var diff = JSON.stringify(pathToObject(path));
-        var url = "canvas/" + jQuery.data(document.body, 'canvasid') + "/";
-        $.ajax ({
-            type: "POST",
-            url: url,
-            //url: "canvas/" + gameid + "/",
-            dataType: "json", 
-            data: diff
-        }).fail(function (response, textStatus, xhr) {
-            console.log('Vituixmän polun lähetys');
-            //sendDiff(path);
-        });
+    var diff = JSON.stringify(pathToObject(path));
+    var url = "canvas/" + jQuery.data(document.body, 'canvasid') + "/";
+    $.ajax ({
+        type: "POST",
+        url: url,
+        //url: "canvas/" + gameid + "/",
+        dataType: "json", 
+        data: diff
+    }).fail(function (response, textStatus, xhr) {
+        console.log('Vituixmän polun lähetys');
+        //sendDiff(path);
+    });
 }
 
 function getGameID() {
@@ -85,8 +85,8 @@ function getGameID() {
     $.ajax ({
         type: "GET",
         url: "games/",
-        dataType: "text", 
-        done(function (response, textStatus, xhr) {
+        dataType: "text"
+    }).done(function (response, textStatus, xhr) {
             setGameID(response);
          });
     });
