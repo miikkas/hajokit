@@ -29,7 +29,7 @@ function segmentsToObject(segments, closed) {
     
     var segObj = {};
     var i;
-    while (i < segments.length) {
+    for (i = 0; i < segments.length; i++) {
         segObj[i] = {
             pointx: segments[i].point.x, 
             pointy: segments[i].point.y, 
@@ -38,21 +38,8 @@ function segmentsToObject(segments, closed) {
             handleOutx: segments[i].handleOut.x, 
             handleOuty: segments[i].handleOut.y
         };
-        window.console.log(segObj[i]);
-        window.console.log('kikki hiiri');
-        i++;
     }
-    if (closed) {
-        segObj[i] = {
-            pointx: segments[0].point.x, 
-            pointy: segments[0].point.y, 
-            handleInx: segments[0].handleIn.x, 
-            handleIny: segments[0].handleIn.y, 
-            handleOutx: segments[0].handleOut.x, 
-            handleOuty: segments[0].handleOut.y
-        };
-        window.console.log(segObj[i]);
-    }
+    console.log(segments.length);
     return segObj;
 }
 
@@ -68,7 +55,6 @@ function pathToObject(pathtosend, color, size, closed) {
         size: size, 
         segments: segObj
     };
-    window.console.log(diffObj);
     return diffObj;
 }
 
@@ -88,7 +74,7 @@ function sendDiff(path, color, size, closed) {
             dataType: "json", 
             data: diff
         }).fail(function (response, textStatus, xhr) {
-            console.log('Vituixmän polun lähetys: ' + response);
+            console.log('Vituixmän polun lähetys');
             //TO-DO: resend?
         });
     }
