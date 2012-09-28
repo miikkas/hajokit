@@ -11,7 +11,7 @@ var gameid = '-1';
 $(document).ready(function () {
     $("#button").live("click", function(event){
         //alert(gameid);
-        $('body').append('roiroiroi');
+        document.body.append('roiroiroi');
     });
     getGameID();
     paper.setup('drawingcanvas');
