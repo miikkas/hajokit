@@ -59,7 +59,8 @@ function pathToObject(pathtosend, color, size) {
 
 function sendDiff(path, color, size) {
     /*
-     * POST the path that was drawn to the server in JSON.
+     * POST the path that was drawn to the server in JSON. Include
+     * tool color and size.
      */
     
     var id = jQuery.data(document.body, 'canvasid');
