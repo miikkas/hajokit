@@ -135,6 +135,7 @@ window.onload = function() {
         path.removeOnDrag();
     };
     circle.onMouseUp = function(event) {
+        //No point in sending zero-size circles.
         if (rad > 0) {
             sendDiff(path);
         }
@@ -153,6 +154,7 @@ window.onload = function() {
         path.removeOnDrag();
     };
     rect.onMouseUp = function(event) {
+        //No point in sending zero-size rects.
         if (startingpoint.getDistance(event.point, false) > 0) {
             sendDiff(path);
         }
@@ -160,10 +162,9 @@ window.onload = function() {
 
     //Eraser. Like pencil, but always white.
     eraser.onMouseDown = function(event) {
-        oldstrokecolor = drawcolor;
         path = new Path();
-        changeColor('white');
         path.strokeWidth = drawsize;
+        path.strokeColor = 'white';
     };
     eraser.onMouseDrag = function(event) {
         path.add(event.point);
