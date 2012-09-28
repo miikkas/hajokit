@@ -86,7 +86,7 @@ function clearCanvas() {
     sendDiff(blankpath, 'white', drawsize);
     var id = jQuery.data(document.body, 'canvasid');
     $.ajax ({
-        type: "POST",
+        type: "GET",
         url: "canvas/" + id + "/clear"
     }).fail(function (response, textStatus, xhr) {
         console.log('Failed to notify server about clearing.');
