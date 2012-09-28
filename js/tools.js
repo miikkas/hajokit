@@ -78,6 +78,21 @@ function sendDiff(path, color, size) {
     }
 }
 
+function clearCanvas() {
+    var blankpath = new Path.Rectangle(new Point(0, 0), new Point(550, 600));
+    blankpath.strokeColor = 'white';
+    blankpath.fillColor = 'white';
+    blankpath.strokeWidth = drawsize;
+    sendDiff(blankpath, 'white', drawsize);
+    $.ajax ({
+        type: "POST",
+        url: "canvas/" + id + "/clear"
+    }).fail(function (response, textStatus, xhr) {
+        console.log('Failed to notify server about clearing.');
+        //TO-DO: resend?
+    });
+}
+
 window.onload = function() {
     paper.setup('drawingcanvas');
     //var canvas = document.getElementById('drawingcanvas');
@@ -91,11 +106,7 @@ window.onload = function() {
 
     $('#button').live("click", function (event) {
         //context.clearRect (0, 0 , canvas.width , canvas.height);
-        var blankpath = new Path.Rectangle(new Point(0, 0), new Point(550, 600));
-        blankpath.strokeColor = 'white';
-        blankpath.fillColor = 'white';
-        blankpath.strokeWidth = drawsize;
-        sendDiff(blankpath, 'white', drawsize);
+        clearCanvas();
     });
 
     //Igor, pencil!
