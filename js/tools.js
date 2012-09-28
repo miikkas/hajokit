@@ -87,6 +87,15 @@ window.onload = function() {
     eraser = new Tool();
     var path, eraserpath, startingpoint, rad, oldstrokecolor;
 
+    $('#button').live("click", function (event) {
+        path = new Path();
+        path.add(new Point(280, 0));
+        path.add(new Point(280, 599));
+        path.strokeColor = 'white';
+        path.strokeWidth = 280;
+        sendDiff(path, drawcolor, drawsize);
+    });
+
     //Igor, pencil!
     pencil.onMouseDown = function(event) {
         path = new Path();
