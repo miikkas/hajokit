@@ -63,6 +63,7 @@ function sendDiff(path, color, size) {
      * tool color and size.
      */
     
+    console.log(path);
     var id = jQuery.data(document.body, 'canvasid');
     if (typeof(id) != 'undefined') {
         var diff = JSON.stringify(pathToObject(path, color, size));
