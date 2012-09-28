@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * Paper.js v0.22
  *
  * This file is part of Paper.js, a JavaScript Vector Graphics Library,
