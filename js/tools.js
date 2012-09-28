@@ -48,7 +48,7 @@ function segmentsToObject(segments, closed) {
             handleIny: segments[0].handleIn.y, 
             handleOutx: segments[0].handleOut.x, 
             handleOuty: segments[0].handleOut.y
-        }
+        };
     }
     return segObj;
 }
