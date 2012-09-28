@@ -157,6 +157,8 @@ def canvasdiff( request, canvas_id, timestamp = 0 ):
         if polling_time <= 0.0:
            return HttpResponse(status=304)
         canvas.path_set.update()
+     time.sleep(0.05)
+     canvas.path_set.update()
      return HttpResponse( serializers.serialize("json", canvas.path_set.filter(epoch__gt=float(timestamp)) ) )
 
 #Clear the canvas from all the paths
