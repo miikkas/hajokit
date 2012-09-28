@@ -38,7 +38,7 @@ function segmentsToObject(segments, closed) {
             handleOutx: segments[i].handleOut.x, 
             handleOuty: segments[i].handleOut.y
         };
-        console.log(segObj[i]);
+        window.console.log(segObj[i]);
         i++;
     }
     if (closed) {
@@ -50,7 +50,7 @@ function segmentsToObject(segments, closed) {
             handleOutx: segments[0].handleOut.x, 
             handleOuty: segments[0].handleOut.y
         };
-        console.log(segObj[i]);
+        window.console.log(segObj[i]);
     }
     return segObj;
 }
