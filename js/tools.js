@@ -82,12 +82,13 @@ function getGameID() {
     
     console.log('Getting ID for the game.');
     alert('getgameid');
-    var id;
     $.ajax ({
         type: "GET",
         url: "games/",
         dataType: "text", 
-        done: setGameID(response)
+        done(function (response, textStatus, xhr) {
+            setGameID(response);
+         });
     });
 }
 
@@ -107,6 +108,8 @@ $(document).ready(function() {
 });
 
 window.onload = function() {
+    window.console.log('perkele');
+    alert('perkele');
     $("#button").live("click", function(event){
         //alert(gameid);
         alert(jQuery.data(document.body, 'canvasid'));
