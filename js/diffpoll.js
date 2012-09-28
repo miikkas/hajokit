@@ -5,74 +5,6 @@
  * on the client's canvas.
  */
 
-$(document).ready(function () {
-    /*
-     * When the document has loaded, set up the canvas and 
-     * get the canvas id from the server.
-     */
-    paper.install(window);
-    drawView = new View('piirtocanvas');
-    paper.setup('piirtocanvas');
-    getGameID();
-});
-
-function getGameID() {
-    /*
-     * Get an ID for a game that will then be joined.
-     */
-    
-    var id;
-    //window.console.log('Getting ID for the game.');
-    $.ajax ({
-        type: "GET",
-        url: "games/",
-        dataType: "text"
-    }).done(function (response, textStatus, xhr) {
-        try {
-            id = jQuery.parseJSON(response)[0].fields.canvas;
-            //Store the canvas id so that it can be used elsewhere.
-            jQuery.data(document.body, 'canvasid', id);
-        } catch (e) {
-            window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game: ' + e);
-        }
-        getDiff(id, 0);
-    });
-}
-
-function getDiff(id,timestamp) {
-    /*
-     * Get a new path to be drawn from the server using long 
-     * polling.
-     */
-    
-    // Get a UNIX timestamp.
-    var next_timestamp=timestamp
-    var url = "canvas/" + id + "/" + timestamp;
-    $.ajax ({
-        type: "GET",
-        url: url,
-        dataType: "text", 
-        complete: function(){getDiff(id,next_timestamp);}, 
-        timeout: 60000
-
-    }).done(function (response, textStatus, xhr) {
-        // Server responds with 304 status code, if there's 
-        // nothing new to draw.
-        if (xhr.status == 200) {
-            try {
-                var jason = jQuery.parseJSON(response);
-                next_timestamp = drawDiff(jason);
-            }
-            catch (e) {
-                window.console.log('Error while getting the latest paths: ' + e);
-            }
-        }
-        else {
-            window.console.log(xhr.status + ' occurred while getting the latest paths.');
-        }
-    });
-}
-
 function drawDiff(json) {
     /*
      * Draw a path described in the diff on the canvas.
@@ -104,6 +36,63 @@ function drawDiff(json) {
     return timestamp;
 }
 
+function getDiff(id,timestamp) {
+    /*
+     * Get a new path to be drawn from the server using long 
+     * polling.
+     */
+    
+    // Get a UNIX timestamp.
+    var next_timestamp=timestamp;
+    var url = "canvas/" + id + "/" + timestamp;
+    $.ajax ({
+        type: "GET",
+        url: url,
+        dataType: "text", 
+        complete: function(){getDiff(id,next_timestamp);}, 
+        timeout: 60000
+
+    }).done(function (response, textStatus, xhr) {
+        // Server responds with 304 status code, if there's 
+        // nothing new to draw.
+        if (xhr.status == 200) {
+            try {
+                var jason = jQuery.parseJSON(response);
+                next_timestamp = drawDiff(jason);
+            }
+            catch (e) {
+                window.console.log('Error while getting the latest paths: ' + e);
+            }
+        }
+        else {
+            window.console.log(xhr.status + ' occurred while getting the latest paths.');
+        }
+    });
+}
+
+function getGameID() {
+    /*
+     * Get an ID for a game that will then be joined.
+     */
+    
+    var id;
+    //window.console.log('Getting ID for the game.');
+    $.ajax ({
+        type: "GET",
+        url: "games/",
+        dataType: "text"
+    }).done(function (response, textStatus, xhr) {
+        try {
+            id = jQuery.parseJSON(response)[0].fields.canvas;
+            //Store the canvas id so that it can be used elsewhere.
+            jQuery.data(document.body, 'canvasid', id);
+        } catch (e) {
+            window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game: ' + e);
+        }
+        getDiff(id, 0);
+    });
+}
+
 function JSONize(string) {
     /*
      * Because JQuery seems really picky nowadays, do some 
@@ -120,3 +109,14 @@ function reDraw() {
      */
     view.draw();
 }
+
+$(document).ready(function () {
+    /*
+     * When the document has loaded, set up the canvas and 
+     * get the canvas id from the server.
+     */
+    paper.install(window);
+    drawView = new View('piirtocanvas');
+    paper.setup('piirtocanvas');
+    getGameID();
+});

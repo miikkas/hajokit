@@ -22,6 +22,26 @@ function changeSize(size) {
     drawsize = size;
 }
 
+function segmentsToObject(segments) {
+    /*
+     * Turn the segments of a path into JSON objects.
+     */
+    
+    var segObj = {};
+    var i;
+    for (i = 0; i < segments.length; i++) {
+        segObj[i] = {
+            pointx: segments[i].point.x, 
+            pointy: segments[i].point.y, 
+            handleInx: segments[i].handleIn.x, 
+            handleIny: segments[i].handleIn.y, 
+            handleOutx: segments[i].handleOut.x, 
+            handleOuty: segments[i].handleOut.y
+        };
+    }
+    return segObj;
+}
+
 function pathToObject(path) {
     /*
      * Turn the paper.js path into a JSON object, with color 
@@ -35,25 +55,6 @@ function pathToObject(path) {
         segments: segObj
     };
     return diffObj;
-}
-
-function segmentsToObject(segments) {
-    /*
-     * Turn the segments of a path into JSON objects.
-     */
-    
-    var segObj = {};
-    for (var i = 0; i < segments.length; i++) {
-        segObj[i] = {
-            pointx: segments[i].point.x, 
-            pointy: segments[i].point.y, 
-            handleInx: segments[i].handleIn.x, 
-            handleIny: segments[i].handleIn.y, 
-            handleOutx: segments[i].handleOut.x, 
-            handleOuty: segments[i].handleOut.y
-        }
-    }
-    return segObj;
 }
 
 function sendDiff(path) {
