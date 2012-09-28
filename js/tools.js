@@ -29,7 +29,7 @@ function segmentsToObject(segments, closed) {
     
     var segObj = {};
     var i;
-    for (i = 0; i < segments.length; i++) {
+    while (i < segments.length) {
         segObj[i] = {
             pointx: segments[i].point.x, 
             pointy: segments[i].point.y, 
@@ -38,9 +38,10 @@ function segmentsToObject(segments, closed) {
             handleOutx: segments[i].handleOut.x, 
             handleOuty: segments[i].handleOut.y
         };
+        i++;
     }
     if (closed) {
-        segObj[segObj.length] = {
+        segObj[i] = {
             pointx: segments[0].point.x, 
             pointy: segments[0].point.y, 
             handleInx: segments[0].handleIn.x, 
