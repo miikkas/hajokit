@@ -22,7 +22,7 @@ function changeSize(size) {
     drawsize = size;
 }
 
-function segmentsToObject(segments) {
+function segmentsToObject(segments, closed) {
     /*
      * Turn the segments of a path into JSON objects.
      */
@@ -39,16 +39,26 @@ function segmentsToObject(segments) {
             handleOuty: segments[i].handleOut.y
         };
     }
+    if (closed) {
+        segObj[segObj.length] = {
+            pointx: segments[0].point.x, 
+            pointy: segments[0].point.y, 
+            handleInx: segments[0].handleIn.x, 
+            handleIny: segments[0].handleIn.y, 
+            handleOutx: segments[0].handleOut.x, 
+            handleOuty: segments[0].handleOut.y
+        }
+    }
     return segObj;
 }
 
-function pathToObject(pathtosend, color, size) {
+function pathToObject(pathtosend, color, size, closed) {
     /*
      * Turn the paper.js path into a JSON object, with color 
      * and size info with all the segments that the path includes.
      */
     
-    var segObj = segmentsToObject(pathtosend.segments);
+    var segObj = segmentsToObject(pathtosend.segments, closed);
     var diffObj = {
         color: color,
         size: size, 
@@ -57,7 +67,7 @@ function pathToObject(pathtosend, color, size) {
     return diffObj;
 }
 
-function sendDiff(path, color, size) {
+function sendDiff(path, color, size, closed) {
     /*
      * POST the path that was drawn to the server in JSON. Include
      * tool color and size.
@@ -66,7 +76,7 @@ function sendDiff(path, color, size) {
     console.log(path);
     var id = jQuery.data(document.body, 'canvasid');
     if (typeof(id) != 'undefined') {
-        var diff = JSON.stringify(pathToObject(path, color, size));
+        var diff = JSON.stringify(pathToObject(path, color, size, closed));
         $.ajax ({
             type: "POST",
             url: "canvas/" + id + "/",
@@ -123,7 +133,7 @@ window.onload = function() {
     pencil.onMouseUp = function(event) {
         path.simplify();
         if (path.segments.length !== 0) {
-            sendDiff(path, drawcolor, drawsize);
+            sendDiff(path, drawcolor, drawsize, false);
         }
     };
     
@@ -144,7 +154,7 @@ window.onload = function() {
     line.onMouseUp = function(event) {
         path.add(event.point);
         if (startingpoint.getDistance(event.point, false) > 0) {
-            sendDiff(path, drawcolor, drawsize);
+            sendDiff(path, drawcolor, drawsize, false);
         }
     };
 
@@ -162,7 +172,7 @@ window.onload = function() {
     circle.onMouseUp = function(event) {
         //No point in sending zero-size circles.
         if (rad > 0) {
-            sendDiff(path, drawcolor, drawsize);
+            sendDiff(path, drawcolor, drawsize, true);
         }
         rad = 0;
     };
@@ -181,7 +191,7 @@ window.onload = function() {
     rect.onMouseUp = function(event) {
         //No point in sending zero-size rects.
         if (startingpoint.getDistance(event.point, false) > 0) {
-            sendDiff(path, drawcolor, drawsize);
+            sendDiff(path, drawcolor, drawsize, true);
         }
     };
 
@@ -197,7 +207,7 @@ window.onload = function() {
     eraser.onMouseUp = function(event) {
         eraserpath.simplify();
         if (eraserpath.segments.length !== 0) {
-            sendDiff(path, 'white', drawsize);
+            sendDiff(path, 'white', drawsize, false);
         }
         drawcolor = oldstrokecolor;
     };
