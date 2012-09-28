@@ -6,13 +6,11 @@
 var pencil, line, rect, circle, eraser, fill;
 var drawcolor = 'black';
 var drawsize = 5;
-var gameid = '-1';
 
 window.onload = function() {
-    jQuery.data(document.body, 'testi', 'rairai');
     $("#button").live("click", function(event){
         //alert(gameid);
-        alert(jQuery.data(document.body, 'testi'));
+        alert(jQuery.data(document.body, 'canvasid'));
     });
     getGameID();
     paper.setup('drawingcanvas');
@@ -168,9 +166,10 @@ function sendDiff(path) {
      */
     
         var diff = JSON.stringify(pathToObject(path));
+        var url = "canvas/" + jQuery.data(document.body, 'canvasid') + "/";
         $.ajax ({
             type: "POST",
-            url: "canvas/1/",
+            url: url,
             //url: "canvas/" + gameid + "/",
             dataType: "json", 
             data: diff
@@ -198,9 +197,8 @@ function getGameID() {
 function setGameID(json) {
     window.console.log(json);
     try {
-        id = jQuery.parseJSON(json)[0].fields.canvas;
+        jQuery.data(document.body, 'canvasid', jQuery.parseJSON(json)[0].fields.canvas);
         window.console.log('Got ID ' + id);    window.console.log('hurr');
-        gameid = id;
     } catch (e) {
         window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
     }
