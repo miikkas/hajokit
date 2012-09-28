@@ -42,7 +42,7 @@ function segmentsToObject(segments) {
     return segObj;
 }
 
-function pathToObject(pathtosend) {
+function pathToObject(pathtosend, color, size) {
     /*
      * Turn the paper.js path into a JSON object, with color 
      * and size info with all the segments that the path includes.
@@ -50,21 +50,21 @@ function pathToObject(pathtosend) {
     
     var segObj = segmentsToObject(pathtosend.segments);
     var diffObj = {
-        color: pathtosend.strokeColor,
-        size: pathtosend.strokeWidth, 
+        color: color,
+        size: size, 
         segments: segObj
     };
     return diffObj;
 }
 
-function sendDiff(path) {
+function sendDiff(path, color, size) {
     /*
      * POST the path that was drawn to the server in JSON.
      */
     
     var id = jQuery.data(document.body, 'canvasid');
     if (typeof(id) != 'undefined') {
-        var diff = JSON.stringify(pathToObject(path));
+        var diff = JSON.stringify(pathToObject(path, color, size));
         $.ajax ({
             type: "POST",
             url: "canvas/" + id + "/",
@@ -98,7 +98,7 @@ window.onload = function() {
     pencil.onMouseUp = function(event) {
         path.simplify();
         if (path.segments.length !== 0) {
-            sendDiff(path);
+            sendDiff(path, drawcolor, drawsize);
         }
     };
     
@@ -119,7 +119,7 @@ window.onload = function() {
     line.onMouseUp = function(event) {
         path.add(event.point);
         if (startingpoint.getDistance(event.point, false) > 0) {
-            sendDiff(path);
+            sendDiff(path, drawcolor, drawsize);
         }
     };
 
@@ -137,7 +137,7 @@ window.onload = function() {
     circle.onMouseUp = function(event) {
         //No point in sending zero-size circles.
         if (rad > 0) {
-            sendDiff(path);
+            sendDiff(path, drawcolor, drawsize);
         }
         rad = 0;
     };
@@ -156,7 +156,7 @@ window.onload = function() {
     rect.onMouseUp = function(event) {
         //No point in sending zero-size rects.
         if (startingpoint.getDistance(event.point, false) > 0) {
-            sendDiff(path);
+            sendDiff(path, drawcolor, drawsize);
         }
     };
 
@@ -172,7 +172,7 @@ window.onload = function() {
     eraser.onMouseUp = function(event) {
         eraserpath.simplify();
         if (eraserpath.segments.length !== 0) {
-            sendDiff(eraserpath);
+            sendDiff(path, 'white', drawsize);
         }
         drawcolor = oldstrokecolor;
     };
