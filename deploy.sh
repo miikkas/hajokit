@@ -14,6 +14,12 @@ sudo pip install django
 #konffataan settings kohdilleen
 sed -i -e "s|/home/mdf/projects/hajokit|$juurihakemisto|g" ${juurihakemisto}/django-project/draw_and_guess/settings.py
 
+#konffataan init.d-skripta kohdilleen
+sed -i -e "s|/home/mdf/hajarit/hajokit/src/avahi|$juurihakemisto/src/avahi|g" ${juurihakemisto}/src/avahi/hajokit-zeroconf
+sudo ln -s $juurihakemisto/src/avahi/hajokit-zeroconf /etc/init.d/hajokit-zeroconf
+sudo update-rc.d hajokit-zeroconf defaults 99
+
+#konffataan apache
 sudo cp apache_sites/hajokit /etc/apache2/sites-available/
 sudo a2dissite default
 sudo a2ensite hajokit

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#-*- encoding:utf-8 -*-
+# -*- coding: utf-8 -*-
 #
 # Hajokit ryhmän DNS-pohjainen service discovery
 #  daemoni. Hyödyntää Avahi-kirjastoa ja mdns kyselyitä
