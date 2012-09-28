@@ -32,7 +32,7 @@ window.onload = function() {
     };
     pencil.onMouseUp = function(event) {
         path.simplify();
-        if (path.segments.length != 0) {
+        if (path.segments.length !== 0) {
             sendDiff(path);
         }
     };
@@ -105,7 +105,7 @@ window.onload = function() {
     };
     eraser.onMouseUp = function(event) {
         path.simplify();
-        if (path.segments.length != 0) {
+        if (path.segments.length !== 0) {
             sendDiff(path);
         }
         drawcolor = oldstrokecolor;
@@ -137,7 +137,7 @@ function pathToObject(path) {
         color: drawcolor,
         size: drawsize, 
         segments: segObj
-    }
+    };
     return diffObj;
 }
 
@@ -184,7 +184,7 @@ function getGameID() {
      * Get an ID for a game that will then be joined.
      */
     
-    window.console.log('Getting ID for the game.');
+    console.log('Getting ID for the game.');
     var id;
     $.ajax ({
         type: "GET",
@@ -195,10 +195,10 @@ function getGameID() {
 }
 
 function setGameID(json) {
-    window.console.log(json);
+    window.console.log('got game id response, parsing');
     try {
         jQuery.data(document.body, 'canvasid', jQuery.parseJSON(json)[0].fields.canvas);
-        window.console.log('Got ID ' + id);    window.console.log('hurr');
+        window.console.log('Got ID ' + id);
     } catch (e) {
         window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game.');
     }
