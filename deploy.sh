@@ -5,11 +5,13 @@
 juurihakemisto=$( cd "$( dirname "$0" )" && pwd )
 #Eli nyt ollaan projektin juuressa, sekä tiedetään missä projektin juuri on
 
-sudo apt-get install --install-suggests -u python-pip libapache2-mod-wsgi python-avahi python-dbus python-prctl python-mysqldb mysql-server
+sudo apt-get install --install-suggests -u libapache2-mod-wsgi python-avahi python-dbus python-prctl python-mysqldb mysql-server
+# python-pip
 
 #Asennetaan django 1.4.1 #FIXME
 sudo apt-get remove python-django
-sudo pip install django
+#sudo pip install django
+sudo easy_install https://www.djangoproject.com/download/1.4.1/tarball/
 
 #konffataan settings kohdilleen
 sed -i -e "s|/home/mdf/projects/hajokit|$juurihakemisto|g" ${juurihakemisto}/django-project/draw_and_guess/settings.py
