@@ -87,9 +87,8 @@ function getGameID() {
         url: "games/",
         dataType: "text"
     }).done(function (response, textStatus, xhr) {
-            setGameID(response);
-         });
-    });
+        setGameID(response);
+     });
 }
 
 function setGameID(json) {
