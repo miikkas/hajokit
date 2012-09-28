@@ -126,9 +126,9 @@ def canvasall(request):
     return HttpResponse(serializers.serialize("json", Canvas.objects.all(), ensure_ascii=False ))
 
 @transaction.commit_on_success
-def path_import( canvas, parameters ):
-   epoch     = time.time()
-   for segment in parametrit['segments']:
+def path_import( canvas, parametrit ):
+    epoch = time.time()
+    for segment in parametrit['segments']:
        datat = parametrit['segments'][segment]
        segmentti = Path()
        segmentti.ordernumber = segment
@@ -142,8 +142,8 @@ def path_import( canvas, parameters ):
        segmentti.handleOutx = datat['handleOutx']
        segmentti.handleOuty = datat['handleOuty']
        canvas.path_set.add(segmentti)
-   canvas.save()
-   return
+    canvas.save()
+    return
 
 #Give all the paths for given canvas from timestamp onward
 @csrf_exempt
