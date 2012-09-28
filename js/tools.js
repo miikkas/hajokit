@@ -10,7 +10,8 @@ var gameid = '-1';
 
 window.onload = function() {
     $("#button").live("click", function(event){
-        alert(gameid);
+        //alert(gameid);
+        $('body').append('roiroiroi');
     });
     getGameID();
     paper.setup('drawingcanvas');
