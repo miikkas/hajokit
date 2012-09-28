@@ -61,27 +61,22 @@ function sendDiff(path) {
      * POST the path that was drawn to the server in JSON.
      */
     
-    var diff = JSON.stringify(pathToObject(path));
-    var url = "canvas/" + jQuery.data(document.body, 'canvasid') + "/";
-    $.ajax ({
-        type: "POST",
-        url: url,
-        //url: "canvas/" + gameid + "/",
-        dataType: "json", 
-        data: diff
-    }).fail(function (response, textStatus, xhr) {
-        console.log('Vituixmän polun lähetys');
-        //sendDiff(path);
-    });
+    var id = jQuery.data(document.body, 'canvasid');
+    if (typeof(id) != 'undefined') {
+        var diff = JSON.stringify(pathToObject(path));
+        $.ajax ({
+            type: "POST",
+            url: "canvas/" + id + "/",
+            dataType: "json", 
+            data: diff
+        }).fail(function (response, textStatus, xhr) {
+            console.log('Vituixmän polun lähetys');
+            //TO-DO: resend?
+        });
+    }
 }
 
 window.onload = function() {
-    window.console.log('window loaded');
-    //alert('perkele');
-    $("#button").live("click", function(event){
-        //alert(gameid);
-        alert(jQuery.data(document.body, 'canvasid'));
-    });
     paper.setup('drawingcanvas');
     pencil = new Tool();
     line = new Tool();
@@ -93,8 +88,8 @@ window.onload = function() {
     //Igor, pencil!
     pencil.onMouseDown = function(event) {
         path = new Path();
-        //path.strokeColor = drawcolor;
-        //path.strokeWidth = drawsize;
+        path.strokeColor = drawcolor;
+        path.strokeWidth = drawsize;
     };
     pencil.onMouseDrag = function(event) {
         path.add(event.point);
@@ -109,8 +104,8 @@ window.onload = function() {
     //Line
     line.onMouseDown = function(event) {
         path = new Path();
-        //path.strokeColor = drawcolor;
-        //path.strokeWidth = drawsize;
+        path.strokeColor = drawcolor;
+        path.strokeWidth = drawsize;
         if (path.segments.length === 0) {
             path.add(event.point);
         }
@@ -134,8 +129,8 @@ window.onload = function() {
     circle.onMouseDrag = function(event) {
         rad = startingpoint.getDistance(event.point, false);
         path = new Path.Circle(startingpoint, rad);
-        //path.strokeColor = drawcolor;
-        //path.strokeWidth = drawsize;
+        path.strokeColor = drawcolor;
+        path.strokeWidth = drawsize;
         path.removeOnDrag();
     };
     circle.onMouseUp = function(event) {
@@ -152,8 +147,8 @@ window.onload = function() {
     };
     rect.onMouseDrag = function(event) {
         path = new Path.Rectangle(startingpoint, event.point);
-        //path.strokeColor = drawcolor;
-        //path.strokeWidth = drawsize;
+        path.strokeColor = drawcolor;
+        path.strokeWidth = drawsize;
         path.removeOnDrag();
     };
     rect.onMouseUp = function(event) {
@@ -166,8 +161,8 @@ window.onload = function() {
     eraser.onMouseDown = function(event) {
         oldstrokecolor = drawcolor;
         path = new Path();
-        //changeColor('white');
-        //path.strokeWidth = drawsize;
+        changeColor('white');
+        path.strokeWidth = drawsize;
     };
     eraser.onMouseDrag = function(event) {
         path.add(event.point);

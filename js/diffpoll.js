@@ -6,6 +6,10 @@
  */
 
 $(document).ready(function () {
+    /*
+     * When the document has loaded, set up the canvas and 
+     * get the canvas id from the server.
+     */
     paper.install(window);
     drawView = new View('piirtocanvas');
     paper.setup('piirtocanvas');
@@ -24,14 +28,13 @@ function getGameID() {
         url: "games/",
         dataType: "text"
     }).done(function (response, textStatus, xhr) {
-        //window.console.log(response);
         try {
             id = jQuery.parseJSON(response)[0].fields.canvas;
+            //Store the canvas id so that it can be used elsewhere.
             jQuery.data(document.body, 'canvasid', id);
         } catch (e) {
             window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game: ' + e);
         }
-        //window.console.log('Got ID ' + id);
         getDiff(id, 0);
     });
 }
@@ -57,10 +60,8 @@ function getDiff(id,timestamp) {
         // nothing new to draw.
         if (xhr.status == 200) {
             try {
-                //window.console.log('Received the latest paths from server');
                 var jason = jQuery.parseJSON(response);
                 next_timestamp = drawDiff(jason);
-                //window.console.log("timestamp:"+ next_timestamp);
             }
             catch (e) {
                 window.console.log('Error while getting the latest paths: ' + e);
@@ -69,9 +70,7 @@ function getDiff(id,timestamp) {
         else {
             window.console.log(xhr.status + ' occurred while getting the latest paths.');
         }
-        //window.console.log('Gon poll again soon.');
     });
-    //getDiff();
 }
 
 function drawDiff(json) {
@@ -79,12 +78,9 @@ function drawDiff(json) {
      * Draw a path described in the diff on the canvas.
      */
     
-    //window.console.log('Attempting to draw stuff');
     var path = null,timestamp=0;
     var point, handleIn, handleOut;
-    //console.log(json)
     $.each(json, function(key,valueObj){
-        //console.log(key + ', ' + valueObj.pk);
         /*
          * Parse path info if json contains game.path model
          */
@@ -104,7 +100,6 @@ function drawDiff(json) {
          path.add(new Segment(point, handleIn, handleOut) );
         }
     });
-    //window.console.log('Managed to draw stuff');
     view.draw();
     return timestamp;
 }
@@ -123,6 +118,5 @@ function reDraw() {
     /*
      * Redraw the canvas to show any changes.
      */
-    //window.console.log('Redraw!');
     view.draw();
 }
