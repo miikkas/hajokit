@@ -185,6 +185,7 @@ function getGameID() {
      */
     
     console.log('Getting ID for the game.');
+    alert('getgameid');
     var id;
     $.ajax ({
         type: "GET",
@@ -195,6 +196,7 @@ function getGameID() {
 }
 
 function setGameID(json) {
+    alert('setgameid');
     window.console.log('got game id response, parsing');
     try {
         jQuery.data(document.body, 'canvasid', jQuery.parseJSON(json)[0].fields.canvas);
