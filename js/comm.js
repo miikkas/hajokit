@@ -3,6 +3,7 @@
     $("#guessbox").keyup(function(event){
         if(event.keyCode == 13){
             sendGuess(player, $('#arvaussyotto').val());
+	    $('#arvaussyotto').val("");
         }
     });
     var canvaso = document.getElementById('drawingcanvas');
@@ -26,8 +27,9 @@
         });
     }
 
+    
 // tähän kohti tulee palvelimelta kysely v
-    function sendGuess(playername, guessword) {
+    function getGuesses(playername, guessword) {
         
         var guess = {playername: guessword};
         $.ajax ({
