@@ -83,7 +83,9 @@ function getGameID() {
         dataType: "text"
     }).done(function (response, textStatus, xhr) {
         try {
-            id = jQuery.parseJSON(response)[0].fields.canvas;
+            var result_json = jQuery.parseJSON(response);
+            id = result_json[0].fields.canvas;
+            console.log(result_json);
             //Store the canvas id so that it can be used elsewhere.
             jQuery.data(document.body, 'canvasid', id);
         } catch (e) {
