@@ -10,10 +10,10 @@
     </head>
  <body>
 <h1></h1>
-
+<img style="position:absolute; top:5px; left:100px; width:50px; height:50px" src="css/piirra_arvaa_banneri.png">
 <div class="piirtoalue">
 
-<canvas id="drawingcanvas" width="550" height="700" style="border:2px solid #000000;">
+<canvas id="drawingcanvas" width="550" height="600" style="border:2px solid #000000;">
 
 
 </canvas>
@@ -39,27 +39,13 @@
     <a href="#" onClick="javascript:changeSize(10);" id="koko10">10</a>
 </div>
 
-<div class="varit">
-    <a href="#" onClick="javascript:changeColor('black');" id="black">MUSTA</a>
-    <a href="#" onClick="javascript:changeColor('red');" id="red">Punainen</a>
-    <a href="#" onClick="javascript:changeColor('green');" id="green">Vihreä</a>
-    <a href="#" onClick="javascript:changeColor('blue');" id="blue">Sininen</a>
-    <a href="#" onClick="javascript:changeColor('yellow');" id="yellow">Keltainen</a>
-</div>
-
-<div class="koot">
-    <a href="#" onClick="javascript:changeSize(1);" id="koko1">1</a>
-    <a href="#" onClick="javascript:changeSize(2);" id="koko2">2</a>
-    <a href="#" onClick="javascript:changeSize(5);" id="koko5">5</a>
-    <a href="#" onClick="javascript:changeSize(7);" id="koko7">7</a>
-    <a href="#" onClick="javascript:changeSize(10);" id="koko10">10</a>
-</div>
 
 <div id="canvas">
 <input id="canvasnimi"/>
 </div>
 
 <div class="arvausalue">
+    <input id="arvaussyotto" type="text" size="100" maxlength="255">
 </div>
 
 <div class="painikkeet">

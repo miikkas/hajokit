@@ -8,7 +8,7 @@ body {
   top:60px;
   width:550px;
   height:600px;
-  background-color:#b3bbcf;
+  background-color:#FFFFFF;
 }
 
 .tyokalut {
@@ -16,12 +16,12 @@ body {
   left:20px;
   top:700px;
   width:550px;
-  background-color:#516eb7;
+  background-color:#FFFFFF;
 }
 
 .arvausalue {
   position:absolute;
-  right:10px;
+  left:570px;
   top:60px;
   width:440px;
   height:600px;
@@ -30,10 +30,10 @@ body {
 
 .painikkeet {
   position:absolute;
-  right:10px;
+  left:570px;
   top:700px;
   width:440px;
-  background-color:#516eb7;
+  background-color:#FFFFFF;
 }
 
 h1 {

@@ -2,7 +2,7 @@
     var player = 'gunther';
     $("#guessbox").keyup(function(event){
         if(event.keyCode == 13){
-            sendGuess(player, $('#guessbox').val());
+            sendGuess(player, $('#arvaussyotto').val());
         }
     });
     var canvaso = document.getElementById('drawingcanvas');
@@ -25,4 +25,22 @@
             }*/
         });
     }
+
+// tähän kohti tulee palvelimelta kysely v
+    function sendGuess(playername, guessword) {
+        
+        var guess = {playername: guessword};
+        $.ajax ({
+            type: "GET",
+            url: "guess",
+            dataType: json, 
+            data: guess
+        }).done(function (response) {
+            //Add guess to a list showing all guesses so far
+            /*if (guess was correct) {
+                say hurray, end game
+            }*/
+        });
+    }  
+  
 });
