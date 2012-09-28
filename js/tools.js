@@ -84,42 +84,42 @@ window.onload = function() {
     circle = new Tool();
     rect = new Tool();
     eraser = new Tool();
-    var path, startingpoint, rad, oldstrokecolor;
+    var startingpoint, rad, oldstrokecolor;
 
     //Igor, pencil!
     pencil.onMouseDown = function(event) {
-        path = new Path();
-        path.strokeColor = drawcolor;
-        path.strokeWidth = drawsize;
+        var pencilpath = new Path();
+        pencilpath.strokeColor = drawcolor;
+        pencilpath.strokeWidth = drawsize;
     };
     pencil.onMouseDrag = function(event) {
-        path.add(event.point);
+        pencilpath.add(event.point);
     };
     pencil.onMouseUp = function(event) {
-        path.simplify();
-        if (path.segments.length !== 0) {
-            sendDiff(path);
+        pencilpath.simplify();
+        if (pencilpath.segments.length !== 0) {
+            sendDiff(pencilpath);
         }
     };
     
     //Line
     line.onMouseDown = function(event) {
-        path = new Path();
-        path.strokeColor = drawcolor;
-        path.strokeWidth = drawsize;
-        if (path.segments.length === 0) {
-            path.add(event.point);
+        var linepath = new Path();
+        linepath.strokeColor = drawcolor;
+        linepath.strokeWidth = drawsize;
+        if (linepath.segments.length === 0) {
+            linepath.add(event.point);
         }
-        path.add(event.point);
+        linepath.add(event.point);
         startingpoint = event.point;
     };
     line.onMouseDrag = function(event) {
-        path.lastSegment.point = event.point;
+        linepath.lastSegment.point = event.point;
     };
     line.onMouseUp = function(event) {
-        path.add(event.point);
+        linepath.add(event.point);
         if (startingpoint.getDistance(event.point, false) > 0) {
-            sendDiff(path);
+            sendDiff(linepath);
         }
     };
 
@@ -129,15 +129,15 @@ window.onload = function() {
     };
     circle.onMouseDrag = function(event) {
         rad = startingpoint.getDistance(event.point, false);
-        path = new Path.Circle(startingpoint, rad);
-        path.strokeColor = drawcolor;
-        path.strokeWidth = drawsize;
-        path.removeOnDrag();
+        var circlepath = new Path.Circle(startingpoint, rad);
+        circlepath.strokeColor = drawcolor;
+        circlepath.strokeWidth = drawsize;
+        circlepath.removeOnDrag();
     };
     circle.onMouseUp = function(event) {
         //No point in sending zero-size circles.
         if (rad > 0) {
-            sendDiff(path);
+            sendDiff(circlepath);
         }
         rad = 0;
     };
@@ -148,31 +148,31 @@ window.onload = function() {
         startingpoint = event.point;
     };
     rect.onMouseDrag = function(event) {
-        path = new Path.Rectangle(startingpoint, event.point);
-        path.strokeColor = drawcolor;
-        path.strokeWidth = drawsize;
-        path.removeOnDrag();
+        var rectpath = new Path.Rectangle(startingpoint, event.point);
+        rectpath.strokeColor = drawcolor;
+        rectpath.strokeWidth = drawsize;
+        rectpath.removeOnDrag();
     };
     rect.onMouseUp = function(event) {
         //No point in sending zero-size rects.
         if (startingpoint.getDistance(event.point, false) > 0) {
-            sendDiff(path);
+            sendDiff(rectpath);
         }
     };
 
     //Eraser. Like pencil, but always white.
     eraser.onMouseDown = function(event) {
-        path = new Path();
-        path.strokeWidth = drawsize;
-        path.strokeColor = 'white';
+        var eraserpath = new Path();
+        eraserpath.strokeWidth = drawsize;
+        eraserpath.strokeColor = 'white';
     };
     eraser.onMouseDrag = function(event) {
-        path.add(event.point);
+        eraserpath.add(event.point);
     };
     eraser.onMouseUp = function(event) {
-        path.simplify();
-        if (path.segments.length !== 0) {
-            sendDiff(path);
+        eraserpath.simplify();
+        if (eraserpath.segments.length !== 0) {
+            sendDiff(eraserpath);
         }
         drawcolor = oldstrokecolor;
     };
