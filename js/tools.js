@@ -90,9 +90,9 @@ window.onload = function() {
     $('#button').live("click", function (event) {
         path = new Path();
         path.add(new Point(280, 0));
-        path.add(new Point(280, 599));
+        path.add(new Point(280, 600));
         path.strokeColor = 'white';
-        path.strokeWidth = 550;
+        path.strokeWidth = 552;
         sendDiff(path, drawcolor, drawsize);
     });
 
