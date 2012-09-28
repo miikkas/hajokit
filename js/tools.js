@@ -42,13 +42,13 @@ function segmentsToObject(segments) {
     return segObj;
 }
 
-function pathToObject(path) {
+function pathToObject(pathtosend) {
     /*
      * Turn the paper.js path into a JSON object, with color 
      * and size info with all the segments that the path includes.
      */
     
-    var segObj = segmentsToObject(path.segments);
+    var segObj = segmentsToObject(pathtosend.segments);
     var diffObj = {
         color: drawcolor,
         size: drawsize, 
@@ -84,42 +84,42 @@ window.onload = function() {
     circle = new Tool();
     rect = new Tool();
     eraser = new Tool();
-    var startingpoint, rad, oldstrokecolor;
+    var path, eraserpath, startingpoint, rad, oldstrokecolor;
 
     //Igor, pencil!
     pencil.onMouseDown = function(event) {
-        var pencilpath = new Path();
-        pencilpath.strokeColor = drawcolor;
-        pencilpath.strokeWidth = drawsize;
+        var path = new Path();
+        path.strokeColor = drawcolor;
+        path.strokeWidth = drawsize;
     };
     pencil.onMouseDrag = function(event) {
-        pencilpath.add(event.point);
+        path.add(event.point);
     };
     pencil.onMouseUp = function(event) {
-        pencilpath.simplify();
-        if (pencilpath.segments.length !== 0) {
-            sendDiff(pencilpath);
+        path.simplify();
+        if (path.segments.length !== 0) {
+            sendDiff(path);
         }
     };
     
     //Line
     line.onMouseDown = function(event) {
-        var linepath = new Path();
-        linepath.strokeColor = drawcolor;
-        linepath.strokeWidth = drawsize;
-        if (linepath.segments.length === 0) {
-            linepath.add(event.point);
+        var path = new Path();
+        path.strokeColor = drawcolor;
+        path.strokeWidth = drawsize;
+        if (path.segments.length === 0) {
+            path.add(event.point);
         }
-        linepath.add(event.point);
+        path.add(event.point);
         startingpoint = event.point;
     };
     line.onMouseDrag = function(event) {
-        linepath.lastSegment.point = event.point;
+        path.lastSegment.point = event.point;
     };
     line.onMouseUp = function(event) {
-        linepath.add(event.point);
+        path.add(event.point);
         if (startingpoint.getDistance(event.point, false) > 0) {
-            sendDiff(linepath);
+            sendDiff(path);
         }
     };
 
@@ -129,15 +129,15 @@ window.onload = function() {
     };
     circle.onMouseDrag = function(event) {
         rad = startingpoint.getDistance(event.point, false);
-        var circlepath = new Path.Circle(startingpoint, rad);
-        circlepath.strokeColor = drawcolor;
-        circlepath.strokeWidth = drawsize;
-        circlepath.removeOnDrag();
+        var path = new Path.Circle(startingpoint, rad);
+        path.strokeColor = drawcolor;
+        path.strokeWidth = drawsize;
+        path.removeOnDrag();
     };
     circle.onMouseUp = function(event) {
         //No point in sending zero-size circles.
         if (rad > 0) {
-            sendDiff(circlepath);
+            sendDiff(path);
         }
         rad = 0;
     };
@@ -148,15 +148,15 @@ window.onload = function() {
         startingpoint = event.point;
     };
     rect.onMouseDrag = function(event) {
-        var rectpath = new Path.Rectangle(startingpoint, event.point);
-        rectpath.strokeColor = drawcolor;
-        rectpath.strokeWidth = drawsize;
-        rectpath.removeOnDrag();
+        var path = new Path.Rectangle(startingpoint, event.point);
+        path.strokeColor = drawcolor;
+        path.strokeWidth = drawsize;
+        path.removeOnDrag();
     };
     rect.onMouseUp = function(event) {
         //No point in sending zero-size rects.
         if (startingpoint.getDistance(event.point, false) > 0) {
-            sendDiff(rectpath);
+            sendDiff(path);
         }
     };
 
