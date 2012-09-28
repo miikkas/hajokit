@@ -8,7 +8,7 @@ var drawcolor = 'black';
 var drawsize = 5;
 var gameid = '-1';
 
-window.onload = function() {
+$(document).ready(function () {
     $("#button").live("click", function(event){
         //alert(gameid);
         $('body').append('roiroiroi');
@@ -111,7 +111,7 @@ window.onload = function() {
         }
         drawcolor = oldstrokecolor;
     };
-};
+});
 
 function changeColor(color) {
     /*
