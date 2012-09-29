@@ -34,7 +34,9 @@ function createPlayer(name) {
             console.log('Created player ' + name);
         }
     }).fail(function (response, textStatus, xhr) {
-        console.log('Failed to create a player: ' + xhr.ststua);
+        $.each(response, function(key,valueObj){
+            console.log(key + ', ' + valueObj);
+        });
         //TO-DO: resend?
     });
 }
