@@ -36,7 +36,7 @@ function drawDiff(json) {
     return timestamp;
 }
 
-function getDiff(id,timestamp) {
+function getDiff(id, timestamp) {
     /*
      * Get a new path to be drawn from the server using long 
      * polling.
@@ -59,11 +59,11 @@ function getDiff(id,timestamp) {
                 next_timestamp = drawDiff(jason);
             }
             catch (e) {
-                window.console.log('Error while getting the latest paths: ' + e);
+                console.log('Error while getting the latest paths: ' + e);
             }
         }
         else {
-            window.console.log(xhr.status + ' occurred while getting the latest paths.');
+            console.log(xhr.status + ' occurred while getting the latest paths.');
         }
     });
 }
@@ -83,9 +83,9 @@ function newGame() {
             var result_json = jQuery.parseJSON(response);
             id = result_json[0].pk;
             // Store the canvas id so that it can be used elsewhere.
-            jQuery.data(document.body, 'canvasid', id);
+            $.cookie('canvasid', id);
         } catch (e) {
-            window.console.log('Failed to find a game, attempting again.');
+            console.log('Failed to find a game, attempting again.');
         }
         getDiff(id, 0);
     }).fail(function (response, textStatus, xhr) {
@@ -109,10 +109,9 @@ function getGameID() {
             var result_json = jQuery.parseJSON(response);
             id = result_json[0].fields.canvas;
             // Store the canvas id so that it can be used elsewhere.
-            jQuery.data(document.body, 'canvasid', id);
             $.cookie('canvasid', id);
         } catch (e) {
-            window.console.log('Failed to find a game, creating a new one.');
+            console.log('Failed to find a game, creating a new one.');
         }
         getDiff(id, 0);
     }).fail(function (response, textStatus, xhr) {
@@ -141,6 +140,7 @@ function reDraw() {
 
 function checkForGames() {
     if ($.cookie('canvasid') !== true) {
+        console.log('canvasid was "' + $.cookie('canvasid') + '". Attempting to get one from the server');
         getGameID();
     }
 }

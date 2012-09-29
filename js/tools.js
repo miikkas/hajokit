@@ -44,7 +44,6 @@ function segmentsToObject(segments, closed) {
             handleOuty: segments[i].handleOut.y
         };
     }
-    console.log(segments.length);
     
     /*
      * For circles and rectangles. paper.js uses a "closed" 
@@ -64,6 +63,7 @@ function segmentsToObject(segments, closed) {
             handleOuty: segments[0].handleOut.y
         };
     }
+    console.log('turned segments into an object');
     return segObj;
 }
 
@@ -79,6 +79,7 @@ function pathToObject(pathtosend, color, size, closed) {
         size: size, 
         segments: segObj
     };
+    console.log('turned a path into an object');
     return diffObj;
 }
 
@@ -88,7 +89,7 @@ function sendDiff(drawnpath, color, size, closed) {
      * tool color and size.
      */
     
-    console.log(drawnpath);
+    console.log('gon send a path and then have some taters n mustard');
     var id = $.cookie('canvasid');
     if (!id) {
         var diff = JSON.stringify(pathToObject(drawnpath, color, size, closed));
