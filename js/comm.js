@@ -18,7 +18,9 @@
             $('ul#chattiruutu').append("<li>"+name + ': ' + guessword+"</li>");
         }
     }).fail(function (response, textStatus, xhr) {
-        console.log('Sending message failed with ' + xhr.ststua);
+        $.each(response, function(key,valueObj){
+            console.log(key + ', ' + valueObj);
+        });
         //TO-DO: resend?
     });
 }
