@@ -71,13 +71,37 @@ function getDiff(id,timestamp) {
     });
 }
 
+function newGame() {
+    /*
+     * Create a new game and store the ID for it.
+     */
+    
+    var id;
+    $.ajax ({
+        type: "GET",
+        url: "games/new",
+        dataType: "text"
+    }).done(function (response, textStatus, xhr) {
+        try {
+            var result_json = jQuery.parseJSON(response);
+            id = result_json[0].pk;
+            //Store the canvas id so that it can be used elsewhere.
+            jQuery.data(document.body, 'canvasid', id);
+        } catch (e) {
+            window.console.log('Failed to find a game, attempting again.');
+        }
+        getDiff(id, 0);
+    }).fail(function (response, textStatus, xhr) {
+        newGame();
+    });
+}
+
 function getGameID() {
     /*
      * Get an ID for a game that will then be joined.
      */
     
     var id;
-    //window.console.log('Getting ID for the game.');
     $.ajax ({
         type: "GET",
         url: "games/",
@@ -86,11 +110,10 @@ function getGameID() {
         try {
             var result_json = jQuery.parseJSON(response);
             id = result_json[0].fields.canvas;
-            //console.log(result_json);
             //Store the canvas id so that it can be used elsewhere.
             jQuery.data(document.body, 'canvasid', id);
         } catch (e) {
-            window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game: ' + e);
+            window.console.log('Failed to find a game, creating a new one.');
         }
         getDiff(id, 0);
     }).fail(function (response, textStatus, xhr) {
@@ -111,6 +134,7 @@ function JSONize(string) {
 function reDraw() {
     /*
      * Redraw the canvas to show any changes.
+     * TO-DO: needed?
      */
     view.draw();
 }
