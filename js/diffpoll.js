@@ -57,7 +57,7 @@ function getDiff(id,timestamp) {
         if (xhr.status == 200) {
             try {
                 //window.console.log('new path yay');
-                console.log(response);
+                //console.log(response);
                 var jason = jQuery.parseJSON(response);
                 next_timestamp = drawDiff(jason);
             }
