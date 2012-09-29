@@ -85,7 +85,9 @@ function guessPollInit() {
     if (typeof(jQuery.data(document.body, 'canvasid')) == 'undefined') {
         setTimeout('guessPollInit()', 1000);
     }
-    getGuesses(0);
+    else {
+        getGuesses(0);
+    }
 }
 
 function checkName() {
