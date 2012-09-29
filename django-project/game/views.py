@@ -11,6 +11,7 @@ import time,datetime
 
 from django.http import HttpResponse,Http404
 from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext
 from django.shortcuts import render_to_response,get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
@@ -120,9 +121,9 @@ def newplayer(request,playername,player_uuid=None,nodename=platform.node()+".loc
        player_uuid = uuid.uuid4()
     pelinodeid = HostNode.objects.get(hostname=nodename)
     try:
-       pelaaja = Players.objects.get(nimi=playername)
+       pelaaja = Player.objects.get(nimi=playername)
        return HttpResponse("already there")
-    except Players.DoestNotExists:
+    except ObjectDoesNotExist:
        pelaaja = Player(nimi=playername,pelinode=pelinodeid,uuid=player_uuid)
     print("Creating player %s uuid %s" %(playername,player_uuid))
     pelaaja.save()
