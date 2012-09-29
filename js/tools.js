@@ -68,7 +68,7 @@ function pathToObject(pathtosend, color, size, closed) {
     return diffObj;
 }
 
-function sendDiff(path, color, size, closed) {
+function sendDiff(drawnpath, color, size, closed) {
     /*
      * POST the path that was drawn to the server in JSON. Include
      * tool color and size.
@@ -77,7 +77,7 @@ function sendDiff(path, color, size, closed) {
     console.log(path);
     var id = jQuery.data(document.body, 'canvasid');
     if (typeof(id) != 'undefined') {
-        var diff = JSON.stringify(pathToObject(path, color, size, closed));
+        var diff = JSON.stringify(pathToObject(drawnpath, color, size, closed));
         $.ajax ({
             type: "POST",
             url: "canvas/" + id + "/",
