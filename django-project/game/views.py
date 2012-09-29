@@ -7,10 +7,10 @@ import uuid
 import time,datetime
 
 
-from django.http import HttpResponse
+from django.http import HttpResponse,Http404
 from django.core import serializers
 from django.template import RequestContext
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response,get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import simplejson
 from django.db import transaction
@@ -116,10 +116,12 @@ def endgame( request, gameid, nodename=platform.node()+".local"):
 def newplayer(request,playername,player_uuid=None,nodename=platform.node()+".local"):
     if player_uuid is None:
        player_uuid = uuid.uuid4()
-    pelaaja = Player(nimi=playername,uuid=player_uuid)
+    pelinodeid = HostNode.objects.get(hostname=nodename)
+    pelaaja = Player.objects.get_or_create(nimi=playername,pelinode=pelinodeid,uuid=player_uuid)[0]
+    print type(str(player_uuid))
+    print pelaaja
+    print player_uuid
     print("Creating player %s uuid %s" %(playername,player_uuid))
-    pelinode = HostNode.objects.get(hostname=nodename)
-    pelaaja.pelinode = pelinode
     pelaaja.save()
     replicate(request,nodename, player_uuid)
     return HttpResponse(serializers.serialize("json", [pelaaja], ensure_ascii=False ) )
@@ -202,9 +204,11 @@ def guess(request):
     """For HTTP POSTing a guess to the current game, JSON encoded(?)."""
     if request.method == "POST":
       parametrit = simplejson.loads(request.body)
-      player = Player.objects.filter(nimi=str(parametrit['playername']))[0]
+      pelinodeinfo = HostNode.objects.get(hostname=platform.node()+".local")
+      player = get_object_or_404(Player,nimi=str(parametrit['playername']))
+      print player
       game_id = parametrit['canvas']
-      game = Game.objects.get(game_id)
+      game = Game.objects.get(uuid=game_id)
       guess = Guess(pelaaja=player,peli=game,arvaus=parametrit['guess'])
       guess.save()
       return HttpResponse("ok")
