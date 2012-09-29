@@ -42,6 +42,11 @@ def refresh(request,nodename):
     for game in Game.objects.filter(pelinode=platform.node()+".local"):
         print("Replicating game %s to node %s"%(game.uuid,nodename))
         newplayer = urllib2.urlopen("http://%s:%d%s/game/new/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(game_uuid.name),platform.node()+".local")).read()
+        jsondata=[]
+        #Replicate the canvas data to new node
+        for path in game.canvas.path__set:
+            jsondata.append({"color":path.color,"size":path.size,"segments":[{"pointx":path.pointx,"pointy":path.pointy,"handleInx":path.handleInx,"handleIny":path.handleIny,"handleOutx":path.handleOutx,"handleOuty":path.handleOuty}]})
+        print "Replicating canvas %s data:%s"%(game.uuid,jsondata)
     return HttpResponse(serializers.serialize("json", [node], ensure_ascii=False ) )
 
 #Replicates request to all the other nodes if needed
