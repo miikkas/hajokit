@@ -50,6 +50,7 @@ function createPlayer(name) {
         if (xhr.status == 200) {
             jQuery.data(document.body, 'playername', $.trim(name) );
             console.log('Created player ' + name);
+            $.cookie('playername', name);
         }
     }).fail(function (response, textStatus, xhr) {
         $.each(response, function(key,valueObj){
@@ -116,7 +117,7 @@ function guessPollInit() {
      * until an ID is available.
      */
     
-    if (typeof(jQuery.data(document.body, 'canvasid')) == 'undefined') {
+    if (!$.cookie('canvasid')) {
         setTimeout('guessPollInit()', 1000);
     }
     else {
@@ -131,7 +132,7 @@ function checkName() {
      * Otherwise, send a guess with the contents of the box.
      */
     
-    if (typeof(jQuery.data(document.body, 'playername')) == 'undefined') {
+    if (!$.cookie('playername')) {
         createPlayer($('#arvaussyotto').val());
     }
     else {
@@ -150,7 +151,9 @@ $(document).ready(function () {
      * messages.
      */
     
-    $('#arvaussyotto').val('Nimi tähän ja menoksi!');
+    if (!$.cookie('playername')) {
+        $('#arvaussyotto').val('Nimi tähän ja menoksi!');
+    }
     $('#arvaussyotto').focus(function (event) {
         if (typeof(jQuery.data(document.body, 'playername')) == 'undefined') {
             $('#arvaussyotto').val("");

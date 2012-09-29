@@ -110,6 +110,7 @@ function getGameID() {
             id = result_json[0].fields.canvas;
             // Store the canvas id so that it can be used elsewhere.
             jQuery.data(document.body, 'canvasid', id);
+            $.cookie('canvasid', id);
         } catch (e) {
             window.console.log('Failed to find a game, creating a new one.');
         }
@@ -138,12 +139,19 @@ function reDraw() {
     view.draw();
 }
 
+function checkForGames() {
+    if (!$.cookie('canvasid')) {
+        getGameID();
+    }
+}
+
 $(document).ready(function () {
     /*
      * When the document has loaded, set up the canvas and 
      * get the canvas id from the server.
      */
-    getGameID();
+    
+    checkForGames();
     paper.install(window);
     drawView = new View('piirtocanvas');
     paper.setup('piirtocanvas');
