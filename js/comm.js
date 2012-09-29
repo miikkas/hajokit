@@ -38,6 +38,7 @@ function createPlayer(name) {
     }).fail(function (response, textStatus, xhr) {
         $.each(response, function(key,valueObj){
             console.log(key + ', ' + valueObj);
+            //$('ul#chattiruutu').append("<li>"+name + ': ' + guessword+"</li>");
         });
         //TO-DO: resend?
     });
@@ -47,6 +48,7 @@ function addGuesses(json) {
     var timestamp = 0;
     $.each(json, function(key,valueObj){
         console.log(key + ', ' + valueObj);
+        $('ul#chattiruutu').append("<li>" + valueObj.player + ': ' + valueObj.guess + "</li>");
     });
     return timestamp;
 }
