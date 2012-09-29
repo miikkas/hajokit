@@ -203,7 +203,7 @@ def guesses(request, canvas_id=1,timestamp = 0):
     for guess in Guess.objects.filter(peli=canvas_id).filter(aikaleima__gt=aika):
         pelaaja = guess.pelaaja
         response.append({"player":pelaaja.nimi,"guess":guess.arvaus,"timestamp":str(guess.aikaleima)})
-    return HttpResponse( response )
+    return HttpResponse( simplejson.dumps(response) )
 
 @csrf_exempt
 def guess(request):
