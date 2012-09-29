@@ -1,18 +1,18 @@
-﻿    function sendGuess(playername, guessword) {
-        
-        var guess = {playername: guessword};
-        $.ajax ({
-            type: "POST",
-            url: "guess/",
-            dataType: "text", 
-            data: guess
-        }).fail(function (response, textStatus, xhr) {
-            $.each(response, function(key,valueObj){
-                console.log(key + ', ' + valueObj);
-            });
-            //TO-DO: resend?
+﻿function sendGuess(playername, guessword) {
+    
+    var guess = JSON.stringify({playername: guessword});
+    $.ajax ({
+        type: "POST",
+        url: "guess/",
+        dataType: "text", 
+        data: guess
+    }).fail(function (response, textStatus, xhr) {
+        $.each(response, function(key,valueObj){
+            console.log(key + ', ' + valueObj);
         });
-    }
+        //TO-DO: resend?
+    });
+}
 
 function getGuesses(timestamp) {
     var next_timestamp = timestamp;
