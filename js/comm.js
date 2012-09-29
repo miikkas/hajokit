@@ -9,6 +9,10 @@
         url: "guess/",
         dataType: "text", 
         data: guess
+    }).done(function (response, textStatus, xhr) {
+        if (xhr.status == 200) {
+            console.log(jQuery.data(document.body, 'playername', name) + ' guessed ' + guessword);
+        }
     }).fail(function (response, textStatus, xhr) {
         console.log('Sending message failed with ' + xhr.ststua);
         //TO-DO: resend?
@@ -22,6 +26,9 @@ function createPlayer(name) {
         dataType: "text"
     }).done(function (response, textStatus, xhr) {
         jQuery.data(document.body, 'playername', name);
+        if (xhr.status == 200) {
+            console.log('Created player ' + name);
+        }
     }).fail(function (response, textStatus, xhr) {
         console.log('Failed to create a player: ' + xhr.ststua);
         //TO-DO: resend?
