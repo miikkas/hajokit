@@ -151,7 +151,7 @@ $(document).ready(function () {
      * messages.
      */
     
-    if (!$.cookie('playername')) {
+    if ($.cookie('playername') === null) {
         console.log('playername was "' + !$.cookie('playername') + '". Asking for a name.');
         $('#arvaussyotto').val('Nimi tähän ja menoksi!');
     }
