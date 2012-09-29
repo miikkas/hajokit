@@ -85,7 +85,7 @@ function getGameID() {
             window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game: ' + e);
         }
         getDiff(id, 0);
-        getGuesses(0);
+        getGuesses(id, 0);
     });
 }
 
@@ -152,10 +152,9 @@ function addGuesses(json) {
     return timestamp;
 }
 
-function getGuesses(timestamp) {
+function getGuesses(id, timestamp) {
     var next_timestamp = timestamp;
-    var canvasid = jQuery.data(document.body, 'canvasid');
-    var url = "guesses/" + canvasid + "/" + timestamp;
+    var url = "guesses/" + id + "/" + timestamp;
     console.log('attemptgin to get guesses after ' + timestamp);
     $.ajax ({
         type: "GET",
