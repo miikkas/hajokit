@@ -79,8 +79,15 @@ function checkName() {
 $(document).ready(function () {
     getGuesses('');
     $('#arvaussyotto').val('Nimi tähän ja menoksi!');
-    $('#arvaussyotto').live("click", function (event) {
-        $('#arvaussyotto').val("");
+    $('#arvaussyotto').focus(function (event) {
+        if (typeof(jQuery.data(document.body, 'playername')) == 'undefined') {
+            $('#arvaussyotto').val("");
+        }
+    });
+    $('#arvaussyotto').focusout(function (event) {
+        if (typeof(jQuery.data(document.body, 'playername')) == 'undefined') {
+            $('#arvaussyotto').val("Nimi tähän ja menoksi!");
+        }
     });
     $("#arvaussyotto").keyup(function(event){
         if(event.keyCode == 13){
