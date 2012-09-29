@@ -84,9 +84,9 @@ def newgame(request, nodename=platform.node()+".local", game_uuid=None):
        print("UUID created as %s" %(game_uuid))
     else:
        print("UUID given as %s" %(game_uuid))
-    canvas = Canvas(uuid=game_uuid)
+    canvas = Canvas(uuid=str(game_uuid))
     canvas.save()
-    uus_peli = Game(canvas=canvas,pelinode=pelinode,uuid=game_uuid)
+    uus_peli = Game(canvas=canvas,pelinode=pelinode,uuid=str(game_uuid))
     uus_peli.save()
     replicate(request,nodename, game_uuid)
     return HttpResponse(serializers.serialize("json", [uus_peli], ensure_ascii=False ) )
