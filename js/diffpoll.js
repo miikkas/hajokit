@@ -1,13 +1,14 @@
 ﻿/*
  * This file contains functionality for getting small 
- * differential increments made by the person currently 
- * drawing, and then making those differentials visible 
- * on the client's canvas.
+ * differential increments made by other players on the 
+ * canvas, as well as getting an ID for a game or creating 
+ * a new one.
  */
 
 function drawDiff(json) {
     /*
-     * Draw a path described in the diff on the canvas.
+     * Draw a path on the canvas as described in the received 
+     * diff.
      */
     
     var path = null,timestamp=0;
@@ -16,20 +17,19 @@ function drawDiff(json) {
         /*
          * Parse path info if json contains game.path model
          */
-        if (valueObj.model == "game.path" )
-        {
-         valueObj = valueObj.fields;
-         if( timestamp != valueObj.epoch)
-         {
-            path = new Path();
-            timestamp = valueObj.epoch;
-         }
-         path.strokeColor = valueObj.color;
-         path.strokeWidth = valueObj.size;
-         point = new Point(valueObj.pointx, valueObj.pointy);
-         handleIn = new Point(valueObj.handleInx, valueObj.handleIny);
-         handleOut = new Point(valueObj.handleOutx, valueObj.handleOuty);
-         path.add(new Segment(point, handleIn, handleOut) );
+        if (valueObj.model == "game.path" ) {
+            valueObj = valueObj.fields;
+            if( timestamp != valueObj.epoch) {
+                path = new Path();
+                //Grab the new timestamp to be used.
+                timestamp = valueObj.epoch;
+            }
+            path.strokeColor = valueObj.color;
+            path.strokeWidth = valueObj.size;
+            point = new Point(valueObj.pointx, valueObj.pointy);
+            handleIn = new Point(valueObj.handleInx, valueObj.handleIny);
+            handleOut = new Point(valueObj.handleOutx, valueObj.handleOuty);
+            path.add(new Segment(point, handleIn, handleOut) );
         }
     });
     view.draw();
@@ -42,22 +42,19 @@ function getDiff(id,timestamp) {
      * polling.
      */
     
-    // Get a UNIX timestamp.
     var next_timestamp=timestamp;
     var url = "canvas/" + id + "/" + timestamp;
     $.ajax ({
         type: "GET",
         url: url,
         dataType: "text",
-        complete: function(){getDiff(id,next_timestamp);},
+        complete: function(){getDiff(id, next_timestamp);},
         timeout: 60000
     }).done(function (response, textStatus, xhr) {
         // Server responds with 304 status code, if there's 
         // nothing new to draw.
         if (xhr.status == 200) {
             try {
-                //window.console.log('new path yay');
-                //console.log(response);
                 var jason = jQuery.parseJSON(response);
                 next_timestamp = drawDiff(jason);
             }
@@ -85,13 +82,14 @@ function newGame() {
         try {
             var result_json = jQuery.parseJSON(response);
             id = result_json[0].pk;
-            //Store the canvas id so that it can be used elsewhere.
+            // Store the canvas id so that it can be used elsewhere.
             jQuery.data(document.body, 'canvasid', id);
         } catch (e) {
             window.console.log('Failed to find a game, attempting again.');
         }
         getDiff(id, 0);
     }).fail(function (response, textStatus, xhr) {
+        // Try again if creating a game failed.
         newGame();
     });
 }
@@ -110,13 +108,14 @@ function getGameID() {
         try {
             var result_json = jQuery.parseJSON(response);
             id = result_json[0].fields.canvas;
-            //Store the canvas id so that it can be used elsewhere.
+            // Store the canvas id so that it can be used elsewhere.
             jQuery.data(document.body, 'canvasid', id);
         } catch (e) {
             window.console.log('Failed to find a game, creating a new one.');
         }
         getDiff(id, 0);
     }).fail(function (response, textStatus, xhr) {
+        // If there were no ID's, create a new game.
         getGameID();
     });
 }
@@ -134,7 +133,7 @@ function JSONize(string) {
 function reDraw() {
     /*
      * Redraw the canvas to show any changes.
-     * TO-DO: needed?
+     * TO-DO: needed anymore?
      */
     view.draw();
 }

@@ -1,4 +1,9 @@
-﻿paper.install(window);
+﻿/*
+ * This file contains the tools for drawing on the canvas, as
+ * well as functionality for sending drawings to the server.
+ */
+
+paper.install(window);
 /*
  * Global variables so that they can be accessed via HTML.
  */
@@ -40,6 +45,15 @@ function segmentsToObject(segments, closed) {
         };
     }
     console.log(segments.length);
+    
+    /*
+     * For circles and rectangles. paper.js uses a "closed" 
+     * property for them, effectively connecting the last 
+     * and first point together. Once sent over the network, 
+     * this doesn't happen on the receiving end, so we'll 
+     * manually add one more segment from the last point 
+     * to the first point.
+     */
     if (closed) {
         segObj[segments.length] = {
             pointx: segments[0].point.x, 
@@ -84,13 +98,20 @@ function sendDiff(drawnpath, color, size, closed) {
             dataType: "json", 
             data: diff
         }).fail(function (response, textStatus, xhr) {
-            console.log('Vituixmän polun lähetys');
+            console.log('Failed to send path.');
             //TO-DO: resend?
         });
     }
 }
 
 function clearCanvas() {
+    /*
+     * Send a really big white line path that effectively 
+     * blanks the canvas.
+     * TO-DO: doesn't work, blanks the canvas of the player 
+     * firing it, but everyone else's canvases remain.
+     */
+    
     var blankpath = new Path.Rectangle(new Point(0, 0), new Point(550, 600));
     blankpath.strokeColor = 'white';
     blankpath.fillColor = 'white';
@@ -107,9 +128,14 @@ function clearCanvas() {
 }
 
 window.onload = function() {
+    /*
+     * Once the window has loaded, create tool instances 
+     * for all the tools and set the canvas up. Use 
+     * different path instances for the eraser and other 
+     * tools (colors tend to screw up otherwise).
+     */
+    
     paper.setup('drawingcanvas');
-    //var canvas = document.getElementById('drawingcanvas');
-    //context = canvas.getContext('2d');
     pencil = new Tool();
     line = new Tool();
     circle = new Tool();
@@ -118,11 +144,10 @@ window.onload = function() {
     var path, eraserpath, startingpoint, rad;
 
     $('#button').live("click", function (event) {
-        //context.clearRect (0, 0 , canvas.width , canvas.height);
         clearCanvas();
     });
 
-    //Igor, pencil!
+    // Igor, pencil!
     pencil.onMouseDown = function(event) {
         path = new Path();
         path.strokeColor = drawcolor;
@@ -138,7 +163,7 @@ window.onload = function() {
         }
     };
     
-    //Line
+    // Line
     line.onMouseDown = function(event) {
         path = new Path();
         path.strokeColor = drawcolor;
@@ -159,7 +184,7 @@ window.onload = function() {
         }
     };
 
-    //Circle
+    // Circle
     circle.onMouseDown = function(event) {
         startingpoint = event.point;
     };
@@ -171,7 +196,7 @@ window.onload = function() {
         path.removeOnDrag();
     };
     circle.onMouseUp = function(event) {
-        //No point in sending zero-size circles.
+        // No point in sending zero-size circles.
         if (rad > 0) {
             sendDiff(path, drawcolor, drawsize, true);
         }
@@ -179,7 +204,7 @@ window.onload = function() {
     };
 
 
-    //Rectangle
+    // Rectangle
     rect.onMouseDown = function(event) {
         startingpoint = event.point;
     };
@@ -190,13 +215,13 @@ window.onload = function() {
         path.removeOnDrag();
     };
     rect.onMouseUp = function(event) {
-        //No point in sending zero-size rects.
+        // No point in sending zero-size rects.
         if (startingpoint.getDistance(event.point, false) > 0) {
             sendDiff(path, drawcolor, drawsize, true);
         }
     };
 
-    //Eraser. Like pencil, but always white.
+    // Eraser. Like pencil, but always white.
     eraser.onMouseDown = function(event) {
         eraserpath = new Path();
         eraserpath.strokeWidth = drawsize;
@@ -210,6 +235,5 @@ window.onload = function() {
         if (eraserpath.segments.length !== 0) {
             sendDiff(path, 'white', drawsize, false);
         }
-        drawcolor = oldstrokecolor;
     };
 };

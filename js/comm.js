@@ -1,4 +1,14 @@
-﻿function sendGuess(guessword) {
+﻿/*
+ * This file contains functionality for sending and receiving 
+ * messages.
+ */
+
+function sendGuess(guessword) {
+    /*
+     * Send the given word to the server. Include player ID 
+     * and canvas ID.
+     */
+    
     var name = jQuery.data(document.body, 'playername');
     var canvasid = jQuery.data(document.body, 'canvasid');
     console.log('"' + name + '" is guessing ' + guessword);
@@ -15,9 +25,9 @@
     }).done(function (response, textStatus, xhr) {
         if (xhr.status == 200) {
             console.log('"' + name + '" guessed ' + guessword);
-            //$('ul#chattiruutu').append("<li>"+name + ': ' + guessword+"</li>");
         }
     }).fail(function (response, textStatus, xhr) {
+        // Log the error message from the server.
         $.each(response, function(key,valueObj){
             console.log(key + ', ' + valueObj);
         });
@@ -26,6 +36,12 @@
 }
 
 function createPlayer(name) {
+    /*
+     * Send a request for creating a new player with the 
+     * given name. If succesful, store the name in body 
+     * data.
+     */
+    
     $.ajax ({
         type: "GET",
         url: "player/create/" + $.trim(name),
@@ -38,16 +54,19 @@ function createPlayer(name) {
     }).fail(function (response, textStatus, xhr) {
         $.each(response, function(key,valueObj){
             console.log(key + ', ' + valueObj);
-            //$('ul#chattiruutu').append("<li>"+name + ': ' + guessword+"</li>");
         });
         //TO-DO: resend?
     });
 }
 
 function addGuesses(json) {
+    /*
+     * Show the guesses and player names included in the 
+     * response. Grab the latest timestamp.
+     */
+    
     var timestamp = 0;
     $.each(json, function(key,valueObj){
-        //console.log(key + ', ' + valueObj);
         $('ul#chattiruutu').append("<li>" + valueObj.player + ': ' + valueObj.guess + "</li>");
         timestamp = valueObj.timestamp;
     });
@@ -55,6 +74,11 @@ function addGuesses(json) {
 }
 
 function getGuesses(timestamp) {
+    /*
+     * Retrieve guesses newer than the given timestamp. 
+     * Include canvas ID into the request.
+     */
+    
     var next_timestamp = timestamp;
     var canvasid = jQuery.data(document.body, 'canvasid');
     var url = "guesses/" + canvasid + "/" + timestamp;
@@ -85,6 +109,13 @@ function getGuesses(timestamp) {
 }
 
 function guessPollInit() {
+    /*
+     * Since the canvas ID is requested once already (in 
+     * diffpoll.js), we won't request it again here. But 
+     * guesses can't be requested without an ID, so wait 
+     * until an ID is available.
+     */
+    
     if (typeof(jQuery.data(document.body, 'canvasid')) == 'undefined') {
         setTimeout('guessPollInit()', 1000);
     }
@@ -94,6 +125,12 @@ function guessPollInit() {
 }
 
 function checkName() {
+    /*
+     * If the player has not yet set a name for themselves, 
+     * create a new player when Enter is hit in the text box. 
+     * Otherwise, send a guess with the contents of the box.
+     */
+    
     if (typeof(jQuery.data(document.body, 'playername')) == 'undefined') {
         createPlayer($('#arvaussyotto').val());
     }
@@ -103,6 +140,16 @@ function checkName() {
 }
 
 $(document).ready(function () {
+    /*
+     * First, set the contents of the text box to ask for a 
+     * player name. If at that time the box is clicked, empty 
+     * it. If it is unfocused at that point, restore the text 
+     * asking for a name. In other cases, empty the box after 
+     * Enter has been pressed, that is, when a message has 
+     * been sent. Also initialize the requests for new 
+     * messages.
+     */
+    
     $('#arvaussyotto').val('Nimi tähän ja menoksi!');
     $('#arvaussyotto').focus(function (event) {
         if (typeof(jQuery.data(document.body, 'playername')) == 'undefined') {
