@@ -1,92 +1,93 @@
 Hajokit
 =======
 
-Distributed Systems coursework, team Hajokit
+Distributed Systems course work, team Hajokit
 
-Table Of Content
+Table of Content
 ----------------
 - Brief Description
 - Service Discovery
 - Drawing
 - Guessing
-- Communication between browser and server
-- Communication between nodes
+- Communication Between Browser and Server
+- Communication Between Nodes
 
 
 Brief Description
 -----------------
 
-We designed and implemented distributed 'draw and guess' game. Implementation
-lacks game logic for now, so it ended up more as shared whiteboard/chat. System
-is running on 3 virtual machines located in following addresses:
+We designed and implemented a distributed 'draw and guess' game. The implementation
+lacks game logic for now, so it ended up more as a shared whiteboard/chat. The system
+is running on 3 virtual machines located in the following addresses:
 * [node 1](http://ubuntu_node1.porogrammer.fi/)
 * [node 2](http://ubuntu_node2.porogrammer.fi/)
 * [node 3](http://ubuntu_node3.porogrammer.fi/)
 
-Implementation is done on top of [JQuery](http://www.jquery.org/) on browserside and
-drawing uses heavily [Paper.js](http://paperjs.org/) on path information. Serverside
-is implemented using [Django](http://www.djangoproject.com/) for HTTP-interface and
-python made separated daemon for service discovery. Backend DB is MySQL and OS for virtual
-machines is ubuntu precise.
+The implementation is done on top of [JQuery](http://www.jquery.org/) on browser-side and
+drawing uses [Paper.js](http://paperjs.org/) heavily on path information. jquery.cookie is 
+used for storing cookie information. The server side is implemented using 
+[Django](http://www.djangoproject.com/) for the HTTP interface and a Python-made separated 
+daemon for service discovery. The backend DB is MySQL and the OS for the virtual machines 
+is ubuntu precise.
 
-When user loads webpage, javascript asks all games (canvases) from the
-connected node, if there isn't any canvases available or made, script creates
+When the user loads the web page, javascript asks all the games (canvases) from the
+connected node. If there aren't any canvases available or made, the script creates
 one.
 
-On chat functionality webpage asks username first and creates useraccount,
-useraccount isn't stored for now in browser and is lost when user reloads page
-or restarts browser. Canvas and chat content is stored in nodes db and is
-persistent over browser or webserver restarts.
+On chat functionality, the web page first asks a user name and creates a user account.
+The user account / name is stored in the browser as a cookie but may be lost when the 
+user restarts the browser. Canvas and chat content is stored in the nodes' db and is
+persistent over browser or web server restarts.
 
 Service Discovery
 -----------------
 
-Service discovery is done using mDNS service advertising via avahi in linux. Avahi is
-connected via dbus and advertised service are marked as '\_hajarit.\_.tcp'. Service
-follows similar textual information as webservices [DNS-SD](http://www.dns-sd.org/ServiceTypes.html).
-Main information is port and path, user information isn't used for now.
+Service discovery is done using mDNS service advertising via avahi in Linux. Avahi is
+connected via dbus and advertised services are marked as '\_hajarit.\_.tcp'. The service
+follows similar textual information as web services [DNS-SD](http://www.dns-sd.org/ServiceTypes.html).
+Main information is the port and path, user information isn't used for now.
 
-When daemon finds any own services, it adds them to djangos database and gives notify to
-django via HTTP request. Same happens when service is no longer advertised, daemon notifies
-django so it can purge all the related data from DB.
+When the daemon finds any own services, it adds them to django's database and gives a notification 
+to django via HTTP request. The same happens when a service is no longer advertised. The daemon 
+notifies django so it can purge all the related data from DB.
 
 Drawing
 -------
 
-Drawing is implemented using HTML5 2d canvas, canvas is handled using paper.js framework. User
-is given few basic drawing tools (freehand, circle, rectangle, line and eraser). Also basic set
-of colors are offered (black, red, green, blue, yellow) and selection of different sizes.
+Drawing is implemented using HTML5 2d canvas. The canvas is handled using paper.js framework. The 
+user is given a few basic drawing tools (freehand, circle, rectangle, line and eraser). Also a basic 
+set of colors are offered (black, red, green, blue, yellow) and a selection of different sizes.
 
-When user draws any form, it is send to the server as group of segments. Also when browser
-receives drawing info from server, it is served as group of segments from given unixtime onward
+When the user draws any form, it is sent to the server as a group of segments. Also when the browser
+receives drawing info from server, it is served a group of segments after a given unixtime 
 (timestamp can be 0).
 
 Guessing
 --------
 
-In this phase of implementation, guessing is just text-based chat. Browser sends user and text in json
-to server, and also gets back json formated data on what others have said. Text messages are tied to 
-certain canvas, so we could implement different 'rooms'.
+In this phase of implementation, guessing is just text-based chat. The browser sends user name and text 
+in json to the server, and also gets back json-formatted data on what others have said. Text messages are 
+tied to a certain canvas, so we could implement different 'rooms'.
 
 
-Communication between browser and server
+Communication between the browser and the server
 ----------------------------------------
 
-Communication between browser and server is based on RESTfull-like API containing json-formated
-data. Communication utilizes ajax long-polling with 10min timeout time. Response time for chat-messages
-is on average 350ms and on drawing data on average 100ms (serverside checking period rules how fast it
-notifies about new data). Guess and drawing query api also allow to give unix timestamp to wait messages
-that appear after that certain timestamp. 
+Communication between the browser and the server is based on a RESTful-like API containing json-formatted
+data. Communication utilizes AJAX long-polling with a 10min timeout time. Response time for chat-messages
+is on average 350ms and for drawing data on average 100ms (serverside checking period rules how fast it
+notifies about new data). The guess and drawing query apis also allow to give a unix timestamp to wait 
+messages that appear after that certain timestamp. 
 
-If server doesn't get any new messages within 10min period, it returns 304 to the browser and browser-code
-can restart the query. Connection doesn't utilize HTTPS or any other encryption method.
+If the server doesn't get any new messages within a 10min period, it returns 304 to the browser and 
+the browser-code can restart the query. The connection doesn't utilize HTTPS or any other encryption method.
 
 Communication between nodes
 ---------------------------
 
 Communication between nodes happens in mDNS via SD-daemon and in HTTP for propagading drawing and other
-user related data. When node receives drawing info or text message from browser, it replicates the data
-content to other nodes using same HTTP RESTfull interface. Node communication doesn't implement any
+user-related data. When a node receives drawing info or a text message from a browser, it replicates the data
+content to other nodes using the same HTTP RESTful interface. Node communication doesn't implement any
 encryption or stronger authentication.
 
 
