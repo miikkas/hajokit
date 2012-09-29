@@ -91,7 +91,7 @@ function sendDiff(drawnpath, color, size, closed) {
     
     console.log('gon send a path and then have some taters n mustard');
     var id = $.cookie('canvasid');
-    if (!id) {
+    if (id !== null) {
         var diff = JSON.stringify(pathToObject(drawnpath, color, size, closed));
         $.ajax ({
             type: "POST",
