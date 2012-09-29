@@ -78,7 +78,7 @@ function checkName() {
 
 $(document).ready(function () {
     getGuesses('');
-    $('#arvaussyotto').value('Nimi tähän ja menoksi!');
+    $('#arvaussyotto').val('Nimi tähän ja menoksi!');
     $('#button').live("click", function (event) {
         $('#arvaussyotto').val("");
     });
