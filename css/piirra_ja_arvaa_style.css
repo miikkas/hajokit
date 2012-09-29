@@ -45,12 +45,12 @@ h1 {
 
 #canvasnimi {
   position:relative;
-  left:20px;
-  top:170px;
+  left:0%;
+  top:0%;
 }
 
 #arvaussyotto {
   position:relative;
   left:0%;
-  top:100%;
+  top:0%;
 }
