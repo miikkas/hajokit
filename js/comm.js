@@ -43,6 +43,14 @@ function createPlayer(name) {
     });
 }
 
+function addGuesses(json) {
+    var timestamp = 0;
+    $.each(json, function(key,valueObj){
+        console.log(key + ', ' + valueObj);
+    });
+    return timestamp;
+}
+
 function getGuesses(timestamp) {
     var next_timestamp = timestamp;
     var url = "guesses/" + timestamp;
@@ -59,8 +67,8 @@ function getGuesses(timestamp) {
         if (xhr.status == 200) {
             try {
                 console.log(response);
-                //var jason = jQuery.parseJSON(response);
-                //next_timestamp = appendGuesses(jason);
+                var jason = jQuery.parseJSON(response);
+                next_timestamp = addGuesses(jason);
             }
             catch (e) {
                 console.log('Error while getting the latest messages: ' + e);
@@ -82,7 +90,7 @@ function checkName() {
 }
 
 $(document).ready(function () {
-    getGuesses('');
+    getGuesses(0);
     $('#arvaussyotto').val('Nimi tähän ja menoksi!');
     $('#arvaussyotto').focus(function (event) {
         if (typeof(jQuery.data(document.body, 'playername')) == 'undefined') {
