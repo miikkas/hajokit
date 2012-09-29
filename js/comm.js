@@ -66,13 +66,21 @@ function getGuesses(timestamp) {
     });
 }
 
+function checkName() {
+    if (typeof(jQuery.data(document.body, 'playername')) == 'undefined') {
+        createPlayer($('#arvaussyotto').val());
+    }
+    else {
+        sendGuess($('#arvaussyotto').val());
+    }
+}
+
 $(document).ready(function () {
-    createPlayer('pyytton');
     //getGuesses('');
     $("#arvaussyotto").keyup(function(event){
         if(event.keyCode == 13){
-            sendGuess($('#arvaussyotto').val());
-	    $('#arvaussyotto').val("");
+            checkName();
+            $('#arvaussyotto').val("");
         }
     });
 });
