@@ -55,7 +55,7 @@ function getGuesses(timestamp) {
     var next_timestamp = timestamp;
     var canvasid = jQuery.data(document.body, 'canvasid');
     var url = "guesses/" + canvasid + "/" + timestamp;
-    console.log('attemptgin to get guesses after ' + timestamp);
+    console.log(url);
     $.ajax ({
         type: "GET",
         url: url,
