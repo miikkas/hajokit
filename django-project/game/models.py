@@ -49,7 +49,7 @@ class Game(models.Model):
 
 #Guess that some player have made for game
 class Guess(models.Model):
-    aikaleima = models.DateTimeField(auto_now=True)
+    epoch     = models.FloatField()
     pelaaja   = models.ForeignKey(Player)
     peli      = models.ForeignKey(Game)
     arvaus    = models.TextField()

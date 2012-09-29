@@ -190,21 +190,22 @@ def canvasclear( request, canvas_id ):
 
 #Long-poll the guesses people have made
 def guesses(request, canvas_id=1,timestamp = 0):
-    aika = datetime.datetime.utcfromtimestamp(float(timestamp)).replace(tzinfo=utc)
+    aika = float(timestamp)
     """For HTTP GETting the guesses made on the current game, JSON encoded.
        If timestamp is given, give guesses that are younger than timestamp
        or block until such guess is made"""
     polling_time=600.0 #10min
-    while Guess.objects.filter(peli=canvas_id).filter(aikaleima__gt=aika).count() == 0:
+    while Guess.objects.filter(peli=canvas_id).filter(epoch__gt=aika).count() == 0:
           time.sleep(0.7)
           polling_time -= 0.7
           #If we have waited 10mins already, give not modified back
           if polling_time <= 0.0:
              return HttpResponse(status=304)
+          Guess.objects.all().update()
     response = []
-    for guess in Guess.objects.filter(peli=canvas_id).filter(aikaleima__gt=aika):
+    for guess in Guess.objects.filter(peli=canvas_id).filter(epoch__gt=aika):
         pelaaja = guess.pelaaja
-        response.append({"player":pelaaja.nimi,"guess":guess.arvaus,"timestamp":time.mktime(guess.aikaleima.timetuple())})
+        response.append({"player":pelaaja.nimi,"guess":guess.arvaus,"timestamp":guess.epoch})
     return HttpResponse( simplejson.dumps(response) )
 
 @csrf_exempt
@@ -217,7 +218,7 @@ def guess(request):
       print player
       game_id = parametrit['canvas']
       game = Game.objects.get(uuid=game_id)
-      guess = Guess(pelaaja=player,peli=game,arvaus=parametrit['guess'])
+      guess = Guess(pelaaja=player,peli=game,arvaus=parametrit['guess'],epoch=time.time())
       guess.save()
       replicate( request )
       return HttpResponse("ok")
