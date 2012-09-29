@@ -1,7 +1,7 @@
 ﻿function sendGuess(guessword) {
     
     var guess = JSON.stringify({
-        "playername": jQuery.data(document.body, 'playername', name), 
+        "playername": jQuery.data(document.body, 'playername'), 
         "guess": guessword
     });
     $.ajax ({
@@ -11,7 +11,7 @@
         data: guess
     }).done(function (response, textStatus, xhr) {
         if (xhr.status == 200) {
-            console.log(jQuery.data(document.body, 'playername', name) + ' guessed ' + guessword);
+            console.log('"' + jQuery.data(document.body, 'playername') + '" guessed ' + guessword);
         }
     }).fail(function (response, textStatus, xhr) {
         console.log('Sending message failed with ' + xhr.ststua);
@@ -25,8 +25,8 @@ function createPlayer(name) {
         url: "player/create/" + name,
         dataType: "text"
     }).done(function (response, textStatus, xhr) {
-        jQuery.data(document.body, 'playername', name);
         if (xhr.status == 200) {
+            jQuery.data(document.body, 'playername', name);
             console.log('Created player ' + name);
         }
     }).fail(function (response, textStatus, xhr) {
