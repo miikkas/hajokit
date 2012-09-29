@@ -7,7 +7,7 @@
             dataType: "text", 
             data: guess
         }).fail(function (response, textStatus, xhr) {
-            console.log('Failed to send message: ' + response + ', ' + textStatus);
+            console.log('Failed to send message: ' + new String(response) + ', ' + textStatus);
             //TO-DO: resend?
         });
     }
