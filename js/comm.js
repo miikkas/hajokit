@@ -81,6 +81,13 @@ function getGuesses(timestamp) {
     });
 }
 
+function guessPollInit() {
+    if (typeof(jQuery.data(document.body, 'canvasid')) == 'undefined') {
+        setTimeout('guessPollInit()', 1000);
+    }
+    getGuesses(0);
+}
+
 function checkName() {
     if (typeof(jQuery.data(document.body, 'playername')) == 'undefined') {
         createPlayer($('#arvaussyotto').val());
@@ -91,7 +98,6 @@ function checkName() {
 }
 
 $(document).ready(function () {
-    getGuesses(0);
     $('#arvaussyotto').val('Nimi tähän ja menoksi!');
     $('#arvaussyotto').focus(function (event) {
         if (typeof(jQuery.data(document.body, 'playername')) == 'undefined') {
@@ -109,4 +115,5 @@ $(document).ready(function () {
             $('#arvaussyotto').val("");
         }
     });
+    guessPollInit();
 });
