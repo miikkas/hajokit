@@ -66,7 +66,7 @@ def replicate(request, nodename=platform.node()+".local", uuid=""):
         if not len(request.body):
          newplayer = urllib2.urlopen("http://%s:%d%s%s/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(request.path_info),uuid,platform.node()+".local")).read()
         else: #HTTP POST
-         newplayer = urllib2.urlopen("http://%s:%d%s%s" %(node.hostname,node.port,node.path,urllib.quote(request.path_info)),request.body).read()
+         newplayer = urllib2.urlopen("http://%s:%d%s%s" %(node.hostname,node.port,node.path,urllib.quote(request.path_info)),urllib.quote_plus(request.body)).read()
       except urllib2.HTTPError as e:
         print("HTTPError from %s: %d body:%s" % (node.hostname,e.code,e.read()))
 
