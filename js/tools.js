@@ -89,8 +89,8 @@ function sendDiff(drawnpath, color, size, closed) {
      */
     
     console.log(drawnpath);
-    var id = jQuery.data(document.body, 'canvasid');
-    if (typeof(id) != 'undefined') {
+    var id = $.cookie('canvasid');
+    if (!id) {
         var diff = JSON.stringify(pathToObject(drawnpath, color, size, closed));
         $.ajax ({
             type: "POST",
@@ -117,7 +117,7 @@ function clearCanvas() {
     blankpath.fillColor = 'white';
     blankpath.strokeWidth = drawsize;
     sendDiff(blankpath, 'white', drawsize);
-    var id = jQuery.data(document.body, 'canvasid');
+    var id = $.cookie('canvasid');
     $.ajax ({
         type: "GET",
         url: "canvas/" + id + "/clear"
