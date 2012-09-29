@@ -30,6 +30,7 @@ function createPlayer(name) {
     }).done(function (response, textStatus, xhr) {
         if (xhr.status == 200) {
             jQuery.data(document.body, 'playername', name);
+            $('ul#chattiruutu').append("<li>"+name + " joinasi peliin.</li>");
             console.log('Created player ' + name);
         }
     }).fail(function (response, textStatus, xhr) {
@@ -76,7 +77,11 @@ function checkName() {
 }
 
 $(document).ready(function () {
-    //getGuesses('');
+    getGuesses('');
+    $('#arvaussyotto').value('Nimi tähän ja menoksi!');
+    $('#button').live("click", function (event) {
+        $('#arvaussyotto').val("");
+    });
     $("#arvaussyotto").keyup(function(event){
         if(event.keyCode == 13){
             checkName();
