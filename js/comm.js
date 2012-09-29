@@ -28,11 +28,11 @@
 function createPlayer(name) {
     $.ajax ({
         type: "GET",
-        url: "player/create/" + name,
+        url: "player/create/" + $.trim(name),
         dataType: "text"
     }).done(function (response, textStatus, xhr) {
         if (xhr.status == 200) {
-            jQuery.data(document.body, 'playername', name);
+            jQuery.data(document.body, 'playername', $.trim(name) );
             console.log('Created player ' + name);
         }
     }).fail(function (response, textStatus, xhr) {
