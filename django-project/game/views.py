@@ -204,7 +204,7 @@ def guess(request):
       parametrit = simplejson.dumps(request.body)
       player = Player.objects.get(nimi=parametrit['playername'])
       game_id = parametrit['canvas']
-      guess = new Guess(pelaaja=player,peli=game_id,arvaus=parametrit['guess'])
+      guess = Guess(pelaaja=player,peli=game_id,arvaus=parametrit['guess'])
       guess.save()
       return HttpResponse("ok")
     return HttpResponse("not ok, use POST")
