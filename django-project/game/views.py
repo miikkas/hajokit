@@ -200,7 +200,7 @@ def guesses(request, timestamp = 0):
 @csrf_exempt
 def guess(request):
     """For HTTP POSTing a guess to the current game, JSON encoded(?)."""
-    if requests.method == "POST":
+    if request.method == "POST":
       print simplejson.loads(urllib.unquote(request.body))
       return HttpResponse("ok")
     return HttpResponse("not ok, use POST")
