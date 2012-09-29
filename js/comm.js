@@ -42,6 +42,7 @@ function createPlayer(name) {
 function getGuesses(timestamp) {
     var next_timestamp = timestamp;
     var url = "guesses/" + timestamp;
+    console.log('attemptgin to get guesses after ' + timestamp);
     $.ajax ({
         type: "GET",
         url: url,
@@ -53,12 +54,12 @@ function getGuesses(timestamp) {
         // nothing new to draw.
         if (xhr.status == 200) {
             try {
-                window.console.log(response);
+                console.log(response);
                 //var jason = jQuery.parseJSON(response);
                 //next_timestamp = appendGuesses(jason);
             }
             catch (e) {
-                window.console.log('Error while getting the latest messages: ' + e);
+                console.log('Error while getting the latest messages: ' + e);
             }
         }
         else {
