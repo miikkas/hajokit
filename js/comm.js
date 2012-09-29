@@ -60,7 +60,7 @@ function getGuesses(timestamp) {
         type: "GET",
         url: url,
         dataType: "text",
-        //complete: function(){getGuesses(next_timestamp);},
+        complete: function(){getGuesses(next_timestamp);},
         timeout: 60000
     }).done(function (response, textStatus, xhr) {
         // Server responds with 304 status code, if there's 
