@@ -166,6 +166,10 @@ def new_service( interface, protocol, name, stype, domain, flags):
 
 
 if __name__ == "__main__":
+   #Change directory to /tmp/ and user to nobody, as we don't need any extra privileges
+   os.chdir("/tmp/")
+   os.setgid(getpwnam('nobody')[3])
+   os.setuid(getpwnam('nobody')[2])
    retCode = createDaemon()
 
    log("Daemonized with code "+str(retCode)+" setting up avahi")
