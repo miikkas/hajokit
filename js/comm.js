@@ -81,7 +81,7 @@ function getGuesses(timestamp) {
      */
     
     var next_timestamp = timestamp;
-    var canvasid = jQuery.data(document.body, 'canvasid');
+    var canvasid = $.cookie('canvasid');
     var url = "guesses/" + canvasid + "/" + timestamp;
     console.log(url);
     $.ajax ({
