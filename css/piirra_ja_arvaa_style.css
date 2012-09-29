@@ -44,13 +44,13 @@ h1 {
 }
 
 #canvasnimi {
-  position:absolute;
+  position:relative;
   left:20px;
   top:170px;
 }
 
 #arvaussyotto {
-  position:absolute;
-  left:570px;
-  top:770px;
+  position:relative;
+  left:0%;
+  top:100%;
 }
