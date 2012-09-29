@@ -56,7 +56,7 @@ function getDiff(id,timestamp) {
         // nothing new to draw.
         if (xhr.status == 200) {
             try {
-                window.console.log('new path yay');
+                //window.console.log('new path yay');
                 var jason = jQuery.parseJSON(response);
                 next_timestamp = drawDiff(jason);
             }
@@ -85,7 +85,7 @@ function getGameID() {
         try {
             var result_json = jQuery.parseJSON(response);
             id = result_json[0].fields.canvas;
-            console.log(result_json);
+            //console.log(result_json);
             //Store the canvas id so that it can be used elsewhere.
             jQuery.data(document.body, 'canvasid', id);
         } catch (e) {

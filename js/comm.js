@@ -9,6 +9,7 @@
         }).fail(function (response, textStatus, xhr) {
             $.each(response, function(key,valueObj){
                 console.log(key + ', ' + valueObj);
+            });
             //TO-DO: resend?
         });
     }
