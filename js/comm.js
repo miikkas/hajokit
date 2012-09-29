@@ -1,6 +1,7 @@
 ﻿function sendGuess(guessword) {
     var name = jQuery.data(document.body, 'playername');
     var canvasid = jQuery.data(document.body, 'canvasid');
+    console.log('"' + name + '" is guessing ' + guessword);
     var guess = JSON.stringify({
         "playername": name, 
         "guess": guessword,
