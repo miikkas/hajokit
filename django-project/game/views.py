@@ -40,7 +40,7 @@ def refresh(request,nodename):
        return HttpResponse(serializers.serialize("json", [node], ensure_ascii=False ) )
     #create all the players we have
     for player in Player.objects.filter(pelinode=platform.node()+".local"):
-        print("Replicating player %s to node %s body %s"%(player,nodename,request.body))
+        print("Replicating player %s to node %s body %s"%(player,nodename,repr(request.body)))
         newplayer = urllib2.urlopen("http://%s:%d%s/player/create/%s/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(player.name),player.uuid,platform.node()+".local")).read()
     for game in Game.objects.filter(pelinode=platform.node()+".local"):
         print("Replicating game %s to node %s"%(game.uuid,nodename))
@@ -60,7 +60,7 @@ def replicate(request, nodename=platform.node()+".local", uuid=""):
        return
     print("Replicatin request %s"%(request.path_info))
     for node in HostNode.objects.exclude(hostname=platform.node()+".local"):
-      print("Replicating data to host %s body: %s" %(node.hostname,request.body))
+      print("Replicating data to host %s body: %s" %(node.hostname,repr(request.body)))
       newplayer=""
       try:
         if not len(request.body):
@@ -209,7 +209,7 @@ def guesses(request, canvas_id=1,timestamp = 0):
 def guess(request):
     """For HTTP POSTing a guess to the current game, JSON encoded(?)."""
     if request.method == "POST":
-      parametrit = simplejson.loads(request.body)
+      parametrit = simplejson.loads(urllib.unquote(request.body))
       pelinodeinfo = HostNode.objects.get(hostname=platform.node()+".local")
       player = get_object_or_404(Player,nimi=str(parametrit['playername']))
       print player
