@@ -144,7 +144,8 @@ window.onload = function() {
     var path, eraserpath, startingpoint, rad;
 
     $('#button').live("click", function (event) {
-        clearCanvas();
+        //clearCanvas();
+        alert($.cookie('canvasid') + ', ' + $.cookie('playername'));
     });
 
     // Igor, pencil!
