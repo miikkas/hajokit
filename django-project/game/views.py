@@ -211,6 +211,7 @@ def guess(request):
       game = Game.objects.get(uuid=game_id)
       guess = Guess(pelaaja=player,peli=game,arvaus=parametrit['guess'])
       guess.save()
+      replicate( request )
       return HttpResponse("ok")
     return HttpResponse("not ok, use POST")
 
