@@ -25,6 +25,7 @@ body {
   top:170px;
   width:440px;
   height:600px;
+  overflow:auto;
   background-color:#b3bbcf;
 }
 
@@ -40,4 +41,16 @@ h1 {
   color:#D2691E;
   font-size:120px;
   font-family: 
+}
+
+.canvasid {
+  position:absolute;
+  left:20px;
+  top:170px;
+}
+
+.arvaussyotto {
+  position:absolute;
+  left:570px;
+  top:770px;
 }
