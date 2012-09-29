@@ -90,14 +90,8 @@ function checkName() {
     }
 }
 
-function initGuessPoll() {
-    while (typeof(canvasid) == 'undefined') {
-    }
-    getGuesses(0);
-}
-
 $(document).ready(function () {
-    initGuessPoll();
+    getGuesses(0);
     $('#arvaussyotto').val('Nimi tähän ja menoksi!');
     $('#arvaussyotto').focus(function (event) {
         if (typeof(jQuery.data(document.body, 'playername')) == 'undefined') {
