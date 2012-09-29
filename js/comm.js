@@ -14,8 +14,8 @@
         data: guess
     }).done(function (response, textStatus, xhr) {
         if (xhr.status == 200) {
-            console.log('"' + name + '" arvasi ' + guessword);
-            $('ul#chattiruutu').append("<li>"+name + ': ' + guessword+"</li>");
+            console.log('"' + name + '" guessed ' + guessword);
+            //$('ul#chattiruutu').append("<li>"+name + ': ' + guessword+"</li>");
         }
     }).fail(function (response, textStatus, xhr) {
         $.each(response, function(key,valueObj){
@@ -47,7 +47,7 @@ function createPlayer(name) {
 function addGuesses(json) {
     var timestamp = 0;
     $.each(json, function(key,valueObj){
-        console.log(key + ', ' + valueObj);
+        //console.log(key + ', ' + valueObj);
         $('ul#chattiruutu').append("<li>" + valueObj.player + ': ' + valueObj.guess + "</li>");
     });
     return timestamp;
@@ -62,7 +62,7 @@ function getGuesses(timestamp) {
         type: "GET",
         url: url,
         dataType: "text",
-        //complete: function(){getGuesses(next_timestamp);},
+        complete: function(){getGuesses(next_timestamp);},
         timeout: 60000
     }).done(function (response, textStatus, xhr) {
         // Server responds with 304 status code, if there's 
