@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+#asetetaan verbose mode niin näkee mitä tapahtuu
+set -x
+
 #hack'n'slash scripti projektin koodin asentamiseen ajoon ubuntu-ympäristössä
 
 juurihakemisto=$( cd "$( dirname "$0" )" && pwd )
