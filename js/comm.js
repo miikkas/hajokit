@@ -1,15 +1,29 @@
-﻿function sendGuess(playername, guessword) {
+﻿function sendGuess(guessword) {
     
-    var guess = JSON.stringify({playername: guessword});
+    var guess = JSON.stringify({
+        "playername": jQuery.data(document.body, 'playername', name), 
+        "guess": guessword
+    });
     $.ajax ({
         type: "POST",
         url: "guess/",
         dataType: "text", 
         data: guess
     }).fail(function (response, textStatus, xhr) {
-        $.each(response, function(key,valueObj){
-            console.log(key + ', ' + valueObj);
-        });
+        console.log('Sending message failed with ' + xhr.ststua);
+        //TO-DO: resend?
+    });
+}
+
+function createPlayer(name) {
+    $.ajax ({
+        type: "GET",
+        url: "player/create/" + name,
+        dataType: "text"
+    }).done(function (response, textStatus, xhr) {
+        jQuery.data(document.body, 'playername', name);
+    }).fail(function (response, textStatus, xhr) {
+        console.log('Failed to create a player: ' + xhr.ststua);
         //TO-DO: resend?
     });
 }
@@ -43,11 +57,11 @@ function getGuesses(timestamp) {
 }
 
 $(document).ready(function () {
+    createPlayer('pyytton');
     //getGuesses('');
-    var player = 'gunther';
     $("#arvaussyotto").keyup(function(event){
         if(event.keyCode == 13){
-            sendGuess(player, $('#arvaussyotto').val());
+            sendGuess($('#arvaussyotto').val());
 	    $('#arvaussyotto').val("");
         }
     });
