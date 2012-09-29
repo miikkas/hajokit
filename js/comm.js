@@ -53,7 +53,8 @@ function addGuesses(json) {
 
 function getGuesses(timestamp) {
     var next_timestamp = timestamp;
-    var url = "guesses/" + timestamp;
+    var canvasid = jQuery.data(document.body, 'canvasid');
+    var url = "guesses/" + canvasid + "/" + timestamp;
     console.log('attemptgin to get guesses after ' + timestamp);
     $.ajax ({
         type: "GET",
