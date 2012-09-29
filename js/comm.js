@@ -41,7 +41,7 @@ function getGuesses(timestamp) {
 }
 
 $(document).ready(function () {
-    getGuesses(0);
+    getGuesses('');
     var player = 'gunther';
     $("#arvaussyotto").keyup(function(event){
         if(event.keyCode == 13){
