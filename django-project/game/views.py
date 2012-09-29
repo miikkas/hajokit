@@ -47,6 +47,7 @@ def refresh(request,nodename):
         for path in game.canvas.path__set:
             jsondata.append({"color":path.color,"size":path.size,"segments":[{"pointx":path.pointx,"pointy":path.pointy,"handleInx":path.handleInx,"handleIny":path.handleIny,"handleOutx":path.handleOutx,"handleOuty":path.handleOuty}]})
         print "Replicating canvas %s data:%s"%(game.uuid,jsondata)
+        newcanvas = urllib2.urlopen("http://%s:%d%s/canvas/%s/" %(node.hostname,node.port,node.path,urllib.quote(game_uuid.name)),jsondata).read()
     return HttpResponse(serializers.serialize("json", [node], ensure_ascii=False ) )
 
 #Replicates request to all the other nodes if needed
