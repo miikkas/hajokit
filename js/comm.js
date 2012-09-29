@@ -49,6 +49,7 @@ function addGuesses(json) {
     $.each(json, function(key,valueObj){
         //console.log(key + ', ' + valueObj);
         $('ul#chattiruutu').append("<li>" + valueObj.player + ': ' + valueObj.guess + "</li>");
+        timestamp = valueObj.timestamp;
     });
     return timestamp;
 }
