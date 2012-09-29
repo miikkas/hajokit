@@ -3,7 +3,7 @@
         var guess = {playername: guessword};
         $.ajax ({
             type: "POST",
-            url: "guess",
+            url: "guess/",
             dataType: "text", 
             data: guess
         }).fail(function (response, textStatus, xhr) {
