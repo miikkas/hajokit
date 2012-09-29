@@ -196,11 +196,11 @@ def guesses(request, timestamp = 0):
              return HttpResponse(status=304)
     return HttpResponse( serializers.serialize("json", Guess.objects.filter(aikaleima__gt=aika), ensure_ascii=False))
 
+@csrf_exempt
 def guess(request):
     """For HTTP POSTing a guess to the current game, JSON encoded(?)."""
     if requests.method == "POST":
-      for guess in serializers.deserialize("json",request.POST ):
-          guess.save()
+      print simplejson.loads(urllib.unquote(request.body))
       return HttpResponse("ok")
     return HttpResponse("not ok, use POST")
 
