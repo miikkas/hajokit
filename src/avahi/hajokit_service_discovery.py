@@ -19,6 +19,9 @@ import urllib2
 #daemoning, saadaan SIGTERM
 import signal
 
+#changing uid/guid
+from pwd import getpwnam
+
 import time
 
 import platform
@@ -213,6 +216,7 @@ if __name__ == "__main__":
 
    #Kun saadaan sigTERM, lopetetaan
    signal.signal(signal.SIGTERM, stop)
+   signal.signal(signal.SIGKILL, stop)
 
    gobject.MainLoop().run()
    group.Free()
