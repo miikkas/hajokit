@@ -13,7 +13,7 @@
         data: guess
     }).done(function (response, textStatus, xhr) {
         if (xhr.status == 200) {
-            console.log('"' + name + '" guessed ' + guessword);
+            console.log('"' + name + '" arvasi ' + guessword);
             $('ul#chattiruutu').append("<li>"+name + ': ' + guessword+"</li>");
         }
     }).fail(function (response, textStatus, xhr) {
@@ -30,7 +30,7 @@ function createPlayer(name) {
     }).done(function (response, textStatus, xhr) {
         if (xhr.status == 200) {
             jQuery.data(document.body, 'playername', name);
-            $('ul#chattiruutu').append("<li>"+name + " joinasi peliin.</li>");
+            $('ul#chattiruutu').append("<li><i>"+name + " joinasi peliin.</i></li>");
             console.log('Created player ' + name);
         }
     }).fail(function (response, textStatus, xhr) {
@@ -79,7 +79,7 @@ function checkName() {
 $(document).ready(function () {
     getGuesses('');
     $('#arvaussyotto').val('Nimi tähän ja menoksi!');
-    $('#button').live("click", function (event) {
+    $('#arvaussyotto').live("click", function (event) {
         $('#arvaussyotto').val("");
     });
     $("#arvaussyotto").keyup(function(event){
