@@ -31,7 +31,6 @@ function createPlayer(name) {
     }).done(function (response, textStatus, xhr) {
         if (xhr.status == 200) {
             jQuery.data(document.body, 'playername', name);
-            $('ul#chattiruutu').append("<li><i>"+name + " joinasi peliin.</i></li>");
             console.log('Created player ' + name);
         }
     }).fail(function (response, textStatus, xhr) {
