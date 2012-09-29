@@ -140,7 +140,7 @@ function reDraw() {
 }
 
 function checkForGames() {
-    if ($.cookie('canvasid') === null) {
+    if ($.cookie('canvasid') !== true) {
         getGameID();
     }
 }
