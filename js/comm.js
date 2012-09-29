@@ -152,6 +152,7 @@ $(document).ready(function () {
      */
     
     if (!$.cookie('playername')) {
+        console.log('playername was "' + !$.cookie('playername') + '". Asking for a name.');
         $('#arvaussyotto').val('Nimi tähän ja menoksi!');
     }
     $('#arvaussyotto').focus(function (event) {
