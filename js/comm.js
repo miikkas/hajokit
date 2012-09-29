@@ -9,8 +9,8 @@ function sendGuess(guessword) {
      * and canvas ID.
      */
     
-    var name = jQuery.data(document.body, 'playername');
-    var canvasid = jQuery.data(document.body, 'canvasid');
+    var name = $.cookie('playername');
+    var canvasid = $.cookie('canvasid');
     console.log('"' + name + '" is guessing ' + guessword);
     var guess = JSON.stringify({
         "playername": name, 
