@@ -65,6 +65,7 @@ function getDiff(id, timestamp) {
         else {
             console.log(xhr.status + ' occurred while getting the latest paths.');
         }
+    view.draw();
     });
 }
 
