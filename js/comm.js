@@ -7,7 +7,8 @@
             dataType: "text", 
             data: guess
         }).fail(function (response, textStatus, xhr) {
-            console.log('Failed to send message: ' + new String(response) + ', ' + textStatus);
+            $.each(response, function(key,valueObj){
+                console.log(key + ', ' + valueObj);
             //TO-DO: resend?
         });
     }
@@ -41,7 +42,7 @@ function getGuesses(timestamp) {
 }
 
 $(document).ready(function () {
-    getGuesses('');
+    //getGuesses('');
     var player = 'gunther';
     $("#arvaussyotto").keyup(function(event){
         if(event.keyCode == 13){
