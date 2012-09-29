@@ -43,13 +43,13 @@ h1 {
   font-family: 
 }
 
-.canvasid {
+#canvasnimi {
   position:absolute;
   left:20px;
   top:170px;
 }
 
-.arvaussyotto {
+#arvaussyotto {
   position:absolute;
   left:570px;
   top:770px;
