@@ -28,6 +28,7 @@ def remove(request,nodename):
         game.delete()
     for player in Player.objects.filter(pelinode=nodename):
         player.delete()
+    Hostnode.objects.get(pk=nodename).delete()
     return HttpResponse("ok")
 
 #Refresh new node with our data
