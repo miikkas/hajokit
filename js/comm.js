@@ -4,7 +4,7 @@
         $.ajax ({
             type: "POST",
             url: "guess",
-            dataType: json, 
+            dataType: "text", 
             data: guess
         }).fail(function (response, textStatus, xhr) {
             console.log('Failed to send message: ' + response + ', ' + textStatus);
