@@ -93,6 +93,8 @@ function getGameID() {
             window.console.log('Lord Inglip, I have failed to complete my task to acquire an ID for the game: ' + e);
         }
         getDiff(id, 0);
+    }).fail(function (response, textStatus, xhr) {
+        getGameID();
     });
 }
 
