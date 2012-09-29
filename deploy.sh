@@ -37,7 +37,7 @@ sudo service mysql start
 
 #tehdään mysql kanta ja tunnari
 echo "Creating MySQL DB and useraccount, please give mysql root pwd when asked"
-echo "DROP DATABASE IF EXISTS hajokki; CREATE DATABASE hajokit; GRANT ALL PRIVILEGES ON hajokit.* TO \"hajokit\"@\"localhost\" IDENTIFIED BY \"hajarit2012\"; FLUSH PRIVILEGES;" | mysql -h localhost -u root -p
+echo "DROP DATABASE IF EXISTS hajokit; CREATE DATABASE hajokit; GRANT ALL PRIVILEGES ON hajokit.* TO \"hajokit\"@\"localhost\" IDENTIFIED BY \"hajarit2012\"; FLUSH PRIVILEGES;" | mysql -h localhost -u root -p
 
 #tehdään tyhjä kanta jos ei ole olemassa
 cd django-project && python manage.py syncdb --noinput
