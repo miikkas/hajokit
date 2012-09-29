@@ -119,10 +119,11 @@ def newplayer(request,playername,player_uuid=None,nodename=platform.node()+".loc
     if player_uuid is None:
        player_uuid = uuid.uuid4()
     pelinodeid = HostNode.objects.get(hostname=nodename)
-    pelaaja = Player.objects.get_or_create(nimi=playername,pelinode=pelinodeid,uuid=player_uuid)[0]
-    print type(str(player_uuid))
-    print pelaaja
-    print player_uuid
+    try:
+       pelaaja = Players.objects.get(nimi=playername)
+       return HttpResponse("already there")
+    except Players.DoestNotExists:
+       pelaaja = Player(nimi=playername,pelinode=pelinodeid,uuid=player_uuid)
     print("Creating player %s uuid %s" %(playername,player_uuid))
     pelaaja.save()
     replicate(request,nodename, player_uuid)
