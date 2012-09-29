@@ -201,7 +201,11 @@ def guesses(request, timestamp = 0):
 def guess(request):
     """For HTTP POSTing a guess to the current game, JSON encoded(?)."""
     if request.method == "POST":
-      print request.body
+      parametrit = simplejson.dumps(request.body)
+      player = Player.objects.get(nimi=parametrit['playername'])
+      game_id = parametrit['canvas']
+      guess = new Guess(pelaaja=player,peli=game_id,arvaus=parametrit['guess'])
+      guess.save()
       return HttpResponse("ok")
     return HttpResponse("not ok, use POST")
 

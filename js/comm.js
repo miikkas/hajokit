@@ -1,8 +1,10 @@
 ﻿function sendGuess(guessword) {
     var name = jQuery.data(document.body, 'playername');
+    var canvasid = jQuery.data(document.body, 'canvasid');
     var guess = JSON.stringify({
         "playername": name, 
-        "guess": guessword
+        "guess": guessword,
+        "canvas": canvasid
     });
     $.ajax ({
         type: "POST",
