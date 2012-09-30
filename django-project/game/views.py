@@ -62,7 +62,7 @@ def refresh(request,nodename):
             jsondata = simplejson.dumps({"color":path.color,"size":path.size,"segments":[{"pointx":path.pointx,"pointy":path.pointy,"handleInx":path.handleInx,"handleIny":path.handleIny,"handleOutx":path.handleOutx,"handleOuty":path.handleOuty}]})
             print "Replicating canvas %s data:%s"%(game.uuid, simplejson.dumps(jsondata) )
             try:
-              newcanvas = urllib2.urlopen("http://%s:%d%s/canvas/%s/" %(node.hostname,node.port,node.path,urllib.quote(game.uuid)),urllib.quote_plus(jsondata)).read()
+              newcanvas = urllib2.urlopen("http://%s:%d%s/canvas/%s/" %(node.hostname,node.port,node.path,urllib.quote(game.uuid)),urllib.quote(jsondata)).read()
             except urllib2.HTTPError as e:
               print "HTTPError on canvas replication: %s" % (e.read())
     print "all done"
@@ -82,7 +82,7 @@ def replicate(request, nodename=platform.node()+".local", uuid=""):
         if not len(request.body):
          newplayer = urllib2.urlopen("http://%s:%d%s%s/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(request.path_info),uuid,platform.node()+".local")).read()
         else: #HTTP POST
-         newplayer = urllib2.urlopen("http://%s:%d%s%s" %(node.hostname,node.port,node.path,urllib.quote(request.path_info)),urllib.quote_plus(request.body)).read()
+         newplayer = urllib2.urlopen("http://%s:%d%s%s" %(node.hostname,node.port,node.path,urllib.quote(request.path_info)),urllib.quote(request.body)).read()
       except urllib2.HTTPError as e:
         print("HTTPError from %s: %d body:%s" % (node.hostname,e.code,e.read()))
 
