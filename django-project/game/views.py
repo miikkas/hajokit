@@ -96,7 +96,7 @@ def index(request):
 #Create game with given uuid or generate uuid
 def newgame(request, nodename=platform.node()+".local", game_uuid=None):
     """ Request new game to be started """
-    pelinode = HostNode.objects.get(hostname=nodename)
+    pelinode = get_object_or_404(HostNode,hostname=nodename)
     if game_uuid is None:
        game_uuid = uuid.uuid4()
        print("UUID created as %s" %(game_uuid))
