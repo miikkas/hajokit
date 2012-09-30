@@ -16,6 +16,7 @@ function checkIfPlayerExists(name) {
     }).error(function (xhr, textStatus, error) {
         if (xhr.status == 404) {
             console.log('Player name "' + name + '" was not found. Creating a new one.');
+            createPlayer(name);
         }
     });
 }
@@ -74,11 +75,9 @@ function createPlayer(name) {
             $.cookie('playername', $.trim(name), { expires: 7 });
             $('.painikkeet').prepend($.trim(name));
         }
-    }).fail(function (response, textStatus, xhr) {
-        $.each(response, function(key,valueObj){
-            console.log(key + ', ' + valueObj);
-        });
-        //TO-DO: resend?
+    }).fail(function (xhr, textStatus, error) {
+        console.log('Failed to create new player "' + $.trim(name) + '". Attempting again.');
+        createPlayer(name);
     });
 }
 
