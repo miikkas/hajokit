@@ -118,7 +118,7 @@ function getGameID() {
         getDiff(id, 0);
     }).fail(function (response, textStatus, xhr) {
         // If there were no ID's, create a new game.
-        getGameID();
+        newGame();
     });
 }
 
