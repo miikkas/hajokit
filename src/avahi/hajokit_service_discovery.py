@@ -142,7 +142,12 @@ def service_resolved(*args):
     log("Service resolved")
     amount=0
     try:
+     conn.commit()
      cursor.execute("SELECT * FROM game_hostnode where hostname = %s",(args[2]+"."+args[4],))
+     try:
+       amount = len(cursor.fetchall())
+     except Exception as e:
+       log(str(e))
      amount=cursor.rowcount
      log(str(cursor._executed))
     except Exception as e:
