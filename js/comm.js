@@ -11,9 +11,8 @@ function checkIfPlayerExists(name) {
     
     $.ajax ({
         type: "POST",
-        url: "guess/",
-        dataType: "text", 
-        data: guess
+        url: "player/" + name,
+        dataType: "text"
     }).done(function (response, textStatus, xhr) {
         if (xhr.status == 404) {
             console.log('"' + name + '" was not found. Creating a new player.');
