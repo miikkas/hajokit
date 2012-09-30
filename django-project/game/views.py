@@ -123,6 +123,10 @@ def endgame( request, gameid, nodename=platform.node()+".local"):
     replicate(request,nodename)
     return HttpResponse(serializers.serialize("json", Game.objects.all(), ensure_ascii=False ) )
 
+def player(request, playername ):
+    player = get_object_or_404(Player,nimi=playername)
+    return HttpResponse( serializers.serialize("json", player ) )
+
 
 #Create new player with given name and optionally given uuid/node where player is connected
 def newplayer(request,playername,player_uuid=None,nodename=platform.node()+".local"):
