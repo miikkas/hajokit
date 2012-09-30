@@ -140,16 +140,16 @@ def entry_group_state_changed( state, error):
 #Discovery parts, we have found service, check if it's allready in DB and if not, add it and notify django
 def service_resolved(*args):
     log("Service resolved")
+    amount=0
     try:
      cursor.execute("SELECT * FROM game_hostnode where hostname = %s",(args[2]+"."+args[4],))
+     amount=cursor.rowcount
      log(str(cursor._executed))
     except Exception as e:
-     log("WTf, DB is gone or?")
-     stop()
-     stop()
-     exit(1)
-    log("found :"+str(cursor.rowcount)+" entries")
-    if cursor.rowcount == 0:
+     log("WTf, DB is gone or?" + str(e))
+     return
+    log("found :"+str(amount)+" entries")
+    if amount == 0:
         txt = dict(item.split('=') for item in avahi.txt_array_to_string_array(args[9]))
         serviceentry = (args[2]+"."+args[4],args[8],txt["path"])
         log("New entry to DB:"+args[2]+"."+args[4])
