@@ -84,7 +84,7 @@ function newGame() {
             var result_json = jQuery.parseJSON(response);
             id = result_json[0].pk;
             // Store the canvas id so that it can be used elsewhere.
-            $.cookie('canvasid', id);
+            $.cookie('canvasid', id, { expires: 7 });
         } catch (e) {
             console.log('Failed to find a game, attempting again.');
         }
@@ -111,7 +111,7 @@ function getGameID() {
             id = result_json[0].fields.canvas;
             // Store the canvas id into a cookie so that it 
             // can be used elsewhere.
-            $.cookie('canvasid', id);
+            $.cookie('canvasid', id, { expires: 7 });
         } catch (e) {
             console.log('Failed to find a game, creating a new one.');
         }

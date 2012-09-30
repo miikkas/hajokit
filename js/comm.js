@@ -50,7 +50,7 @@ function createPlayer(name) {
         if (xhr.status == 200) {
             jQuery.data(document.body, 'playername', $.trim(name) );
             console.log('Created player ' + name);
-            $.cookie('playername', name);
+            $.cookie('playername', name, { expires: 7 });
         }
     }).fail(function (response, textStatus, xhr) {
         $.each(response, function(key,valueObj){
