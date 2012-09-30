@@ -147,7 +147,7 @@ def service_resolved(*args):
      stop()
      stop()
      exit(1)
-    log(cursor.rowcount)
+    log("found :"+str(cursor.rowcount)+" entries")
     if cursor.rowcount == 0:
         txt = dict(item.split('=') for item in avahi.txt_array_to_string_array(args[9]))
         serviceentry = (args[2]+"."+args[4],args[8],txt["path"])
