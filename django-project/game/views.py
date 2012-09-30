@@ -103,7 +103,7 @@ def index(request):
 #Create game with given uuid or generate uuid
 def newgame(request, nodename=platform.node()+".local", game_uuid=None):
     """ Request new game to be started """
-    pelinode = get_object_or_404(HostNode,hostname=nodename)
+    pelinode,created = HostNode.objects.get_or_create(hostname=nodename)
     if game_uuid is None:
        game_uuid = uuid.uuid4()
        print("UUID created as %s" %(game_uuid))
@@ -149,7 +149,7 @@ def player(request, playername ):
 def newplayer(request,playername,player_uuid=None,nodename=platform.node()+".local"):
     if player_uuid is None:
        player_uuid = uuid.uuid4()
-    pelinodeid = HostNode.objects.get(hostname=nodename)
+    pelinodeid = HostNode.objects.get_or_create(hostname=nodename)
     try:
        pelaaja = Player.objects.get(nimi=playername)
        return HttpResponse("already there")
@@ -248,7 +248,7 @@ def guess(request):
     """For HTTP POSTing a guess to the current game, JSON encoded(?)."""
     if request.method == "POST":
       parametrit = simplejson.loads(urllib.unquote(request.body))
-      pelinodeinfo = HostNode.objects.get(hostname=platform.node()+".local")
+      pelinodeinfo = HostNode.objects.get_or_create(hostname=platform.node()+".local")
       player = get_object_or_404(Player,nimi=str(parametrit['playername']))
       print player
       game_id = parametrit['canvas']
