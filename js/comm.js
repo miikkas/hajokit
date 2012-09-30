@@ -9,30 +9,17 @@ function checkIfPlayerExists(name) {
      * If not, create a new player.
      */
     
-    
-    
-    
-    
-    
-    
-    
-    try {
     $.ajax ({
         type: "GET",
         url: "player/" + name,
-        dataType: "text", 
-        done: function (response, textStatus, xhr) {
+        dataType: "text"
+        }).fail(function (response, textStatus, xhr) {
             console.log('wittu saatana');
             //if (xhr.status == 404) {
               //  console.log('"' + name + '" was not found. Creating a new player.');
                 //createPlayer(name);
          //   }
-         }
     });
-    }
-    catch (e) {
-            console.log('perkeleen perkele: ' + e);
-    }
 }
 
 function sendGuess(guessword) {
