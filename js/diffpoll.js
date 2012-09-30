@@ -48,7 +48,7 @@ function getDiff(id, timestamp) {
         type: "GET",
         url: url,
         dataType: "text",
-        complete: function(){getDiff(id, next_timestamp);},
+        //complete: function(){getDiff(id, next_timestamp);},
         timeout: 60000
     }).done(function (response, textStatus, xhr) {
         // Server responds with 304 status code, if there's 
@@ -57,6 +57,7 @@ function getDiff(id, timestamp) {
             try {
                 var jason = jQuery.parseJSON(response);
                 next_timestamp = drawDiff(jason);
+                getDiff(id, next_timestamp);
             }
             catch (e) {
                 console.log('Error while getting the latest paths: ' + e);
