@@ -9,16 +9,18 @@ function checkIfPlayerExists(name) {
      * If not, create a new player.
      */
     
-    $.ajax ({
-        type: "GET",
-        url: "player/" + name,
-        dataType: "text"
-    }).error(function (xhr, textStatus, error) {
-        if (xhr.status == 404) {
-            console.log('Player name "' + name + '" was not found. Creating a new one.');
-            createPlayer(name);
-        }
-    });
+    if (name !== null) {
+        $.ajax ({
+            type: "GET",
+            url: "player/" + name,
+            dataType: "text"
+        }).error(function (xhr, textStatus, error) {
+            if (xhr.status == 404) {
+                console.log('Player name "' + name + '" was not found. Creating a new one.');
+                createPlayer(name);
+            }
+        });
+    }
 }
 
 function sendGuess(guessword) {
