@@ -16,6 +16,7 @@ function checkIfPlayerExists(name) {
     }).error(function (xhr, textStatus, error) {
         if (xhr.status == 404) {
             console.log('Player name "' + name + '" was not found. Creating a new one.');
+        }
     });
 }
 
