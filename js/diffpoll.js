@@ -114,6 +114,7 @@ function getGameID() {
             $.cookie('canvasid', id, { expires: 7 });
         } catch (e) {
             console.log('Failed to find a game, creating a new one.');
+            newGame();
         }
         getDiff(id, 0);
     }).fail(function (response, textStatus, xhr) {
