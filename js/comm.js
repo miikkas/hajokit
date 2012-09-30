@@ -12,12 +12,12 @@ function checkIfPlayerExists(name) {
     $.ajax ({
         type: "GET",
         url: "player/" + name,
-        dataType: "text"
-    }).complete(function (response, textStatus, xhr) {
-        if (xhr.status == 404) {
-            console.log('"' + name + '" was not found. Creating a new player.');
-            createPlayer(name);
-        }
+        dataType: "text", 
+        complete: function (response, textStatus, xhr) {
+            if (xhr.status == 404) {
+                console.log('"' + name + '" was not found. Creating a new player.');
+                //createPlayer(name);
+            }
     });
 }
 
