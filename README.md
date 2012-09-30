@@ -6,6 +6,7 @@ Distributed Systems course work, team Hajokit
 Table of Content
 ----------------
 - Brief Description
+- Installation
 - Service Discovery
 - Drawing
 - Guessing
@@ -38,6 +39,14 @@ On chat functionality, the web page first asks a user name and creates a user ac
 The user account / name is stored in the browser as a cookie but may be lost when the 
 user restarts the browser. Canvas and chat content is stored in the nodes' db and is
 persistent over browser or web server restarts.
+
+Installation
+------------
+
+Root of this directory is deploy.sh that checks/install needed ubuntu packages and installs
+django 1.4.1 and MySQL DB database that is used. /etc/init.d/hajokit-zeroconf is installed
+to start SD-module. Currently init-script isn't able to stop the SD-module. Deploy-script also
+configures apache to server django setup as default content.
 
 Service Discovery
 -----------------
