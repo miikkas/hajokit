@@ -63,7 +63,6 @@ function segmentsToObject(segments, closed) {
             handleOuty: segments[0].handleOut.y
         };
     }
-    console.log('turned segments into an object');
     return segObj;
 }
 
@@ -79,7 +78,6 @@ function pathToObject(pathtosend, color, size, closed) {
         size: size, 
         segments: segObj
     };
-    console.log('turned a path into an object');
     return diffObj;
 }
 
@@ -89,7 +87,6 @@ function sendDiff(drawnpath, color, size, closed) {
      * tool color and size.
      */
     
-    console.log('gon send a path and then have some taters n mustard');
     var id = $.cookie('canvasid');
     if (id !== null) {
         var diff = JSON.stringify(pathToObject(drawnpath, color, size, closed));
@@ -144,98 +141,102 @@ window.onload = function() {
     eraser = new Tool();
     var path, eraserpath, startingpoint, rad;
 
-    $('#button').live("click", function (event) {
-        //clearCanvas();
-        alert($.cookie('canvasid') + ', ' + $.cookie('playername'));
-    });
+    if ($.cookie('canvasid') !== null) {
+        // Crudely chekc that there is a canvas id before 
+        // allowing the player to draw
+        $('#button').live("click", function (event) {
+            //clearCanvas();
+            alert($.cookie('canvasid') + ', ' + $.cookie('playername'));
+        });
 
-    // Igor, pencil!
-    pencil.onMouseDown = function(event) {
-        path = new Path();
-        path.strokeColor = drawcolor;
-        path.strokeWidth = drawsize;
-    };
-    pencil.onMouseDrag = function(event) {
-        path.add(event.point);
-    };
-    pencil.onMouseUp = function(event) {
-        path.simplify();
-        if (path.segments.length !== 0) {
-            sendDiff(path, drawcolor, drawsize, false);
-        }
-    };
-    
-    // Line
-    line.onMouseDown = function(event) {
-        path = new Path();
-        path.strokeColor = drawcolor;
-        path.strokeWidth = drawsize;
-        if (path.segments.length === 0) {
+        // Igor, pencil!
+        pencil.onMouseDown = function(event) {
+            path = new Path();
+            path.strokeColor = drawcolor;
+            path.strokeWidth = drawsize;
+        };
+        pencil.onMouseDrag = function(event) {
             path.add(event.point);
-        }
-        path.add(event.point);
-        startingpoint = event.point;
-    };
-    line.onMouseDrag = function(event) {
-        path.lastSegment.point = event.point;
-    };
-    line.onMouseUp = function(event) {
-        path.add(event.point);
-        if (startingpoint.getDistance(event.point, false) > 0) {
-            sendDiff(path, drawcolor, drawsize, false);
-        }
-    };
+        };
+        pencil.onMouseUp = function(event) {
+            path.simplify();
+            if (path.segments.length !== 0) {
+                sendDiff(path, drawcolor, drawsize, false);
+            }
+        };
+        
+        // Line
+        line.onMouseDown = function(event) {
+            path = new Path();
+            path.strokeColor = drawcolor;
+            path.strokeWidth = drawsize;
+            if (path.segments.length === 0) {
+                path.add(event.point);
+            }
+            path.add(event.point);
+            startingpoint = event.point;
+        };
+        line.onMouseDrag = function(event) {
+            path.lastSegment.point = event.point;
+        };
+        line.onMouseUp = function(event) {
+            path.add(event.point);
+            if (startingpoint.getDistance(event.point, false) > 0) {
+                sendDiff(path, drawcolor, drawsize, false);
+            }
+        };
 
-    // Circle
-    circle.onMouseDown = function(event) {
-        startingpoint = event.point;
-    };
-    circle.onMouseDrag = function(event) {
-        rad = startingpoint.getDistance(event.point, false);
-        path = new Path.Circle(startingpoint, rad);
-        path.strokeColor = drawcolor;
-        path.strokeWidth = drawsize;
-        path.removeOnDrag();
-    };
-    circle.onMouseUp = function(event) {
-        // No point in sending zero-size circles.
-        if (rad > 0) {
-            sendDiff(path, drawcolor, drawsize, true);
-        }
-        rad = 0;
-    };
+        // Circle
+        circle.onMouseDown = function(event) {
+            startingpoint = event.point;
+        };
+        circle.onMouseDrag = function(event) {
+            rad = startingpoint.getDistance(event.point, false);
+            path = new Path.Circle(startingpoint, rad);
+            path.strokeColor = drawcolor;
+            path.strokeWidth = drawsize;
+            path.removeOnDrag();
+        };
+        circle.onMouseUp = function(event) {
+            // No point in sending zero-size circles.
+            if (rad > 0) {
+                sendDiff(path, drawcolor, drawsize, true);
+            }
+            rad = 0;
+        };
 
 
-    // Rectangle
-    rect.onMouseDown = function(event) {
-        startingpoint = event.point;
-    };
-    rect.onMouseDrag = function(event) {
-        path = new Path.Rectangle(startingpoint, event.point);
-        path.strokeColor = drawcolor;
-        path.strokeWidth = drawsize;
-        path.removeOnDrag();
-    };
-    rect.onMouseUp = function(event) {
-        // No point in sending zero-size rects.
-        if (startingpoint.getDistance(event.point, false) > 0) {
-            sendDiff(path, drawcolor, drawsize, true);
-        }
-    };
+        // Rectangle
+        rect.onMouseDown = function(event) {
+            startingpoint = event.point;
+        };
+        rect.onMouseDrag = function(event) {
+            path = new Path.Rectangle(startingpoint, event.point);
+            path.strokeColor = drawcolor;
+            path.strokeWidth = drawsize;
+            path.removeOnDrag();
+        };
+        rect.onMouseUp = function(event) {
+            // No point in sending zero-size rects.
+            if (startingpoint.getDistance(event.point, false) > 0) {
+                sendDiff(path, drawcolor, drawsize, true);
+            }
+        };
 
-    // Eraser. Like pencil, but always white.
-    eraser.onMouseDown = function(event) {
-        eraserpath = new Path();
-        eraserpath.strokeWidth = drawsize;
-        eraserpath.strokeColor = 'white';
-    };
-    eraser.onMouseDrag = function(event) {
-        eraserpath.add(event.point);
-    };
-    eraser.onMouseUp = function(event) {
-        eraserpath.simplify();
-        if (eraserpath.segments.length !== 0) {
-            sendDiff(path, 'white', drawsize, false);
-        }
-    };
+        // Eraser. Like pencil, but always white.
+        eraser.onMouseDown = function(event) {
+            eraserpath = new Path();
+            eraserpath.strokeWidth = drawsize;
+            eraserpath.strokeColor = 'white';
+        };
+        eraser.onMouseDrag = function(event) {
+            eraserpath.add(event.point);
+        };
+        eraser.onMouseUp = function(event) {
+            eraserpath.simplify();
+            if (eraserpath.segments.length !== 0) {
+                sendDiff(path, 'white', drawsize, false);
+            }
+        };
+    }
 };

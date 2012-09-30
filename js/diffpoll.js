@@ -42,7 +42,7 @@ function getDiff(id, timestamp) {
      * polling.
      */
     
-    var next_timestamp=timestamp;
+    var next_timestamp = timestamp;
     var url = "canvas/" + id + "/" + timestamp;
     $.ajax ({
         type: "GET",
@@ -109,7 +109,8 @@ function getGameID() {
         try {
             var result_json = jQuery.parseJSON(response);
             id = result_json[0].fields.canvas;
-            // Store the canvas id so that it can be used elsewhere.
+            // Store the canvas id into a cookie so that it 
+            // can be used elsewhere.
             $.cookie('canvasid', id);
         } catch (e) {
             console.log('Failed to find a game, creating a new one.');
@@ -140,8 +141,12 @@ function reDraw() {
 }
 
 function checkForGames() {
+    /*
+     * Check if there is a cookie containing a canvas ID. 
+     * If not, try to get an ID from the server.
+     */
+    
     if ($.cookie('canvasid') !== true) {
-        console.log('canvasid was "' + $.cookie('canvasid') + '". Attempting to get one from the server');
         getGameID();
     }
 }
