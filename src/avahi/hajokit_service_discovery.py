@@ -101,11 +101,13 @@ def add_service():
         avahi.string_array_to_txt_array(serviceTXT))
     group.Commit()
 
+#if group is not none, reset it when service is resetted
 def remove_service():
     global group
     if not group is None:
         group.Reset()
 
+#basic server state to check if name collision happens, or service can be added
 def server_state_changed(state):
     if state == avahi.SERVER_COLLISION:
         log("Server collision, removing service")
@@ -114,10 +116,11 @@ def server_state_changed(state):
         log("Service running, adding service")
         add_service()
 
+#Name collision, generate new name and try again
 def entry_group_state_changed( state, error):
     global serviceName, server, rename_count
 
-
+    #Avahi tells that our hostname collided, generate new one
     if state == avahi.ENTRY_GROUP_COLLISION:
         rename_count -= 1
         log("Name collision")
@@ -134,7 +137,7 @@ def entry_group_state_changed( state, error):
         gobject.MainLoop().quit()
         return
 
-#Discovery parts
+#Discovery parts, we have found service, check if it's allready in DB and if not, add it and notify django
 def service_resolved(*args):
     try:
      cursor.execute("SELECT * FROM game_hostnode where hostname = %s",(args[2]+".local",))
@@ -158,6 +161,7 @@ def service_resolved(*args):
 def print_error(*args):
     log("Error:"+args)
 
+#Removing service, basicly notify django so it removed node info
 def remove_service( interface, protocol, name, stype, domain, flags):
 
     if flags & avahi.LOOKUP_RESULT_LOCAL:
@@ -169,12 +173,13 @@ def remove_service( interface, protocol, name, stype, domain, flags):
     except urllib2.HTTPError as e:
      log("Error on removal: %s"% (e.read()))
 
+
+#New service found, we'll add it when it is resolved.
 def new_service( interface, protocol, name, stype, domain, flags):
 
     if flags & avahi.LOOKUP_RESULT_LOCAL:
         pass
 
-    #Jos ei löydy kannasta, lisätään
     log("Adding service "+" ".join([name,stype,domain]))
     server.ResolveService(interface, protocol, name, stype,
             domain, avahi.PROTO_UNSPEC, dbus.UInt32(0),
