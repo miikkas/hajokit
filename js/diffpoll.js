@@ -69,7 +69,8 @@ function getDiff(id, timestamp) {
         view.draw();
     }).fail(function (xhr, textStatus, error) {
         $.deleteCookie('canvasid');
-        getGameID();
+        alert('shit went fucked');
+        //getGameID();
     });
 }
 
