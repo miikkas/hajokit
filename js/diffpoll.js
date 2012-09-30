@@ -67,7 +67,7 @@ function getDiff(timestamp) {
             console.log(xhr.status + ' occurred while getting the latest paths.');
         }
         view.draw();
-        getDiff();
+        //getDiff();
     }).fail(function (xhr, textStatus, error) {
         //$.removeCookie('canvasid');
         //alert('shit went fucked');
