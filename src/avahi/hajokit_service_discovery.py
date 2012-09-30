@@ -136,6 +136,10 @@ def entry_group_state_changed( state, error):
 
 #Discovery parts
 def service_resolved(*args):
+    try:
+     log(cursor.execute("SELECT * FROM game_hostnode where hostname = %s",(args[2]+".local",)))
+    except Exception as e:
+     log(e)
     if cursor.execute("SELECT * FROM game_hostnode where hostname = %s",(args[2]+".local",))==0:
         txt = dict(item.split('=') for item in avahi.txt_array_to_string_array(args[9]))
         serviceentry = (args[2]+".local",args[8],txt["path"])

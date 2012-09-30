@@ -25,12 +25,12 @@ from game.models import Game,Player,Guess
 from game.models import Canvas,Path
 
 #Remove all the data related to given node
+@transaction.commit_on_success
 def remove(request,nodename):
     for game in Game.objects.filter(pelinode=nodename):
         game.canvas.delete()
         game.delete()
-    for player in Player.objects.filter(pelinode=nodename):
-        player.delete()
+    Player.objects.filter(pelinode=nodename).delete():
     HostNode.objects.filter(pk=nodename).delete()
     return HttpResponse("ok")
 
