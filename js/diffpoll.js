@@ -36,14 +36,14 @@ function drawDiff(json) {
     return timestamp;
 }
 
-function getDiff(id, timestamp) {
+function getDiff(timestamp) {
     /*
      * Get a new path to be drawn from the server using long 
      * polling.
      */
     
     var next_timestamp = timestamp;
-    var url = "canvas/" + id + "/" + timestamp;
+    var url = "canvas/" + $.cookie('canvasid' + "/" + timestamp;
     $.ajax ({
         type: "GET",
         url: url,
@@ -57,7 +57,7 @@ function getDiff(id, timestamp) {
             try {
                 var jason = jQuery.parseJSON(response);
                 next_timestamp = drawDiff(jason);
-                getDiff(id, next_timestamp);
+                getDiff(next_timestamp);
             }
             catch (e) {
                 console.log('Error while getting the latest paths: ' + e);
@@ -74,7 +74,7 @@ function getDiff(id, timestamp) {
         //getGameID();
         console.log('Failed to retrieve latest paths. Waiting 10s and trying again.');
         setTimeout(function(){
-            getDiff();
+            getDiff(timestamp);
         }, 10000);
     });
 }
@@ -129,7 +129,7 @@ function getGameID() {
             console.log('Failed to find a game, creating a new one.');
             newGame();
         }
-        getDiff(id, 0);
+        getDiff(0);
     }).fail(function (xhr, textStatus, error) {
         // If there were no ID's, create a new game.
         console.log('No canvas ID\'s found. Attempting to create a new game.');
