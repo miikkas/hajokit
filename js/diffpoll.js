@@ -165,6 +165,9 @@ function checkForGames() {
         console.log('No canvas ID cookie found. Attempting to get one.');
         getGameID();
     }
+    else {
+        getDiff(0);
+    }
 }
 
 $(document).ready(function () {
