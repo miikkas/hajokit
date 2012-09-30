@@ -78,6 +78,7 @@ function getDiff(timestamp) {
             getDiff(timestamp);
         }, 10000);
     });
+    view.draw();
 }
 
 function newGame() {
