@@ -53,14 +53,14 @@ def refresh(request,nodename):
     for game in Game.objects.filter(pelinode=platform.node()+".local"):
         print("Replicating game %s to node %s"%(game.uuid,nodename))
         try:
-         newplayer = urllib2.urlopen("http://%s:%d%s/game/new/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(game.uuid),platform.node()+".local")).read()
+         newplayer = urllib2.urlopen("http://%s:%d%s/games/new/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(game.uuid),platform.node()+".local")).read()
         except urllib2.HTTPError as e:
          print "HTTPError on game replication: %s" %(e.read())
 
         jsondata=[]
 
         #Replicate the canvas data to new node
-        for path in game.canvas.path_set:
+        for path in game.canvas.path_set.all():
             jsondata.append({"color":path.color,"size":path.size,"segments":[{"pointx":path.pointx,"pointy":path.pointy,"handleInx":path.handleInx,"handleIny":path.handleIny,"handleOutx":path.handleOutx,"handleOuty":path.handleOuty}]})
         print "Replicating canvas %s data:%s"%(game.uuid,jsondata)
 
