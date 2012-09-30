@@ -31,7 +31,7 @@ def remove(request,nodename):
         game.canvas.delete()
         game.delete()
     Player.objects.filter(pelinode=nodename).delete()
-    HostNode.objects.filter(pk=nodename).delete()
+    HostNode.objects.filter(hostname=nodename).delete()
     return HttpResponse("ok")
 
 #Refresh new node with our data
