@@ -13,16 +13,9 @@ function checkIfPlayerExists(name) {
         type: "GET",
         url: "player/" + name,
         dataType: "text"
-    }).done(function (response) {
-        console.log('wittu done saatana');
-    }).fail(function (response, textStatus, xhr) {
-        console.log('wittu fail saatana: ' + textStatus + ', ' + xhr.status);
-    }).success(function (response) {
-        console.log('wittu success saatana: ' + textStatus + ', ' + xhr.status);
-    }).always(function (response, textStatus, xhr) {
-        console.log('wittu always saatana: ' + textStatus + ', ' + xhr.status);
     }).error(function (xhr, textStatus, error) {
-        console.log('wittu error saatana: ' + textStatus + ', ' + xhr.status);
+        if (xhr.status == 404) {
+            console.log('Player name "' + name + '" was not found. Creating a new one.');
     });
 }
 
