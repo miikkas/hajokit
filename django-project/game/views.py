@@ -53,7 +53,7 @@ def refresh(request,nodename):
     for player in Player.objects.filter(pelinode=platform.node()+".local"):
         print("Replicating player %s to node %s body %s"%(player,nodename,repr(request.body)))
         try:
-         newplayer = urllib2.urlopen("http://%s:%d%s/player/create/%s/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(player.name),player.uuid,platform.node()+".local")).read()
+         newplayer = urllib2.urlopen("http://%s:%d%s/player/create/%s/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(player.nimi),player.uuid,platform.node()+".local")).read()
         except urllib2.HTTPError as e:
          print "HTTPError on player replication: %s" %(e.read())
 
