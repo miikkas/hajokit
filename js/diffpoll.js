@@ -48,7 +48,7 @@ function getDiff(id, timestamp) {
         type: "GET",
         url: url,
         dataType: "text",
-        complete: function(){getDiff(id, next_timestamp);},
+        //complete: function(){getDiff(id, next_timestamp);},
         timeout: 60000
     }).done(function (response, textStatus, xhr) {
         // Server responds with 304 status code, if there's 
@@ -67,10 +67,15 @@ function getDiff(id, timestamp) {
             console.log(xhr.status + ' occurred while getting the latest paths.');
         }
         view.draw();
+        getDiff();
     }).fail(function (xhr, textStatus, error) {
-        $.removeCookie('canvasid');
-        alert('shit went fucked');
+        //$.removeCookie('canvasid');
+        //alert('shit went fucked');
         //getGameID();
+        console.log('Failed to retrieve latest paths. Waiting 10s and trying again.');
+        setTimeout(function(){
+            getDiff();
+        }, 10000);
     });
 }
 

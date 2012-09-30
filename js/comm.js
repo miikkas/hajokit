@@ -113,7 +113,7 @@ function getGuesses(timestamp) {
         type: "GET",
         url: url,
         dataType: "text",
-        complete: function(){getGuesses(next_timestamp);},
+        //complete: function(){getGuesses(next_timestamp);},
         timeout: 60000
     }).done(function (response, textStatus, xhr) {
         // Server responds with 304 status code, if there's 
@@ -123,6 +123,7 @@ function getGuesses(timestamp) {
                 console.log(response);
                 var jason = jQuery.parseJSON(response);
                 next_timestamp = addGuesses(jason);
+                getGuesses(next_timestamp);
             }
             catch (e) {
                 console.log('Error while getting the latest messages: ' + e);
@@ -131,6 +132,10 @@ function getGuesses(timestamp) {
         else {
             window.console.log(xhr.status + ' occurred while getting the latest messages.');
         }
+    }).fail(function (xhr, textStatus, error) {
+        setTimeout(function(){
+            getGuesses(timestamp);
+        }, 10000);
     });
 }
 
