@@ -66,7 +66,10 @@ function getDiff(id, timestamp) {
         else {
             console.log(xhr.status + ' occurred while getting the latest paths.');
         }
-    view.draw();
+        view.draw();
+    }).fail(function (xhr, textStatus, error) {
+        $.deleteCookie('canvasid');
+        getGameID();
     });
 }
 
@@ -88,12 +91,13 @@ function newGame() {
             $.cookie('canvasid', id, { expires: 7 });
             console.log('Created a new goddamn game with canvas id ' + $.cookie('canvasid'));
         } catch (e) {
-            console.log('Failed to find a game, attempting again.');
+            console.log('Failed to find a game.');
         }
         //getDiff(id, 0);
     }).fail(function (xhr, textStatus, error) {
         // Try again if creating a game failed.
-        newGame();
+        console.log('Failed to find a game.');
+        alert('There was a problem loading the canvas. Please try refreshing the page.');
     });
 }
 
@@ -111,6 +115,7 @@ function getGameID() {
         try {
             var result_json = jQuery.parseJSON(response);
             id = result_json[0].fields.canvas;
+            console.log('Got canvas ID ' + id);
             // Store the canvas id into a cookie so that it 
             // can be used elsewhere.
             $.cookie('canvasid', id, { expires: 7 });
@@ -121,6 +126,7 @@ function getGameID() {
         getDiff(id, 0);
     }).fail(function (xhr, textStatus, error) {
         // If there were no ID's, create a new game.
+        console.log('No canvas ID\'s found. Attempting to create a new game.');
         newGame();
     });
 }
@@ -150,6 +156,7 @@ function checkForGames() {
      */
     
     if ($.cookie('canvasid') !== true) {
+        console.log('No canvas ID cookie found. Attempting to get one.');
         getGameID();
     }
 }
