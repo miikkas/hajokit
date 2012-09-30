@@ -139,9 +139,10 @@ def entry_group_state_changed( state, error):
 
 #Discovery parts, we have found service, check if it's allready in DB and if not, add it and notify django
 def service_resolved(*args):
-    log("Service resolved, importing")
+    log("Service resolved")
     try:
-     cursor.execute("SELECT * FROM game_hostnode where hostname = %s",(args[2]+".local",))
+     cursor.execute("SELECT * FROM game_hostnode where hostname = %s",(args[2]+"."+args[4],))
+     log(str(cursor._executed))
     except Exception as e:
      log("WTf, DB is gone or?")
      stop()
