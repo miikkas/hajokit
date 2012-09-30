@@ -15,14 +15,14 @@ function checkIfPlayerExists(name) {
         dataType: "text"
     }).done(function (response) {
         console.log('wittu done saatana');
-    }).fail(function (response) {
-        console.log('wittu fail saatana');
+    }).fail(function (response, textStatus, xhr) {
+        console.log('wittu fail saatana: ' + textStatus + ', ' + xhr.status);
     }).success(function (response) {
-        console.log('wittu success saatana');
+        console.log('wittu success saatana: ' + textStatus + ', ' + xhr.status);
     }).always(function (response) {
-        console.log('wittu always saatana');
+        console.log('wittu always saatana: ' + textStatus + ', ' + xhr.status);
     }).error(function (response) {
-        console.log('wittu error saatana');
+        console.log('wittu error saatana: ' + textStatus + ', ' + xhr.status);
     });
 }
 
