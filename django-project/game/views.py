@@ -30,7 +30,7 @@ def remove(request,nodename):
     for game in Game.objects.filter(pelinode=nodename):
         game.canvas.delete()
         game.delete()
-    Player.objects.filter(pelinode=nodename).delete():
+    Player.objects.filter(pelinode=nodename).delete()
     HostNode.objects.filter(pk=nodename).delete()
     return HttpResponse("ok")
 
