@@ -65,7 +65,7 @@ def refresh(request,nodename):
         print "Replicating canvas %s data:%s"%(game.uuid,jsondata)
 
         try:
-         newcanvas = urllib2.urlopen("http://%s:%d%s/canvas/%s/" %(node.hostname,node.port,node.path,urllib.quote(game_uuid.name)),jsondata).read()
+         newcanvas = urllib2.urlopen("http://%s:%d%s/canvas/%s/" %(node.hostname,node.port,node.path,urllib.quote(game.uuid)),jsondata).read()
         except urllib2.HTTPError as e:
          print "HTTPError on canvas replication: %s" % (e.read())
     print "all done"
