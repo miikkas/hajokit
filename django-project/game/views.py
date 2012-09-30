@@ -24,7 +24,7 @@ from game.models import HostNode
 from game.models import Game,Player,Guess
 from game.models import Canvas,Path
 
-#Remove all the data related to given node
+#Remove all the data related to given node, called from SD-module, no access control now
 @transaction.commit_on_success
 def remove(request,nodename):
     if nodename != platform.node()+".local":
@@ -42,7 +42,7 @@ def remove(request,nodename):
      HostNode.objects.all().delete()
     return HttpResponse("ok")
 
-#Refresh new node with our data
+#Refresh new node with our data, called from SD module, replicate our data to new node
 def refresh(request,nodename):
     node = HostNode.objects.get(pk=nodename)
     #If node is ourself, just return
@@ -94,9 +94,11 @@ def replicate(request, nodename=platform.node()+".local", uuid=""):
       except urllib2.HTTPError as e:
         print("HTTPError from %s: %d body:%s" % (node.hostname,e.code,e.read()))
 
+#Index page, our drawing board
 def index(request):
     """For HTTP GETting the index page of the application."""
     return render_to_response('piirra_ja_arvaa.html',{})
+
 
 #Create game with given uuid or generate uuid
 def newgame(request, nodename=platform.node()+".local", game_uuid=None):
@@ -114,7 +116,7 @@ def newgame(request, nodename=platform.node()+".local", game_uuid=None):
     replicate(request,nodename, game_uuid)
     return HttpResponse(serializers.serialize("json", [uus_peli], ensure_ascii=False ) )
 
-#Join player to some game
+#Join player to some game, not actually used now
 def joingame( request, playerid, gameid, nodename=platform.node()+".local" ):
     peli = Game.objects.get(pk=gameid)
     pelaaja = Player.objects.get(pk=playerid)
@@ -137,6 +139,7 @@ def endgame( request, gameid, nodename=platform.node()+".local"):
     replicate(request,nodename)
     return HttpResponse(serializers.serialize("json", Game.objects.all(), ensure_ascii=False ) )
 
+#Check if player exists or not
 def player(request, playername ):
     player = get_object_or_404(Player,nimi=playername)
     return HttpResponse( serializers.serialize("json", [player] ) )
@@ -157,14 +160,18 @@ def newplayer(request,playername,player_uuid=None,nodename=platform.node()+".loc
     replicate(request,nodename, player_uuid)
     return HttpResponse(serializers.serialize("json", [pelaaja], ensure_ascii=False ) )
 
+#List all players
 def players(request):
     """For HTTP GETting the data of the current players, JSON encoded."""
     return HttpResponse(serializers.serialize("json", Player.objects.all(), ensure_ascii=False ) )
 
+#List all canvases
 def canvasall(request):
     """For HTTP GETting the all canvas, JSON encoded."""
     return HttpResponse(serializers.serialize("json", Canvas.objects.all(), ensure_ascii=False ))
 
+#Import set of paths from browser, commit all at once so polling doens't screw up stuff and
+# delivers all the pats
 @transaction.commit_on_success
 def path_import( canvas, parametrit ):
     epoch = time.time()
@@ -185,7 +192,7 @@ def path_import( canvas, parametrit ):
     canvas.save()
     return
 
-#Give all the paths for given canvas from timestamp onward
+#Give all the paths for given canvas from timestamp onward. Poll every 0.2sec if there is data to deliver
 @csrf_exempt
 def canvasdiff( request, canvas_id, timestamp = 0 ):
     canvas = get_object_or_404(Canvas,pk=canvas_id)
@@ -235,6 +242,7 @@ def guesses(request, canvas_id=1,timestamp = 0):
         response.append({"player":pelaaja.nimi,"guess":guess.arvaus,"timestamp":guess.epoch})
     return HttpResponse( simplejson.dumps(response) )
 
+#Take textual guess (chat message) from user as POST json data
 @csrf_exempt
 def guess(request):
     """For HTTP POSTing a guess to the current game, JSON encoded(?)."""
