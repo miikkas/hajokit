@@ -49,8 +49,9 @@ function createPlayer(name) {
     }).done(function (response, textStatus, xhr) {
         if (xhr.status == 200) {
             jQuery.data(document.body, 'playername', $.trim(name) );
-            console.log('Created player ' + name);
-            $.cookie('playername', name, { expires: 7 });
+            console.log('Created player ' + $.trim(name));
+            $.cookie('playername', $.trim(name), { expires: 7 });
+            $('.painikkeet').prepend($.trim(name));
         }
     }).fail(function (response, textStatus, xhr) {
         $.each(response, function(key,valueObj){
@@ -154,6 +155,9 @@ $(document).ready(function () {
     if ($.cookie('playername') === null) {
         console.log('playername was "' + $.cookie('playername') + '". Asking for a name.');
         $('#arvaussyotto').val('Nimi tähän ja menoksi!');
+    }
+    else {
+        $('.painikkeet').prepend($.cookie('playername'));
     }
     $('#arvaussyotto').focus(function (event) {
         if ($.cookie('playername') === null) {
