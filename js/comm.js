@@ -14,6 +14,7 @@ function checkIfPlayerExists(name) {
         url: "player/" + name,
         dataType: "text", 
         always: function (response, textStatus, xhr) {
+            console.log('wittu saatana');
             if (xhr.status == 404) {
                 console.log('"' + name + '" was not found. Creating a new player.');
                 //createPlayer(name);
