@@ -153,10 +153,13 @@ $(document).ready(function () {
      */
     
     if ($.cookie('playername') === null) {
+        // If there is no cookie containing a player name, 
+        // ask for one.
         console.log('playername was "' + $.cookie('playername') + '". Asking for a name.');
         $('#arvaussyotto').val('Nimi tähän ja menoksi!');
     }
     else {
+        // Make the name visible.
         $('.painikkeet').prepend($.cookie('playername'));
     }
     $('#arvaussyotto').focus(function (event) {
