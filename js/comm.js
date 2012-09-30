@@ -10,7 +10,7 @@ function checkIfPlayerExists(name) {
      */
     
     $.ajax ({
-        type: "POST",
+        type: "GET",
         url: "player/" + name,
         dataType: "text"
     }).done(function (response, textStatus, xhr) {
