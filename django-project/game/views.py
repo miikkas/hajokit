@@ -37,8 +37,10 @@ def remove(request,nodename):
 #Refresh new node with our data
 def refresh(request,nodename):
     node = HostNode.objects.get(pk=nodename)
+    #If node is ourself, just return
     if nodename == platform.node()+".local":
        return HttpResponse(serializers.serialize("json", [node], ensure_ascii=False ) )
+
     #create all the players we have
     for player in Player.objects.filter(pelinode=platform.node()+".local"):
         print("Replicating player %s to node %s body %s"%(player,nodename,repr(request.body)))
@@ -46,21 +48,28 @@ def refresh(request,nodename):
          newplayer = urllib2.urlopen("http://%s:%d%s/player/create/%s/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(player.name),player.uuid,platform.node()+".local")).read()
         except urllib2.HTTPError as e:
          print "HTTPError on player replication: %s" %(e.read())
+
+    #Replicate all the games we have that are originated in out node
     for game in Game.objects.filter(pelinode=platform.node()+".local"):
         print("Replicating game %s to node %s"%(game.uuid,nodename))
         try:
-         newplayer = urllib2.urlopen("http://%s:%d%s/game/new/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(game_uuid.name),platform.node()+".local")).read()
+         newplayer = urllib2.urlopen("http://%s:%d%s/game/new/%s/%s" %(node.hostname,node.port,node.path,urllib.quote(game.uuid),platform.node()+".local")).read()
         except urllib2.HTTPError as e:
          print "HTTPError on game replication: %s" %(e.read())
+
         jsondata=[]
+
         #Replicate the canvas data to new node
         for path in game.canvas.path__set:
             jsondata.append({"color":path.color,"size":path.size,"segments":[{"pointx":path.pointx,"pointy":path.pointy,"handleInx":path.handleInx,"handleIny":path.handleIny,"handleOutx":path.handleOutx,"handleOuty":path.handleOuty}]})
         print "Replicating canvas %s data:%s"%(game.uuid,jsondata)
+
         try:
          newcanvas = urllib2.urlopen("http://%s:%d%s/canvas/%s/" %(node.hostname,node.port,node.path,urllib.quote(game_uuid.name)),jsondata).read()
         except urllib2.HTTPError as e:
          print "HTTPError on canvas replication: %s" % (e.read())
+    print "all done"
+    #all done
     return HttpResponse(serializers.serialize("json", [node], ensure_ascii=False ) )
 
 #Replicates request to all the other nodes if needed
