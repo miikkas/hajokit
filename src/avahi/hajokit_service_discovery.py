@@ -142,7 +142,10 @@ def service_resolved(*args):
         log("New entry to DB:"+args[2]+" ")
         cursor.execute('INSERT INTO game_hostnode(hostname,port,path) VALUES(%s,%s,%s)', serviceentry)
         conn.commit()
-        log(urllib2.urlopen("http://localhost/refresh/%s" %(args[2]+".local")).read())
+        try:
+         log(urllib2.urlopen("http://localhost/refresh/%s" %(args[2]+".local")).read())
+        except urllib2.HTTPError as e:
+         log("Error on refresh: %s"% (e.read()))
 
 
 def print_error(*args):
@@ -154,7 +157,10 @@ def remove_service( interface, protocol, name, stype, domain, flags):
         pass
 
     log("Removing service:"+name)
-    log(urllib2.urlopen("http://localhost/remove/%s" %(name+".local")).read())
+    try:
+     log(urllib2.urlopen("http://localhost/remove/%s" %(name+".local")).read())
+    except urllib2.HTTPError as e:
+     log("Error on removal: %s"% (e.read()))
 
 def new_service( interface, protocol, name, stype, domain, flags):
 
