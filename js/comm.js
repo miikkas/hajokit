@@ -73,7 +73,7 @@ function createPlayer(name) {
             jQuery.data(document.body, 'playername', $.trim(name) );
             console.log('Created player ' + $.trim(name));
             $.cookie('playername', $.trim(name), { expires: 7 });
-            $('.painikkeet').prepend($.trim(name));
+            $('#pelaajannimi').empty().prepend($.trim(name));
         }
     }).fail(function (xhr, textStatus, error) {
         console.log('Failed to create new player "' + $.trim(name) + '". Attempting again.');
