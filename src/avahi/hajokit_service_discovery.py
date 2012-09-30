@@ -74,12 +74,10 @@ def stop(signum, frame):
 def log(*args):
     global LOGFILE
     if LOGFILE is None:
-       LOGFILE = open("/tmp/"+serviceName+"_avahi_daemon.log","a")
+       LOGFILE = open("/var/log/hajokit_SD_"+serviceName+".log","a")
     LOGFILE.write(time.ctime()+" ")
     LOGFILE.write("".join(args))
     LOGFILE.write("\n")
-    LOGFILE.close()
-    LOGFILE = None
 
 #Adding avahi service for http service
 def add_service():
@@ -177,11 +175,12 @@ def new_service( interface, protocol, name, stype, domain, flags):
 if __name__ == "__main__":
    #Change directory to /tmp/ and user to nobody, as we don't need any extra privileges
    os.chdir("/tmp/")
-   os.setgid(getpwnam('nobody')[3])
-   os.setuid(getpwnam('nobody')[2])
    retCode = createDaemon()
 
    log("Daemonized with code "+str(retCode)+" setting up avahi")
+   log("Dropping uid to nobody:nobody")
+   os.setgid(getpwnam('nobody')[3])
+   os.setuid(getpwnam('nobody')[2])
    DBusGMainLoop( set_as_default=True )
    bus = dbus.SystemBus()
    
