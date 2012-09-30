@@ -91,6 +91,52 @@ messages that appear after that certain timestamp.
 If the server doesn't get any new messages within a 10min period, it returns 304 to the browser and 
 the browser-code can restart the query. The connection doesn't utilize HTTPS or any other encryption method.
 
+The API consists of the following URLs:
+
+players/ : GET request. Lists all current players. Not used. Example output: [{"pk": "76d09e84-2368-402d-89e2-2621d059ae40", "model": "game.player", "fields": {"nimi": "jee", "pelinode": "ubuntunode3.local"}}, {"pk": "b1ca7495-3154-4128-b18d-61c35c27d579", "model": "game.player", "fields": {"nimi": "testiukko", "pelinode": "ubuntunode3.local"}}]
+
+player/create/<playername> : GET request. Creates a new player with the given name. Example output: [{"pk": "5dad4763-3868-4c7f-9b13-ad6f094344e7", "model": "game.player", "fields": {"nimi": "pelimies", "pelinode": "ubuntunode3.local"}}]
+
+player/create/<playername>/<player_uuid>/<nodename> : GET request. Like above, but includes a uuid/node where the player is connected. Not used.
+
+player/<playername> : GET request. Returns 200 if a player with the given name exists, 404 otherwise.
+
+player/<playerid>/join/<gameid> : GET request. Make the player join a game. Not used.
+
+player/<playerid>/join/<gameid>/<nodename> As above, but includes a node name. Not used.
+
+games/new : GET request. Create a new game. Returns game information in JSON format. Example output: [{"pk": "58bc7480-2d43-49cc-9da7-1f0e3098432f", "model": "game.game", "fields": {"pelikaynnissa": false, "canvas": "58bc7480-2d43-49cc-9da7-1f0e3098432f", "pelaajat": [], "pelinode": "ubuntunode3.local", "piirtaja": null}}]
+
+games/new/<game_uuid>/<nodename> : GET request. As above, but includes a uuid/node name.
+
+games/$ : GET request. List all available games. Response is in JSON. Example: [{"pk": "58bc7480-2d43-49cc-9da7-1f0e3098432f", "model": "game.game", "fields": {"pelikaynnissa": false, "canvas": "58bc7480-2d43-49cc-9da7-1f0e3098432f", "pelaajat": [], "pelinode": "ubuntunode3.local", "piirtaja": null}}]
+
+games/<gameid>/delete$ : GET request. Deletes a given game. Not used.
+
+games/<gameid>/delete/<nodename>  : GET request. As above, but includes a node name. Not used.
+
+canvas/$ :GET request. Returns all the canvas data in JSON. Not used.
+
+canvas/<canvas_id>/ : GET request. Returns all the paths drawn onto the given canvas in JSON.
+
+canvas/<canvas_id>/<timestamp> : GET request. Like above, but only returns paths that are younger than the timestamp.
+
+canvas/<canvas_id>/clear$ : GET request. Clears the canvas. Not used.
+
+canvas/<canvas_id>/clear/.*$ : GET request. As above.
+
+guesses/<canvas_id>/ : GET request. Returns all the guesses, or messages, related to the given canvas in JSON.
+
+guesses/<canvas_id>/<timestamp> : GET request. As above, but returns guesses that are younger than the given timestamp.
+
+guess/ : POST request. Send a guess to the server in JSON. Example: {"playername": "jukka", "guess": "talo", "canvas": 58bc7480-2d43-49cc-9da7-1f0e3098432f}
+
+nodes/ : GET request. List all the nodes. Not used.
+
+refresh/<nodename> : GET request. Refresh a given node. Not used.
+
+remove/<nodename> : GET request. Remove a given node. Not used.
+
 Communication between nodes
 ---------------------------
 
