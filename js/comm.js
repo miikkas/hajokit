@@ -13,7 +13,7 @@ function checkIfPlayerExists(name) {
         type: "GET",
         url: "player/" + name,
         dataType: "text"
-    }).done(function (response, textStatus, xhr) {
+    }).complete(function (response, textStatus, xhr) {
         if (xhr.status == 404) {
             console.log('"' + name + '" was not found. Creating a new player.');
             createPlayer(name);
