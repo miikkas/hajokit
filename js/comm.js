@@ -21,7 +21,7 @@ function checkIfPlayerExists(name) {
         console.log('wittu success saatana: ' + textStatus + ', ' + xhr.status);
     }).always(function (response, textStatus, xhr) {
         console.log('wittu always saatana: ' + textStatus + ', ' + xhr.status);
-    }).error(function (response, textStatus, xhr) {
+    }).error(function (xhr, textStatus, error) {
         console.log('wittu error saatana: ' + textStatus + ', ' + xhr.status);
     });
 }
