@@ -48,7 +48,7 @@ function getDiff(id, timestamp) {
         type: "GET",
         url: url,
         dataType: "text",
-        //complete: function(){getDiff(id, next_timestamp);},
+        complete: function(){getDiff(id, next_timestamp);},
         timeout: 60000
     }).done(function (response, textStatus, xhr) {
         // Server responds with 304 status code, if there's 
@@ -91,7 +91,7 @@ function newGame() {
             console.log('Failed to find a game, attempting again.');
         }
         //getDiff(id, 0);
-    }).fail(function (response, textStatus, xhr) {
+    }).fail(function (xhr, textStatus, error) {
         // Try again if creating a game failed.
         newGame();
     });
@@ -119,7 +119,7 @@ function getGameID() {
             newGame();
         }
         getDiff(id, 0);
-    }).fail(function (response, textStatus, xhr) {
+    }).fail(function (xhr, textStatus, error) {
         // If there were no ID's, create a new game.
         newGame();
     });
