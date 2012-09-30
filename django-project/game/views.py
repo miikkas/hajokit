@@ -217,7 +217,7 @@ def guess(request):
       player = get_object_or_404(Player,nimi=str(parametrit['playername']))
       print player
       game_id = parametrit['canvas']
-      game = Game.objects.get(uuid=game_id)
+      game = get_object_or_404(Game,uuid=game_id)
       guess = Guess(pelaaja=player,peli=game,arvaus=parametrit['guess'],epoch=time.time())
       guess.save()
       replicate( request )
