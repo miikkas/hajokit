@@ -43,7 +43,7 @@ function getDiff(timestamp) {
      */
     
     var next_timestamp = timestamp;
-    var url = "canvas/" + $.cookie('canvasid' + "/" + timestamp;
+    var url = "canvas/" + $.cookie('canvasid') + "/" + timestamp;
     $.ajax ({
         type: "GET",
         url: url,
