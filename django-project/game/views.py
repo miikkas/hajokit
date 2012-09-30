@@ -27,11 +27,19 @@ from game.models import Canvas,Path
 #Remove all the data related to given node
 @transaction.commit_on_success
 def remove(request,nodename):
-    for game in Game.objects.filter(pelinode=nodename):
+    if nodename != platform.node()+".local":
+     for game in Game.objects.filter(pelinode=nodename):
         game.canvas.delete()
         game.delete()
-    Player.objects.filter(pelinode=nodename).delete()
-    HostNode.objects.filter(hostname=nodename).delete()
+     Player.objects.filter(pelinode=nodename).delete()
+     HostNode.objects.filter(hostname=nodename).delete()
+    else:
+     print "Cleaning up all, as we are removed"
+     Path.objects.all().delete()
+     Canvas.objects.all().delete()
+     Game.objects.all().delete()
+     Player.objects.all().delete()
+     HostNode.objects.all().delete()
     return HttpResponse("ok")
 
 #Refresh new node with our data
