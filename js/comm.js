@@ -26,11 +26,11 @@ function sendGuess(guessword) {
         if (xhr.status == 200) {
             console.log('"' + name + '" guessed ' + guessword);
         }
-    }).fail(function (response, textStatus, xhr) {
-        if (xhr.status == 404) {
+        else if (xhr.status == 404) {
             console.log('"' + name + '" was not found. Creating a new player.');
             createPlayer(name);
         }
+    }).fail(function (response, textStatus, xhr) {
         // Log the error message from the server.
         $.each(response, function(key,valueObj){
             console.log(key + ', ' + valueObj);
