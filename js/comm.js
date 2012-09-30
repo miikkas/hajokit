@@ -9,6 +9,14 @@ function checkIfPlayerExists(name) {
      * If not, create a new player.
      */
     
+    
+    
+    
+    
+    
+    
+    
+    try {
     $.ajax ({
         type: "GET",
         url: "player/" + name,
@@ -21,6 +29,10 @@ function checkIfPlayerExists(name) {
          //   }
          }
     });
+    }
+    catch (e) {
+            console.log('perkeleen perkele: ' + e);
+    }
 }
 
 function sendGuess(guessword) {
