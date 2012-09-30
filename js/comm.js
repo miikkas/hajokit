@@ -78,7 +78,8 @@ function createPlayer(name) {
     }).fail(function (xhr, textStatus, error) {
         console.log('Failed to create new player "' + $.trim(name) + '". REFRESH.');
         $.removeCookie('playername');
-        location.reload();
+        //location.reload();
+        alert('no vittu');
     });
 }
 
