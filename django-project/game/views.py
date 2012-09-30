@@ -161,7 +161,10 @@ def path_import( canvas, parametrit ):
 #Give all the paths for given canvas from timestamp onward
 @csrf_exempt
 def canvasdiff( request, canvas_id, timestamp = 0 ):
-    canvas = Canvas.objects.select_related().get(pk=canvas_id)
+    try:
+     canvas = Canvas.objects.select_related().get(pk=canvas_id)
+    except ObjectDoesNotExists:
+     return Http404
     if request.method == "POST":
      parametrit = simplejson.loads(urllib.unquote(request.body))
      path_import( canvas, parametrit )
