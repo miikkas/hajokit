@@ -3,6 +3,25 @@
  * messages.
  */
 
+function checkIfPlayerExists(name) {
+    /*
+     * Check if the given name can be found from the server. 
+     * If not, create a new player.
+     */
+    
+    $.ajax ({
+        type: "POST",
+        url: "guess/",
+        dataType: "text", 
+        data: guess
+    }).done(function (response, textStatus, xhr) {
+        if (xhr.status == 404) {
+            console.log('"' + name + '" was not found. Creating a new player.');
+            createPlayer(name);
+        }
+    });
+}
+
 function sendGuess(guessword) {
     /*
      * Send the given word to the server. Include player ID 
@@ -182,5 +201,6 @@ $(document).ready(function () {
             $('#arvaussyotto').val("");
         }
     });
+    checkIfPlayerExists($.cookie('playername'));
     guessPollInit();
 });
