@@ -161,7 +161,7 @@ function checkForGames() {
      * If not, try to get an ID from the server.
      */
     
-    if ($.cookie('canvasid') !== true) {
+    if ($.cookie('canvasid') === null) {
         console.log('No canvas ID cookie found. Attempting to get one.');
         getGameID();
     }

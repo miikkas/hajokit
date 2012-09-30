@@ -162,7 +162,7 @@ function checkName() {
      * Otherwise, send a guess with the contents of the box.
      */
     
-    if (!$.cookie('playername')) {
+    if ($.cookie('playername') === null) {
         createPlayer($('#arvaussyotto').val());
     }
     else {
