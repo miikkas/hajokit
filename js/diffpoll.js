@@ -89,7 +89,7 @@ function newGame() {
         } catch (e) {
             console.log('Failed to find a game, attempting again.');
         }
-        getDiff(id, 0);
+        //getDiff(id, 0);
     }).fail(function (response, textStatus, xhr) {
         // Try again if creating a game failed.
         newGame();
