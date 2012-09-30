@@ -156,12 +156,12 @@ $(document).ready(function () {
         $('#arvaussyotto').val('Nimi tähän ja menoksi!');
     }
     $('#arvaussyotto').focus(function (event) {
-        if (typeof(jQuery.data(document.body, 'playername')) == 'undefined') {
+        if ($.cookie('playername') === null) {
             $('#arvaussyotto').val("");
         }
     });
     $('#arvaussyotto').focusout(function (event) {
-        if (typeof(jQuery.data(document.body, 'playername')) == 'undefined') {
+        if ($.cookie('playername') === null) {
             $('#arvaussyotto').val("Nimi tähän ja menoksi!");
         }
     });
