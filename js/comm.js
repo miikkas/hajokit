@@ -76,8 +76,9 @@ function createPlayer(name) {
             $('#pelaajannimi').empty().prepend($.trim(name));
         }
     }).fail(function (xhr, textStatus, error) {
-        console.log('Failed to create new player "' + $.trim(name) + '". Attempting again.');
-        createPlayer(name);
+        console.log('Failed to create new player "' + $.trim(name) + '". REFRESH.');
+        $.removeCookie('playername');
+        location.reload();
     });
 }
 
