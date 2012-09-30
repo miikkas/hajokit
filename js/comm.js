@@ -66,23 +66,25 @@ function createPlayer(name) {
      * data.
      */
     
-    $.ajax ({
-        type: "GET",
-        url: "player/create/" + $.trim(name),
-        dataType: "text"
-    }).done(function (response, textStatus, xhr) {
-        if (xhr.status == 200) {
-            jQuery.data(document.body, 'playername', $.trim(name) );
-            console.log('Created player ' + $.trim(name));
-            $.cookie('playername', $.trim(name), { expires: 7 });
-            $('#pelaajannimi').empty().prepend($.trim(name));
-        }
-    }).fail(function (xhr, textStatus, error) {
-        console.log('Failed to create new player "' + $.trim(name) + '". REFRESH.');
-        $.removeCookie('playername');
-        //location.reload();
-        alert('no vittu');
-    });
+    if (name != '' && typeof(name) !== 'undefined') {
+        $.ajax ({
+            type: "GET",
+            url: "player/create/" + $.trim(name),
+            dataType: "text"
+        }).done(function (response, textStatus, xhr) {
+            if (xhr.status == 200) {
+                jQuery.data(document.body, 'playername', $.trim(name) );
+                console.log('Created player ' + $.trim(name));
+                $.cookie('playername', $.trim(name), { expires: 7 });
+                $('#pelaajannimi').empty().prepend($.trim(name));
+            }
+        }).fail(function (xhr, textStatus, error) {
+            console.log('Failed to create new player "' + $.trim(name) + '". REFRESH.');
+            $.removeCookie('playername');
+            //location.reload();
+            $('ul#chattiruutu').append("<li>Nimen \"" + $.trim(name) + "\" ei onnistunut. Yritä uudestaan.</li>");
+        });
+    }
 }
 
 function addGuesses(json) {
