@@ -13,12 +13,16 @@ function checkIfPlayerExists(name) {
         type: "GET",
         url: "player/" + name,
         dataType: "text"
-        }).fail(function (response, textStatus, xhr) {
-            console.log('wittu saatana');
-            //if (xhr.status == 404) {
-              //  console.log('"' + name + '" was not found. Creating a new player.');
-                //createPlayer(name);
-         //   }
+    }).done(function (response) {
+        console.log('wittu done saatana');
+    }).fail(function (response) {
+        console.log('wittu fail saatana');
+    }).success(function (response) {
+        console.log('wittu success saatana');
+    }).always(function (response) {
+        console.log('wittu always saatana');
+    }).error(function (response) {
+        console.log('wittu error saatana');
     });
 }
 
