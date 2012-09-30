@@ -19,9 +19,9 @@ function checkIfPlayerExists(name) {
         console.log('wittu fail saatana: ' + textStatus + ', ' + xhr.status);
     }).success(function (response) {
         console.log('wittu success saatana: ' + textStatus + ', ' + xhr.status);
-    }).always(function (response) {
+    }).always(function (response, textStatus, xhr) {
         console.log('wittu always saatana: ' + textStatus + ', ' + xhr.status);
-    }).error(function (response) {
+    }).error(function (response, textStatus, xhr) {
         console.log('wittu error saatana: ' + textStatus + ', ' + xhr.status);
     });
 }
