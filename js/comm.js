@@ -18,6 +18,7 @@ function checkIfPlayerExists(name) {
                 console.log('"' + name + '" was not found. Creating a new player.');
                 //createPlayer(name);
             }
+         }
     });
 }
 
