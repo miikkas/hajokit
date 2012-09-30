@@ -125,7 +125,7 @@ def endgame( request, gameid, nodename=platform.node()+".local"):
 
 def player(request, playername ):
     player = get_object_or_404(Player,nimi=playername)
-    return HttpResponse( serializers.serialize("json", player ) )
+    return HttpResponse( serializers.serialize("json", [player] ) )
 
 
 #Create new player with given name and optionally given uuid/node where player is connected
