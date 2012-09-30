@@ -32,14 +32,18 @@ def remove(request,nodename):
         game.canvas.delete()
         game.delete()
      Player.objects.filter(pelinode=nodename).delete()
+     Player.objects.all().update()
      HostNode.objects.filter(hostname=nodename).delete()
+     HostNode.objects.all().update()
     else:
      print "Cleaning up all, as we are removed"
      Path.objects.all().delete()
      Canvas.objects.all().delete()
      Game.objects.all().delete()
      Player.objects.all().delete()
+     Player.objects.all().update()
      HostNode.objects.all().delete()
+     HostNode.objects.all().update()
     return HttpResponse("ok")
 
 #Refresh new node with our data, called from SD module, replicate our data to new node
