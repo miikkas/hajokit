@@ -78,6 +78,8 @@ def log(*args):
     LOGFILE.write(time.ctime()+" ")
     LOGFILE.write("".join(args))
     LOGFILE.write("\n")
+    LOGFILE.close()
+    LOGFILE = None
 
 #Adding avahi service for http service
 def add_service():
