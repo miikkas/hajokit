@@ -85,6 +85,7 @@ function newGame() {
             id = result_json[0].pk;
             // Store the canvas id so that it can be used elsewhere.
             $.cookie('canvasid', id, { expires: 7 });
+            console.log('Created a new goddamn game with canvas id ' + $.cookie('canvasid'));
         } catch (e) {
             console.log('Failed to find a game, attempting again.');
         }
