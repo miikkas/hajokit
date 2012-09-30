@@ -176,9 +176,9 @@ def canvasall(request):
 def path_import( canvas, parametrit ):
     epoch = time.time()
     for segment in parametrit['segments']:
-       datat = parametrit['segments'][segment]
+       datat = parametrit['segments'][int(segment)]
        segmentti = Path()
-       segmentti.ordernumber = segment
+       segmentti.ordernumber = int(segment)
        segmentti.epoch = epoch
        segmentti.color = parametrit['color']
        segmentti.size  = parametrit['size']
