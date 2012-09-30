@@ -60,7 +60,7 @@ def refresh(request,nodename):
         jsondata=[]
 
         #Replicate the canvas data to new node
-        for path in game.canvas.path__set:
+        for path in game.canvas.path_set:
             jsondata.append({"color":path.color,"size":path.size,"segments":[{"pointx":path.pointx,"pointy":path.pointy,"handleInx":path.handleInx,"handleIny":path.handleIny,"handleOutx":path.handleOutx,"handleOuty":path.handleOuty}]})
         print "Replicating canvas %s data:%s"%(game.uuid,jsondata)
 
