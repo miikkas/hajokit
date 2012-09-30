@@ -163,7 +163,7 @@ def path_import( canvas, parametrit ):
 def canvasdiff( request, canvas_id, timestamp = 0 ):
     try:
      canvas = Canvas.objects.select_related().get(pk=canvas_id)
-    except ObjectDoesNotExists:
+    except ObjectDoesNotExist:
      return Http404
     if request.method == "POST":
      parametrit = simplejson.loads(urllib.unquote(request.body))
